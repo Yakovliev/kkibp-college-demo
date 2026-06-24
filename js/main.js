@@ -32,6 +32,8 @@
 
   menuButtons.forEach(button => {
     button.addEventListener('click', (event) => {
+      if (window.innerWidth >= 1100) return;
+      event.preventDefault();
       const item = event.currentTarget.closest('.has-menu');
       const opening = !item.classList.contains('menu-open');
       closeMenus(item);
