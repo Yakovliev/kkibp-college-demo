@@ -10,6 +10,24 @@
   const resultsBox = document.querySelector('#search-results');
   const backToTop = document.querySelector('.back-to-top');
   const toast = document.querySelector('.toast');
+  const languageSwitches = [...document.querySelectorAll('[data-language-switch]')];
+  const isEnglish = document.documentElement.lang.startsWith('en');
+  const locale = isEnglish ? 'en' : 'uk';
+  const ui = isEnglish
+    ? {
+        closeMenu: 'Close menu',
+        openMenu: 'Open menu',
+        noResults: 'No results found. Try another query.',
+        formReady: 'Thank you! The form is prepared for connection to an email service.',
+        futureLink: 'This link is prepared for a future material.'
+      }
+    : {
+        closeMenu: 'Закрити меню',
+        openMenu: 'Відкрити меню',
+        noResults: 'Нічого не знайдено. Спробуйте інший запит.',
+        formReady: 'Дякуємо! Форму підготовлено для підключення до поштового сервісу.',
+        futureLink: 'Це посилання підготовлене для майбутнього матеріалу.'
+      };
 
   const closeMenus = (except = null) => {
     document.querySelectorAll('.has-menu.menu-open').forEach(item => {
@@ -20,15 +38,35 @@
     });
   };
 
+  const closeLanguageSwitches = (except = null) => {
+    languageSwitches.forEach(switcher => {
+      if (switcher !== except) {
+        switcher.classList.remove('is-open');
+        switcher.querySelector('.language-toggle')?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  };
+
   const setNav = (open) => {
     body.classList.toggle('nav-open', open);
     navToggle?.setAttribute('aria-expanded', String(open));
-    navToggle?.setAttribute('aria-label', open ? 'Закрити меню' : 'Відкрити меню');
+    navToggle?.setAttribute('aria-label', open ? ui.closeMenu : ui.openMenu);
     if (!open) closeMenus();
   };
 
   navToggle?.addEventListener('click', () => setNav(!body.classList.contains('nav-open')));
   navBackdrop?.addEventListener('click', () => setNav(false));
+
+  languageSwitches.forEach(switcher => {
+    const button = switcher.querySelector('.language-toggle');
+    button?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const opening = !switcher.classList.contains('is-open');
+      closeLanguageSwitches(switcher);
+      switcher.classList.toggle('is-open', opening);
+      button.setAttribute('aria-expanded', String(opening));
+    });
+  });
 
   menuButtons.forEach(button => {
     button.addEventListener('click', (event) => {
@@ -43,6 +81,7 @@
   });
 
   document.addEventListener('click', (event) => {
+    if (!event.target.closest('[data-language-switch]')) closeLanguageSwitches();
     if (window.innerWidth >= 1100 && !event.target.closest('.has-menu')) closeMenus();
   });
 
@@ -50,20 +89,35 @@
     link.addEventListener('click', () => { if (window.innerWidth < 1100) setNav(false); });
   });
 
-  const searchIndex = [
-    ['Правила прийому 2026', 'Абітурієнту', 'admissions.html#documents'],
-    ['Календар вступника', 'Абітурієнту', 'admissions.html#timeline'],
-    ['Освітні програми', 'Навчання', 'admissions.html#programs'],
-    ['Розклад занять', 'Студенту', 'students.html#schedule'],
-    ['Каталог вибіркових дисциплін', 'Студенту', 'students.html#electives'],
-    ['Психологічна служба', 'Підтримка', 'students.html#support'],
-    ['Центр кар’єри', 'Можливості', 'students.html#career'],
-    ['Електронний каталог бібліотеки', 'Бібліотека', 'library.html#catalog'],
-    ['Академічна доброчесність', 'Бібліотека', 'library.html#integrity'],
-    ['Наукові гуртки', 'Наука', 'science.html#student-science'],
-    ['Контакти коледжу', 'Коледж', 'college.html#contacts'],
-    ['Публічна інформація', 'Коледж', 'college.html#documents']
-  ];
+  const searchIndex = isEnglish
+    ? [
+        ['Admission Rules 2026', 'Applicants', 'admissions.html#documents'],
+        ['Applicant Calendar', 'Applicants', 'admissions.html#timeline'],
+        ['Educational Programs', 'Learning', 'admissions.html#programs'],
+        ['Class Schedule', 'Students', 'students.html#schedule'],
+        ['Elective Disciplines Catalog', 'Students', 'students.html#electives'],
+        ['Psychological Service', 'Support', 'students.html#support'],
+        ['Career Center', 'Opportunities', 'students.html#career'],
+        ['Electronic Library Catalog', 'Library', 'library.html#catalog'],
+        ['Academic Integrity', 'Library', 'library.html#integrity'],
+        ['Research Clubs', 'Research', 'science.html#student-science'],
+        ['College Contacts', 'College', 'college.html#contacts'],
+        ['Public Information', 'College', 'college.html#documents']
+      ]
+    : [
+        ['Правила прийому 2026', 'Абітурієнту', 'admissions.html#documents'],
+        ['Календар вступника', 'Абітурієнту', 'admissions.html#timeline'],
+        ['Освітні програми', 'Навчання', 'admissions.html#programs'],
+        ['Розклад занять', 'Студенту', 'students.html#schedule'],
+        ['Каталог вибіркових дисциплін', 'Студенту', 'students.html#electives'],
+        ['Психологічна служба', 'Підтримка', 'students.html#support'],
+        ['Центр кар’єри', 'Можливості', 'students.html#career'],
+        ['Електронний каталог бібліотеки', 'Бібліотека', 'library.html#catalog'],
+        ['Академічна доброчесність', 'Бібліотека', 'library.html#integrity'],
+        ['Наукові гуртки', 'Наука', 'science.html#student-science'],
+        ['Контакти коледжу', 'Коледж', 'college.html#contacts'],
+        ['Публічна інформація', 'Коледж', 'college.html#documents']
+      ];
 
   const openSearch = () => {
     searchDialog.hidden = false;
@@ -80,15 +134,16 @@
   document.querySelector('.search-close')?.addEventListener('click', closeSearch);
   searchDialog?.addEventListener('click', e => { if (e.target === searchDialog) closeSearch(); });
   searchInput?.addEventListener('input', () => {
-    const q = searchInput.value.trim().toLocaleLowerCase('uk');
+    const q = searchInput.value.trim().toLocaleLowerCase(locale);
     if (!q) { resultsBox.innerHTML = ''; return; }
-    const matches = searchIndex.filter(item => item[0].toLocaleLowerCase('uk').includes(q) || item[1].toLocaleLowerCase('uk').includes(q)).slice(0, 6);
-    resultsBox.innerHTML = matches.length ? matches.map(([title, section, href]) => `<a class="search-result" href="${href}"><span>${title}</span><small>${section}</small></a>`).join('') : '<p>Нічого не знайдено. Спробуйте інший запит.</p>';
+    const matches = searchIndex.filter(item => item[0].toLocaleLowerCase(locale).includes(q) || item[1].toLocaleLowerCase(locale).includes(q)).slice(0, 6);
+    resultsBox.innerHTML = matches.length ? matches.map(([title, section, href]) => `<a class="search-result" href="${href}"><span>${title}</span><small>${section}</small></a>`).join('') : `<p>${ui.noResults}</p>`;
   });
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
       closeMenus();
+      closeLanguageSwitches();
       if (body.classList.contains('nav-open')) setNav(false);
       if (searchDialog && !searchDialog.hidden) closeSearch();
     }
@@ -118,7 +173,7 @@
   document.querySelectorAll('[data-demo-form]').forEach(form => {
     form.addEventListener('submit', event => {
       event.preventDefault();
-      showToast('Дякуємо! Форму підготовлено для підключення до поштового сервісу.');
+      showToast(ui.formReady);
       form.reset();
     });
   });
@@ -138,7 +193,7 @@
   document.querySelectorAll('a[href="#"]').forEach(link => {
     link.addEventListener('click', event => {
       event.preventDefault();
-      showToast('Це посилання підготовлене для майбутнього матеріалу.');
+      showToast(ui.futureLink);
     });
   });
 
