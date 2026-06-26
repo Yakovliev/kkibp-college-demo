@@ -14,15 +14,15 @@
     <div class="toolbar-actions">
       <a href="?lang=uk" data-lang-link="uk">UA</a>
       <a href="?lang=en" data-lang-link="en">EN</a>
-      <a href="../index.html?v=multilingual-20260626-hero-photo" id="open-site" target="_blank">Відкрити окремо</a>
+      <a href="../index.html?v=multilingual-20260626-mobile-language" id="open-site" target="_blank">Відкрити окремо</a>
     </div>
   </div>
   <div class="stage">
-    <div class="device tablet"><div class="screen"><iframe id="site-preview" src="../index.html?v=multilingual-20260626-hero-photo" title="Прев’ю сайту коледжу для Планшет · 820 × 1080"></iframe></div></div>
+    <div class="device tablet"><div class="screen"><iframe id="site-preview" src="../index.html?v=multilingual-20260626-mobile-language" title="Прев’ю сайту коледжу для Планшет · 820 × 1080"></iframe></div></div>
   </div>
   <script>
     const lang = new URLSearchParams(window.location.search).get('lang') === 'en' ? 'en' : 'uk';
-    const target = lang === 'en' ? '../en/index.html?v=multilingual-20260626-hero-photo' : '../index.html?v=multilingual-20260626-hero-photo';
+    const target = lang === 'en' ? '../en/index.html?v=multilingual-20260626-mobile-language' : '../index.html?v=multilingual-20260626-mobile-language';
     document.querySelector('#site-preview').src = target;
     document.querySelector('#open-site').href = target;
     document.querySelectorAll('[data-lang-link]').forEach(link => {

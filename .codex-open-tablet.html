@@ -1,0 +1,10 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>body{margin:0;background:#fff}iframe{display:block;width:820px;height:1080px;border:0}</style>
+<iframe src="/index.html" title="tablet menu"></iframe>
+<script>
+const frame = document.querySelector('iframe');
+frame.addEventListener('load', () => {
+  setTimeout(() => frame.contentDocument.querySelector('.nav-toggle')?.click(), 250);
+});
+</script>

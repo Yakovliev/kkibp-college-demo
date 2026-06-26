@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
-const version = 'multilingual-20260626-hero-photo';
+const version = 'multilingual-20260626-mobile-language';
 const files = ['index.html', 'college.html', 'admissions.html', 'students.html', 'alumni.html', 'science.html', 'library.html', 'news.html'];
 const collegeName = 'Economics and Law Professional College of Kyiv Cooperative Institute of Business and Law';
 const arrow = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
@@ -79,6 +79,35 @@ const languageSwitch = ({ current, ukHref, enHref, label }) => `<div class="lang
 
 const ukrainianTopbarActions = (file) => `<div class="topbar-actions"><a href="college.html#contacts">Контакти</a><a href="#footer">Мапа сайту</a>${languageSwitch({ current: 'UA', ukHref: file, enHref: `en/${file}`, label: 'Змінити мову' })}</div>`;
 const englishTopbarActions = (file) => `<div class="topbar-actions"><a href="college.html#contacts">Contacts</a><a href="#footer">Site map</a>${languageSwitch({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language' })}</div>`;
+const headerLanguageSwitch = (options) => languageSwitch(options).replace('class="language-switch"', 'class="language-switch header-language"');
+const ukrainianHeaderLanguage = (file) => headerLanguageSwitch({ current: 'UA', ukHref: file, enHref: `en/${file}`, label: 'Змінити мову' });
+const englishHeaderLanguage = (file) => headerLanguageSwitch({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language' });
+
+const mobileLanguage = ({ current, ukHref, enHref, label, title }) => `<div class="mobile-language" aria-label="${label}">
+            <span class="mobile-language-title">${title}</span>
+            <div class="mobile-language-options">
+              <a class="mobile-language-option${current === 'UA' ? ' is-active' : ''}" href="${ukHref}" hreflang="uk"${current === 'UA' ? ' aria-current="true"' : ''}>UA</a>
+              <a class="mobile-language-option${current === 'EN' ? ' is-active' : ''}" href="${enHref}" hreflang="en"${current === 'EN' ? ' aria-current="true"' : ''}>EN</a>
+            </div>
+          </div>`;
+
+const ukrainianMobileLanguage = (file) => mobileLanguage({ current: 'UA', ukHref: file, enHref: `en/${file}`, label: 'Зміна мови', title: 'Мова сайту' });
+const englishMobileLanguage = (file) => mobileLanguage({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language', title: 'Site language' });
+const ukrainianMobileNavTools = (file) => `<div class="mobile-nav-tools">
+          ${ukrainianMobileLanguage(file)}
+        </div>`;
+const englishMobileNavTools = (file) => `<div class="mobile-nav-tools">
+          ${englishMobileLanguage(file)}
+        </div>`;
+
+const ukrainianMobileFooter = (file) => `<div class="mobile-nav-footer">
+          <a class="button button--accent button--wide" href="admissions.html#apply">Подати заяву</a>
+          <div class="mobile-contact"><a href="tel:+380442582029">+38 (044) 258-20-29</a><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></div>
+        </div>`;
+const englishMobileFooter = (file) => `<div class="mobile-nav-footer">
+          <a class="button button--accent button--wide" href="admissions.html#apply">Apply now</a>
+          <div class="mobile-contact"><a href="tel:+380442582029">+38 (044) 258-20-29</a><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></div>
+        </div>`;
 
 const header = (file) => `<body>
 
@@ -101,6 +130,7 @@ const header = (file) => `<body>
         <span class="brand-text"><strong>${collegeName}</strong><small>education · growth · future</small></span>
       </a>
       <div class="header-actions">
+        ${englishHeaderLanguage(file)}
         <button class="icon-button search-open" type="button" aria-label="Search the site"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
         <a class="button button--small button--accent desktop-cta" href="admissions.html#apply">Admissions 2026</a>
         <button class="icon-button nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-navigation">
@@ -110,6 +140,7 @@ const header = (file) => `<body>
     </div>
     <div class="nav-shell" id="site-navigation">
       <div class="container nav-inner">
+        ${englishMobileNavTools(file)}
         <nav class="primary-nav" aria-label="Primary navigation">
           <ul class="nav-list"><li class="nav-item has-menu">
           <a class="nav-link menu-toggle" href="college.html" aria-expanded="false" aria-controls="menu-0">
@@ -185,10 +216,7 @@ const header = (file) => `<body>
           </div>
         </li><li class="nav-item"><a class="nav-link" href="news.html">News</a></li></ul>
         </nav>
-        <div class="mobile-nav-footer">
-          <a class="button button--accent button--wide" href="admissions.html#apply">Apply now</a>
-          <div class="mobile-contact"><a href="tel:+380442582029">+38 (044) 258-20-29</a><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></div>
-        </div>
+        ${englishMobileFooter(file)}
       </div>
     </div>
   </div>
@@ -394,6 +422,37 @@ const updateUkrainianPage = async (file) => {
   const topbarEnd = source.indexOf('\n    </div>\n  </div>\n  <div class="header-main">', topbarStart);
   if (topbarStart !== -1 && topbarEnd !== -1) {
     source = `${source.slice(0, topbarStart)}      ${ukrainianTopbarActions(file)}${source.slice(topbarEnd)}`;
+  }
+
+  const headerActionsStart = source.indexOf('      <div class="header-actions">');
+  const searchButtonMarker = '        <button class="icon-button search-open"';
+  const searchButtonStart = source.indexOf(searchButtonMarker, headerActionsStart);
+  const headerLanguageStart = source.indexOf('        <div class="language-switch header-language"', headerActionsStart);
+  if (headerActionsStart !== -1 && searchButtonStart !== -1) {
+    if (headerLanguageStart !== -1 && headerLanguageStart < searchButtonStart) {
+      source = `${source.slice(0, headerLanguageStart)}        ${ukrainianHeaderLanguage(file)}\n${source.slice(searchButtonStart)}`;
+    } else {
+      source = `${source.slice(0, searchButtonStart)}        ${ukrainianHeaderLanguage(file)}\n${source.slice(searchButtonStart)}`;
+    }
+  }
+
+  const navInnerStart = source.indexOf('      <div class="container nav-inner">');
+  const primaryNavMarker = '        <nav class="primary-nav"';
+  const primaryNavStart = source.indexOf(primaryNavMarker, navInnerStart);
+  const mobileToolsStart = source.indexOf('        <div class="mobile-nav-tools"', navInnerStart);
+  if (navInnerStart !== -1 && primaryNavStart !== -1) {
+    if (mobileToolsStart !== -1 && mobileToolsStart < primaryNavStart) {
+      source = `${source.slice(0, mobileToolsStart)}        ${ukrainianMobileNavTools(file)}\n${source.slice(primaryNavStart)}`;
+    } else {
+      source = `${source.slice(0, primaryNavStart)}        ${ukrainianMobileNavTools(file)}\n${source.slice(primaryNavStart)}`;
+    }
+  }
+
+  const mobileFooterStart = source.indexOf('        <div class="mobile-nav-footer">');
+  const mobileFooterClose = '\n        </div>';
+  const mobileFooterEnd = source.indexOf(`${mobileFooterClose}\n      </div>\n    </div>\n  </div>\n</header>`, mobileFooterStart);
+  if (mobileFooterStart !== -1 && mobileFooterEnd !== -1) {
+    source = `${source.slice(0, mobileFooterStart)}        ${ukrainianMobileFooter(file)}${source.slice(mobileFooterEnd + mobileFooterClose.length)}`;
   }
 
   if (!source.includes('rel="alternate" hreflang="en"')) {
