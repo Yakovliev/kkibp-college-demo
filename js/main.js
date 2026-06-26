@@ -18,14 +18,12 @@
         closeMenu: 'Close menu',
         openMenu: 'Open menu',
         noResults: 'No results found. Try another query.',
-        formReady: 'Thank you! The form is prepared for connection to an email service.',
         futureLink: 'This link is prepared for a future material.'
       }
     : {
         closeMenu: 'Закрити меню',
         openMenu: 'Відкрити меню',
         noResults: 'Нічого не знайдено. Спробуйте інший запит.',
-        formReady: 'Дякуємо! Форму підготовлено для підключення до поштового сервісу.',
         futureLink: 'Це посилання підготовлене для майбутнього матеріалу.'
       };
 
@@ -130,7 +128,7 @@
     if (searchInput) searchInput.value = '';
     if (resultsBox) resultsBox.innerHTML = '';
   };
-  document.querySelector('.search-open')?.addEventListener('click', openSearch);
+  document.querySelectorAll('.search-open').forEach(button => button.addEventListener('click', openSearch));
   document.querySelector('.search-close')?.addEventListener('click', closeSearch);
   searchDialog?.addEventListener('click', e => { if (e.target === searchDialog) closeSearch(); });
   searchInput?.addEventListener('input', () => {
@@ -170,14 +168,6 @@
     clearTimeout(showToast.timer);
     showToast.timer = setTimeout(() => toast.classList.remove('is-visible'), 3200);
   };
-  document.querySelectorAll('[data-demo-form]').forEach(form => {
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      showToast(ui.formReady);
-      form.reset();
-    });
-  });
-
   document.querySelectorAll('[data-filter]').forEach(button => {
     button.addEventListener('click', () => {
       const group = button.closest('.filter-bar');
@@ -210,6 +200,6 @@
   });
 
   window.addEventListener('resize', () => {
-    if (window.innerWidth >= 1100 && body.classList.contains('nav-open')) setNav(false);
+    if (window.innerWidth >= 720 && body.classList.contains('nav-open')) setNav(false);
   });
 })();

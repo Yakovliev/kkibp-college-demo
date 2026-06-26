@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
-const version = 'multilingual-20260626-mobile-language';
+const version = 'compact-header-20260627';
 const files = ['index.html', 'college.html', 'admissions.html', 'students.html', 'alumni.html', 'science.html', 'library.html', 'news.html'];
 const collegeName = 'Economics and Law Professional College of Kyiv Cooperative Institute of Business and Law';
 const arrow = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
@@ -77,11 +77,16 @@ const languageSwitch = ({ current, ukHref, enHref, label }) => `<div class="lang
           </div>
         </div>`;
 
-const ukrainianTopbarActions = (file) => `<div class="topbar-actions"><a href="college.html#contacts">Контакти</a><a href="#footer">Мапа сайту</a>${languageSwitch({ current: 'UA', ukHref: file, enHref: `en/${file}`, label: 'Змінити мову' })}</div>`;
-const englishTopbarActions = (file) => `<div class="topbar-actions"><a href="college.html#contacts">Contacts</a><a href="#footer">Site map</a>${languageSwitch({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language' })}</div>`;
+const navLanguageSwitch = (options) => languageSwitch(options).replace('class="language-switch"', 'class="language-switch nav-language"');
 const headerLanguageSwitch = (options) => languageSwitch(options).replace('class="language-switch"', 'class="language-switch header-language"');
+const ukrainianNavLanguage = (file) => navLanguageSwitch({ current: 'UA', ukHref: file, enHref: `en/${file}`, label: 'Змінити мову' });
+const englishNavLanguage = (file) => navLanguageSwitch({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language' });
 const ukrainianHeaderLanguage = (file) => headerLanguageSwitch({ current: 'UA', ukHref: file, enHref: `en/${file}`, label: 'Змінити мову' });
 const englishHeaderLanguage = (file) => headerLanguageSwitch({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language' });
+const ukrainianNavTools = (file) => `<li class="nav-item nav-item--tool nav-item--language">${ukrainianNavLanguage(file)}</li><li class="nav-item nav-item--tool nav-item--search"><button class="icon-button search-open nav-search" type="button" aria-label="Пошук по сайту"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button></li>`;
+const englishNavTools = (file) => `<li class="nav-item nav-item--tool nav-item--language">${englishNavLanguage(file)}</li><li class="nav-item nav-item--tool nav-item--search"><button class="icon-button search-open nav-search" type="button" aria-label="Search the site"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button></li>`;
+const ukrainianNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права — головна"><img src="assets/logo_small.gif" alt="" width="48" height="48"><span><strong>Економіко-правовий фаховий коледж</strong><small>Київського кооперативного інституту бізнесу і права</small></span></a></li>`;
+const englishNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="${collegeName} - home"><img src="../assets/logo_small.gif" alt="" width="48" height="48"><span><strong>Economics and Law Professional College</strong><small>Kyiv Cooperative Institute of Business and Law</small></span></a></li>`;
 
 const mobileLanguage = ({ current, ukHref, enHref, label, title }) => `<div class="mobile-language" aria-label="${label}">
             <span class="mobile-language-title">${title}</span>
@@ -100,29 +105,10 @@ const englishMobileNavTools = (file) => `<div class="mobile-nav-tools">
           ${englishMobileLanguage(file)}
         </div>`;
 
-const ukrainianMobileFooter = (file) => `<div class="mobile-nav-footer">
-          <a class="button button--accent button--wide" href="admissions.html#apply">Подати заяву</a>
-          <div class="mobile-contact"><a href="tel:+380442582029">+38 (044) 258-20-29</a><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></div>
-        </div>`;
-const englishMobileFooter = (file) => `<div class="mobile-nav-footer">
-          <a class="button button--accent button--wide" href="admissions.html#apply">Apply now</a>
-          <div class="mobile-contact"><a href="tel:+380442582029">+38 (044) 258-20-29</a><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></div>
-        </div>`;
-
 const header = (file) => `<body>
 
 <a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-header" data-header>
-  <div class="topbar">
-    <div class="container topbar-inner">
-      <div class="topbar-links">
-        <a href="tel:+380442582029"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 3.8 9 8.2 6.9 10c1.3 3 3.1 4.8 6.1 6.1L14.8 14l4.4 2.4-1 4.1c-.2.8-.9 1.3-1.7 1.3C8.7 21.3 2.7 15.3 2.2 7.5c0-.8.5-1.5 1.3-1.7l3.1-2Z"/></svg> +38 (044) 258-20-29</a>
-        <a href="mailto:rector@kkibp.edu.ua"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg> rector@kkibp.edu.ua</a>
-        <span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg> 18 Yulii Zdanovskoi St., Kyiv, 03022</span>
-      </div>
-      ${englishTopbarActions(file)}
-    </div>
-  </div>
   <div class="header-main">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="${collegeName} - home">
@@ -130,9 +116,8 @@ const header = (file) => `<body>
         <span class="brand-text"><strong>${collegeName}</strong><small>education · growth · future</small></span>
       </a>
       <div class="header-actions">
+        <button class="icon-button search-open header-search" type="button" aria-label="Search the site"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
         ${englishHeaderLanguage(file)}
-        <button class="icon-button search-open" type="button" aria-label="Search the site"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
-        <a class="button button--small button--accent desktop-cta" href="admissions.html#apply">Admissions 2026</a>
         <button class="icon-button nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-navigation">
           <span class="menu-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><span class="close-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></span>
         </button>
@@ -142,7 +127,7 @@ const header = (file) => `<body>
       <div class="container nav-inner">
         ${englishMobileNavTools(file)}
         <nav class="primary-nav" aria-label="Primary navigation">
-          <ul class="nav-list"><li class="nav-item has-menu">
+          <ul class="nav-list">${englishNavBrand()}<li class="nav-item has-menu">
           <a class="nav-link menu-toggle" href="college.html" aria-expanded="false" aria-controls="menu-0">
             College<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
           </a>
@@ -164,7 +149,7 @@ const header = (file) => `<body>
               <a class="mega-title" href="admissions.html">Applicants${arrow}</a>
               <p>Useful materials, documents and services for this section.</p>
             </div>
-            <div class="mega-groups"><section class="mega-group"><h3>Admissions 2026</h3><ul><li><a href="admissions.html#documents">Official documents</a></li><li><a href="admissions.html#documents">Admission rules</a></li><li><a href="admissions.html#timeline">Ranking lists</a></li><li><a href="admissions.html#timeline">Enrollment orders</a></li><li><a href="admissions.html#tuition">Tuition fees</a></li><li><a href="admissions.html#timeline">Important dates</a></li><li><a href="admissions.html#documents">Application documents</a></li><li><a href="admissions.html#contacts">Admissions office</a></li><li><a href="admissions.html#contacts">Contact information</a></li></ul></section><section class="mega-group"><h3>Educational Programs</h3><ul><li><a href="admissions.html#programs">Educational programs</a></li></ul></section></div>
+            <div class="mega-groups"><section class="mega-group"><h3>Admissions</h3><ul><li><a href="admissions.html#documents">Official documents</a></li><li><a href="admissions.html#documents">Admission rules</a></li><li><a href="admissions.html#timeline">Ranking lists</a></li><li><a href="admissions.html#timeline">Enrollment orders</a></li><li><a href="admissions.html#tuition">Tuition fees</a></li><li><a href="admissions.html#timeline">Important dates</a></li><li><a href="admissions.html#documents">Application documents</a></li><li><a href="admissions.html#contacts">Admissions office</a></li><li><a href="admissions.html#contacts">Contact information</a></li></ul></section><section class="mega-group"><h3>Educational Programs</h3><ul><li><a href="admissions.html#programs">Educational programs</a></li></ul></section></div>
           </div>
         </li><li class="nav-item has-menu">
           <a class="nav-link menu-toggle" href="students.html" aria-expanded="false" aria-controls="menu-2">
@@ -214,9 +199,8 @@ const header = (file) => `<body>
             </div>
             <div class="mega-groups mega-groups--library"><section class="mega-group"><h3>About the Library</h3><ul><li><a href="library.html#about">Staff</a></li><li><a href="library.html#about">General information</a></li><li><a href="library.html#about">Library presentation</a></li><li><a href="library.html#about">Work plan</a></li><li><a href="library.html#about">Report</a></li><li><a href="library.html#about">Social media</a></li></ul></section><section class="mega-group"><h3>User Information</h3><ul><li><a href="library.html#about">Library rules</a></li><li><a href="library.html#about">For readers</a></li><li><a href="library.html#about">Reader form</a></li></ul></section><section class="mega-group"><h3>Book Collection</h3><ul><li><a href="library.html#catalog">Repository</a></li><li><a href="library.html#new-books">New acquisitions</a></li><li><a href="library.html#new-books">Book exhibitions</a></li><li><a href="library.html#catalog">Electronic library of textbooks</a></li></ul></section><section class="mega-group"><h3>Library Space</h3><ul><li><a href="library.html#space">Board games</a></li><li><a href="library.html#space">Library film club</a></li><li><a href="library.html#space">Healthy Library volunteering</a></li></ul></section><section class="mega-group"><h3>For Researchers</h3><ul><li><a href="library.html#researchers">For authors of scientific publications</a></li><li><a href="library.html#researchers">Scientometric indicators</a></li><li><a href="library.html#researchers">Open-access research resources</a></li><li><a href="library.html#researchers">Specialized scientific journals of Ukraine</a></li><li><a href="library.html#researchers">UDC/LBC indexes</a></li><li><a href="library.html#researchers">Staff research profiles</a></li></ul></section></div>
           </div>
-        </li><li class="nav-item"><a class="nav-link" href="news.html">News</a></li></ul>
+        </li><li class="nav-item"><a class="nav-link" href="news.html">News</a></li>${englishNavTools(file)}</ul>
         </nav>
-        ${englishMobileFooter(file)}
       </div>
     </div>
   </div>
@@ -317,14 +301,14 @@ const mains = {
   ${newsCardsHome}
 </div></section>
 <section class="section section--soft"><div class="container events-layout">
-  <article class="date-card"><div><span class="big-date">28</span><span class="month">March</span></div><div><span class="tag tag--light">Upcoming Event</span><h3>Open Day</h3><p>Campus tour, program presentation and admissions office consultations.</p><a class="button button--ghost-light" href="admissions.html#contacts">Register</a></div></article>
+  <article class="date-card"><div><span class="big-date">28</span><span class="month">March</span></div><div><span class="tag tag--light">Upcoming Event</span><h3>Open Day</h3><p>Campus tour, program presentation and admissions office consultations.</p></div></article>
   <div><span class="eyebrow">Calendar</span><h2>Do not miss what matters</h2><div class="event-list">
     <article class="event-item"><div class="event-date">02<small>Apr</small></div><div><h3>Presentation Design Workshop</h3><p>15:30 · media lab</p></div><a href="#" aria-label="Details">${arrow}</a></article>
     <article class="event-item"><div class="event-date">09<small>Apr</small></div><div><h3>Career Opportunities Fair</h3><p>11:00 · assembly hall</p></div><a href="#" aria-label="Details">${arrow}</a></article>
     <article class="event-item"><div class="event-date">17<small>Apr</small></div><div><h3>Student Research Conference</h3><p>10:00 · building B</p></div><a href="#" aria-label="Details">${arrow}</a></article>
   </div></div>
 </div></section>
-<section class="section" id="tour"><div class="container"><div class="cta-panel"><div><span class="eyebrow eyebrow--light">Meet the College</span><h2>See you at Open Day</h2><p>Feel the atmosphere, ask questions and choose your educational route.</p></div><div class="cta-actions"><a class="button button--accent" href="admissions.html#contacts">Sign up</a><a class="button button--ghost-light" href="college.html#campus">Virtual tour</a></div></div></div></section>
+<section class="section" id="tour"><div class="container"><div class="cta-panel"><div><span class="eyebrow eyebrow--light">Meet the College</span><h2>See you at Open Day</h2><p>Feel the atmosphere, ask questions and choose your educational route.</p></div></div></div></section>
 </main>`,
   'college.html': `<main id="main"><section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>College</span></nav><div class="page-hero-grid"><div><span class="eyebrow eyebrow--light">College</span><h1>A place where professional futures are shaped</h1><p>We combine a strong academic foundation, practical learning and a culture of mutual support.</p></div><div class="page-hero-card"><strong>42 years</strong><span>working for education and community growth</span></div></div></div></section>
 <section class="section"><div class="container content-layout">
@@ -344,13 +328,13 @@ const mains = {
 <section class="section"><div class="container content-layout">
 <aside class="anchor-nav"><nav class="anchor-card" aria-label="Page navigation"><h2>On this page</h2><a href="#apply"><span>How to apply</span><span>→</span></a><a href="#timeline"><span>Calendar</span><span>→</span></a><a href="#programs"><span>Programs</span><span>→</span></a><a href="#documents"><span>Documents</span><span>→</span></a><a href="#tuition"><span>Tuition</span><span>→</span></a><a href="#faq"><span>Questions</span><span>→</span></a><a href="#contacts"><span>Admissions office</span><span>→</span></a></nav></aside>
 <div>
-  <section class="content-block" id="apply"><span class="eyebrow">Step by Step</span><h2>How to become a student</h2><div class="three-col"><article class="info-card info-card--teal"><div class="icon-badge">1</div><h3>Choose a program</h3><p>Review curricula, professional prospects and the study format.</p></article><article class="info-card info-card--gold"><div class="icon-badge">2</div><h3>Prepare documents</h3><p>Create an applicant e-cabinet and upload the required materials.</p></article><article class="info-card info-card--soft"><div class="icon-badge">3</div><h3>Submit an application</h3><p>Track the ranking and complete enrollment requirements on time.</p></article></div><div style="margin-top:24px"><a class="button button--accent" href="#contacts">Get a consultation ${arrow}</a></div></section>
+  <section class="content-block" id="apply"><span class="eyebrow">Step by Step</span><h2>How to become a student</h2><div class="three-col"><article class="info-card info-card--teal"><div class="icon-badge">1</div><h3>Choose a program</h3><p>Review curricula, professional prospects and the study format.</p></article><article class="info-card info-card--gold"><div class="icon-badge">2</div><h3>Prepare documents</h3><p>Create an applicant e-cabinet and upload the required materials.</p></article><article class="info-card info-card--soft"><div class="icon-badge">3</div><h3>Submit an application</h3><p>Track the ranking and complete enrollment requirements on time.</p></article></div></section>
   <section class="content-block" id="timeline"><span class="eyebrow">Applicant Calendar</span><h2>Key dates</h2><div class="timeline"><article class="timeline-item"><div class="timeline-dot">01</div><div><time>May 15</time><h3>Consultations begin</h3><p>Online meetings with the admissions office and presentations of educational programs.</p></div></article><article class="timeline-item"><div class="timeline-dot">02</div><div><time>July 1</time><h3>E-cabinet registration</h3><p>Create an applicant profile and upload documents.</p></div></article><article class="timeline-item"><div class="timeline-dot">03</div><div><time>July 8-22</time><h3>Application period</h3><p>Submit applications for state-funded or contract-based study.</p></div></article><article class="timeline-item"><div class="timeline-dot">04</div><div><time>August 5</time><h3>Recommendations published</h3><p>Check ranking lists and complete enrollment requirements.</p></div></article></div></section>
   <section class="content-block" id="programs"><span class="eyebrow">Educational Programs</span><h2>Specialties</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>Program</th><th>Entry basis</th><th>Duration</th><th>Format</th></tr></thead><tbody><tr><td><strong>Computer Science</strong></td><td>Grades 9 / 11</td><td>2 y. 10 mo.</td><td><span class="status">Full-time</span></td></tr><tr><td><strong>Entrepreneurship and Trade</strong></td><td>Grades 9 / 11</td><td>2 y. 10 mo.</td><td><span class="status">Full-time</span></td></tr><tr><td><strong>Accounting and Taxation</strong></td><td>Grades 9 / 11</td><td>2 y. 10 mo.</td><td><span class="status">Full-time</span></td></tr><tr><td><strong>Graphic Design</strong></td><td>Grade 9</td><td>3 y. 10 mo.</td><td><span class="status status--gold">Full-time</span></td></tr><tr><td><strong>Law</strong></td><td>Grade 11</td><td>1 y. 10 mo.</td><td><span class="status">Full-time</span></td></tr></tbody></table></div></section>
   <section class="content-block" id="documents"><span class="eyebrow">Documents</span><h2>What to prepare</h2><div class="two-col"><article class="info-card"><h3>For the e-cabinet</h3><ul class="check-list"><li>Identity document</li><li>Education document and supplement</li><li>Digital photo</li><li>Benefit documents, if applicable</li></ul></article><article class="info-card"><h3>After recommendation</h3><ul class="check-list"><li>Originals or qualified e-signature copies of documents</li><li>Enrollment application</li><li>Study agreement</li><li>Medical certificate for selected programs</li></ul></article></div><div class="document-list" style="margin-top:24px"><div class="document-item"><div><strong>Admission Rules 2026</strong><small>PDF · 1.8 MB</small></div><a href="#" aria-label="Download admission rules">${download}</a></div><div class="document-item"><div><strong>List of competitive subjects</strong><small>PDF · 640 KB</small></div><a href="#" aria-label="Download subject list">${download}</a></div></div></section>
   <section class="content-block" id="tuition"><span class="eyebrow">Financial Terms</span><h2>Tuition fees</h2><div class="three-col"><article class="info-card"><span class="tag">from</span><h3 style="font-size:2rem;margin-top:18px">UAH 27,900</h3><p>per academic year for economics programs.</p></article><article class="info-card"><span class="tag">from</span><h3 style="font-size:2rem;margin-top:18px">UAH 31,500</h3><p>per academic year for IT and digital programs.</p></article><article class="info-card info-card--gold"><span class="tag tag--gold">Support</span><h3 style="margin-top:18px">Installment payments</h3><p>Option to agree on an individual payment schedule.</p></article></div></section>
-  <section class="content-block" id="faq"><span class="eyebrow">FAQ</span><h2>Answers for applicants</h2><details class="faq"><summary>Can I apply after grade 9?</summary><p>Yes. Most programs allow admission based on basic secondary education. Specific conditions are listed in the program table.</p></details><details class="faq"><summary>Are there state-funded places?</summary><p>Yes. The number of state or regional order places is published before the application period begins.</p></details><details class="faq"><summary>Is a dormitory available?</summary><p>A limited number of places is available for nonresident applicants. Indicate this need when submitting documents.</p></details><details class="faq"><summary>How can I get an individual consultation?</summary><p>Leave a request through the form or call the admissions office during working hours.</p></details></section>
-  <section class="content-block" id="contacts"><span class="eyebrow">Admissions Office</span><h2>Ask a question</h2><div class="contact-grid"><div class="contact-card"><h3>Applicant contacts</h3><p>Mon-Fri, 09:00-17:00</p><ul><li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 3.8 9 8.2 6.9 10c1.3 3 3.1 4.8 6.1 6.1L14.8 14l4.4 2.4-1 4.1c-.2.8-.9 1.3-1.7 1.3C8.7 21.3 2.7 15.3 2.2 7.5c0-.8.5-1.5 1.3-1.7l3.1-2Z"/></svg><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li><li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>room 101, main building</span></li></ul></div><form class="info-card" data-demo-form><h3>Consultation request</h3><p>The form is prepared for connection to a CRM or email service.</p><label>Name<input style="width:100%;height:48px;margin:6px 0 14px;padding:0 12px;border:1px solid var(--line);border-radius:10px" required></label><label>Phone or email<input style="width:100%;height:48px;margin:6px 0 14px;padding:0 12px;border:1px solid var(--line);border-radius:10px" required></label><button class="button button--primary" type="submit">Send request</button></form></div></section>
+  <section class="content-block" id="faq"><span class="eyebrow">FAQ</span><h2>Answers for applicants</h2><details class="faq"><summary>Can I apply after grade 9?</summary><p>Yes. Most programs allow admission based on basic secondary education. Specific conditions are listed in the program table.</p></details><details class="faq"><summary>Are there state-funded places?</summary><p>Yes. The number of state or regional order places is published before the application period begins.</p></details><details class="faq"><summary>Is a dormitory available?</summary><p>A limited number of places is available for nonresident applicants. Indicate this need when submitting documents.</p></details><details class="faq"><summary>How can I get an individual consultation?</summary><p>Call or email the admissions office during working hours.</p></details></section>
+  <section class="content-block" id="contacts"><span class="eyebrow">Admissions Office</span><h2>Ask a question</h2><div class="contact-grid"><div class="contact-card"><h3>Applicant contacts</h3><p>Mon-Fri, 09:00-17:00</p><ul><li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 3.8 9 8.2 6.9 10c1.3 3 3.1 4.8 6.1 6.1L14.8 14l4.4 2.4-1 4.1c-.2.8-.9 1.3-1.7 1.3C8.7 21.3 2.7 15.3 2.2 7.5c0-.8.5-1.5 1.3-1.7l3.1-2Z"/></svg><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li><li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>room 101, main building</span></li></ul></div><article class="info-card"><h3>How to get an answer</h3><p>Contact the admissions office by phone or email during working hours.</p><ul class="check-list"><li><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li><li>room 101, main building</li></ul></article></div></section>
 </div></div></section>
 </main>`,
   'students.html': `<main id="main"><section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>Students</span></nav><div class="page-hero-grid"><div><span class="eyebrow eyebrow--light">Students</span><h1>Learning, opportunities and support</h1><p>Fast access to the schedule, learning services, student life and career resources.</p></div><div class="page-hero-card"><strong>18</strong><span>student communities and clubs</span></div></div></div></section>
@@ -362,8 +346,8 @@ const mains = {
   <section class="content-block" id="electives"><span class="eyebrow">Individual Path</span><h2>Elective disciplines</h2><div class="two-col"><article class="info-card"><span class="tag">Digital Skills</span><h3 style="margin-top:16px">Web Design Basics</h3><p>Prototyping, UI components, responsive layouts and accessibility.</p><p><strong>3 credits · 30 places</strong></p></article><article class="info-card"><span class="tag tag--gold">Communications</span><h3 style="margin-top:16px">Public Speaking</h3><p>Speech structure, audience work and visual support.</p><p><strong>3 credits · 24 places</strong></p></article><article class="info-card"><span class="tag">Business</span><h3 style="margin-top:16px">Finance for Life</h3><p>Personal budget, taxes, loans, savings and risks.</p><p><strong>3 credits · 30 places</strong></p></article><article class="info-card"><span class="tag tag--gold">Language</span><h3 style="margin-top:16px">English for Careers</h3><p>CVs, interviews, professional vocabulary and workplace correspondence.</p><p><strong>4 credits · 20 places</strong></p></article></div></section>
   <section class="content-block" id="community"><span class="eyebrow">Leisure</span><h2>Student community</h2><div class="three-col"><article class="info-card info-card--teal"><div class="icon-badge">SG</div><h3>Self-government</h3><p>Representation of student interests, events and initiatives.</p></article><article class="info-card info-card--gold"><div class="icon-badge">V</div><h3>Volunteering</h3><p>Volunteer projects for community support and mutual aid.</p></article><article class="info-card info-card--soft"><div class="icon-badge">M</div><h3>History museum</h3><p>Archive, oral histories and student research projects.</p></article></div></section>
   <section class="content-block" id="opportunities"><span class="eyebrow">Opportunities</span><h2>Develop your talents</h2><div class="two-col"><article class="info-card"><h3>Art studios</h3><ul class="check-list"><li>Vocal studio</li><li>Theater workshop</li><li>Photo and video club</li><li>Design laboratory</li></ul></article><article class="info-card"><h3>Sports and languages</h3><ul class="check-list"><li>Volleyball and basketball</li><li>Table tennis</li><li>English speaking club</li><li>Polish for beginners</li></ul></article></div></section>
-  <section class="content-block" id="support"><span class="eyebrow">Social and Legal Support</span><h2>You are not alone</h2><div class="three-col"><article class="info-card"><div class="icon-badge">P</div><h3>Psychological service</h3><p>Confidential consultations, trainings and adaptation support.</p><a class="text-link" href="mailto:rector@kkibp.edu.ua">Write ${arrow}</a></article><article class="info-card"><div class="icon-badge">L</div><h3>Legal clinic</h3><p>Basic consultations on educational, labor and social rights.</p><a class="text-link" href="#">Book ${arrow}</a></article><article class="info-card"><div class="icon-badge">O</div><h3>Student ombudsperson</h3><p>An independent channel for appeals about rights and a safe environment.</p><a class="text-link" href="#">Contact ${arrow}</a></article></div></section>
-  <section class="content-block" id="career"><span class="eyebrow">Career Center</span><h2>From the first CV to the first job</h2><div class="cta-panel"><div><h2 style="font-size:2.2rem">Career consultation</h2><p>CV, portfolio, interview, internship and search for partner employers.</p></div><div class="cta-actions"><a class="button button--accent" href="mailto:rector@kkibp.edu.ua">Book</a><a class="button button--ghost-light" href="#">Vacancies</a></div></div></section>
+  <section class="content-block" id="support"><span class="eyebrow">Social and Legal Support</span><h2>You are not alone</h2><div class="three-col"><article class="info-card"><div class="icon-badge">P</div><h3>Psychological service</h3><p>Confidential consultations, trainings and adaptation support.</p><a class="text-link" href="mailto:rector@kkibp.edu.ua">Write ${arrow}</a></article><article class="info-card"><div class="icon-badge">L</div><h3>Legal clinic</h3><p>Basic consultations on educational, labor and social rights.</p><a class="text-link" href="mailto:rector@kkibp.edu.ua">Write ${arrow}</a></article><article class="info-card"><div class="icon-badge">O</div><h3>Student ombudsperson</h3><p>An independent channel for appeals about rights and a safe environment.</p><a class="text-link" href="mailto:rector@kkibp.edu.ua">Write ${arrow}</a></article></div></section>
+  <section class="content-block" id="career"><span class="eyebrow">Career Center</span><h2>From the first CV to the first job</h2><div class="cta-panel"><div><h2 style="font-size:2.2rem">Career consultation</h2><p>CV, portfolio, interview, internship and search for partner employers.</p></div><div class="cta-actions"><a class="button button--accent" href="mailto:rector@kkibp.edu.ua">Write</a><a class="button button--ghost-light" href="college.html#documents">Vacancies</a></div></div></section>
 </div></div></section>
 </main>`,
   'alumni.html': `<main id="main"><section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>Alumni</span></nav><div class="page-hero-grid"><div><span class="eyebrow eyebrow--light">Alumni</span><h1>A community that stays close</h1><p>Stay connected with the college, share experience and support the next generation of students.</p></div><div class="page-hero-card"><strong>8,600+</strong><span>alumni in the professional community</span></div></div></div></section>
@@ -418,21 +402,20 @@ const updateUkrainianPage = async (file) => {
     .replace(/css\/styles\.css\?v=[^"]+/g, `css/styles.css?v=${version}`)
     .replace(/js\/main\.js\?v=[^"]+/g, `js/main.js?v=${version}`);
 
-  const topbarStart = source.indexOf('      <div class="topbar-actions">');
-  const topbarEnd = source.indexOf('\n    </div>\n  </div>\n  <div class="header-main">', topbarStart);
-  if (topbarStart !== -1 && topbarEnd !== -1) {
-    source = `${source.slice(0, topbarStart)}      ${ukrainianTopbarActions(file)}${source.slice(topbarEnd)}`;
-  }
+  source = source.replace(/\n  <div class="topbar">[\s\S]*?\n  <div class="header-main">/, '\n  <div class="header-main">');
 
   const headerActionsStart = source.indexOf('      <div class="header-actions">');
-  const searchButtonMarker = '        <button class="icon-button search-open"';
+  const searchButtonMarker = '        <button class="icon-button search-open';
   const searchButtonStart = source.indexOf(searchButtonMarker, headerActionsStart);
-  const headerLanguageStart = source.indexOf('        <div class="language-switch header-language"', headerActionsStart);
+  if (headerActionsStart !== -1) {
+    source = source.replace(/\n        <div class="language-switch header-language"[\s\S]*?\n        <\/div>(?=\n        <button class="icon-button nav-toggle")/, '');
+  }
   if (headerActionsStart !== -1 && searchButtonStart !== -1) {
-    if (headerLanguageStart !== -1 && headerLanguageStart < searchButtonStart) {
-      source = `${source.slice(0, headerLanguageStart)}        ${ukrainianHeaderLanguage(file)}\n${source.slice(searchButtonStart)}`;
-    } else {
-      source = `${source.slice(0, searchButtonStart)}        ${ukrainianHeaderLanguage(file)}\n${source.slice(searchButtonStart)}`;
+    source = source.replace('class="icon-button search-open"', 'class="icon-button search-open header-search"');
+    const searchButtonEnd = source.indexOf('</button>', searchButtonStart);
+    if (searchButtonEnd !== -1) {
+      const insertionPoint = searchButtonEnd + '</button>'.length;
+      source = `${source.slice(0, insertionPoint)}\n        ${ukrainianHeaderLanguage(file)}${source.slice(insertionPoint)}`;
     }
   }
 
@@ -448,12 +431,17 @@ const updateUkrainianPage = async (file) => {
     }
   }
 
-  const mobileFooterStart = source.indexOf('        <div class="mobile-nav-footer">');
-  const mobileFooterClose = '\n        </div>';
-  const mobileFooterEnd = source.indexOf(`${mobileFooterClose}\n      </div>\n    </div>\n  </div>\n</header>`, mobileFooterStart);
-  if (mobileFooterStart !== -1 && mobileFooterEnd !== -1) {
-    source = `${source.slice(0, mobileFooterStart)}        ${ukrainianMobileFooter(file)}${source.slice(mobileFooterEnd + mobileFooterClose.length)}`;
+  source = source.replace(/<li class="nav-item nav-item--brand">[\s\S]*?<\/li>/, '');
+  source = source.replace('<ul class="nav-list">', `<ul class="nav-list">${ukrainianNavBrand()}`);
+
+  const newsItem = '<li class="nav-item"><a class="nav-link" href="news.html">Новини</a></li>';
+  const newsStart = source.indexOf(newsItem);
+  const navListEnd = newsStart !== -1 ? source.indexOf('</ul>', newsStart) : -1;
+  if (newsStart !== -1 && navListEnd !== -1) {
+    source = `${source.slice(0, newsStart)}${newsItem}${ukrainianNavTools(file)}${source.slice(navListEnd)}`;
   }
+
+  source = source.replace(/\n        <div class="mobile-nav-footer">[\s\S]*?\n        <\/div>(?=\n      <\/div>\n    <\/div>\n  <\/div>\n<\/header>)/, '');
 
   if (!source.includes('rel="alternate" hreflang="en"')) {
     source = source.replace(
