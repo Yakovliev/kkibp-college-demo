@@ -282,7 +282,7 @@ const mains = {
       <div class="hero-trust"><p><strong>Real college community</strong>Lecturers and students work together through learning, practice and events.</p></div>
     </div>
     <div class="hero-visual">
-      <div class="hero-image-card"><img src="../assets/college-photo.jpg" alt="Lecturers and students near the college building" width="2048" height="1678"></div>
+      <div class="hero-image-card"><img src="../assets/college-photo.jpg" alt="College coat of arms" width="1536" height="1024"></div>
     </div>
   </div>
 </section>
