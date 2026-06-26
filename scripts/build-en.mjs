@@ -63,7 +63,7 @@ const head = (file) => {
   <title>${meta.title}</title>
   <link rel="alternate" hreflang="uk" href="../${file}">
   <link rel="alternate" hreflang="en" href="${file}">
-  <link rel="icon" href="../docs/college_logo.png" type="image/png">
+  <link rel="icon" href="../assets/logo_small.gif" type="image/gif">
   <link rel="stylesheet" href="../css/styles.css?v=${version}">
   <script src="../js/main.js?v=${version}" defer></script>
 </head>`;
@@ -126,7 +126,7 @@ const header = (file) => `<body>
   <div class="header-main">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="${collegeName} - home">
-        <img class="brand-mark" src="../docs/college_logo.png" alt="" width="56" height="44">
+        <img class="brand-mark" src="../assets/logo_small.gif" alt="" width="56" height="56">
         <span class="brand-text"><strong>${collegeName}</strong><small>education · growth · future</small></span>
       </a>
       <div class="header-actions">
@@ -242,7 +242,7 @@ const footer = () => `
 <footer class="site-footer" id="footer">
   <div class="container footer-grid">
     <div class="footer-brand"><a class="brand" href="index.html" aria-label="${collegeName} - home">
-        <img class="brand-mark" src="../docs/college_logo.png" alt="" width="56" height="44">
+        <img class="brand-mark" src="../assets/logo_small.gif" alt="" width="56" height="56">
         <span class="brand-text"><strong>${collegeName}</strong><small>education · growth · future</small></span>
       </a><p>A modern educational space for a professional start, growth and partnership.</p><div class="social-links"><a class="social-link social-link--instagram" href="https://www.instagram.com/kkibp.official/" aria-label="College Instagram" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a><a class="social-link social-link--facebook" href="https://www.facebook.com/pages/%D0%9A%D0%B8%D1%97%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9-%D0%BA%D0%BE%D0%BE%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D0%B8%D0%B9-%D1%96%D0%BD%D1%81%D1%82%D0%B8%D1%82%D1%83%D1%82-%D0%B1%D1%96%D0%B7%D0%BD%D0%B5%D1%81%D1%83-%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B0/1492832900785533/" aria-label="College Facebook" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a></div></div>
     <div><h3>Navigation</h3><ul><li><a href="college.html">About the college</a></li><li><a href="admissions.html">Applicants</a></li><li><a href="students.html">Students</a></li><li><a href="science.html">Research</a></li></ul></div>
@@ -282,7 +282,7 @@ const mains = {
       <div class="hero-trust"><p><strong>Real college community</strong>Lecturers and students work together through learning, practice and events.</p></div>
     </div>
     <div class="hero-visual">
-      <div class="hero-image-card"><img src="../assets/college-photo.jpg" alt="College coat of arms" width="1536" height="1024"></div>
+      <div class="hero-image-card"><img src="../assets/college_logo_official.gif" alt="Official logo of Kyiv Cooperative Institute of Business and Law" width="3376" height="4219"></div>
     </div>
   </div>
 </section>
@@ -457,8 +457,8 @@ const updateUkrainianPage = async (file) => {
 
   if (!source.includes('rel="alternate" hreflang="en"')) {
     source = source.replace(
-      '  <link rel="icon" href="docs/college_logo.png" type="image/png">',
-      `  <link rel="alternate" hreflang="uk" href="${file}">\n  <link rel="alternate" hreflang="en" href="en/${file}">\n  <link rel="icon" href="docs/college_logo.png" type="image/png">`
+      '  <link rel="icon" href="assets/logo_small.gif" type="image/gif">',
+      `  <link rel="alternate" hreflang="uk" href="${file}">\n  <link rel="alternate" hreflang="en" href="en/${file}">\n  <link rel="icon" href="assets/logo_small.gif" type="image/gif">`
     );
   }
 
