@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
-const version = 'header-collapse-20260627';
+const cssVersion = 'footer-social-map-20260627';
+const scriptVersion = 'header-collapse-20260627';
 const files = ['index.html', 'college.html', 'admissions.html', 'students.html', 'alumni.html', 'science.html', 'library.html', 'news.html'];
 const collegeNameMain = 'Professional College of Economics and Law';
 const collegeNameSub = 'of the Kyiv Cooperative Institute of Business and Law';
@@ -67,8 +68,8 @@ const head = (file) => {
   <link rel="alternate" hreflang="uk" href="../${file}">
   <link rel="alternate" hreflang="en" href="${file}">
   <link rel="icon" href="../assets/logo_small.gif" type="image/gif">
-  <link rel="stylesheet" href="../css/styles.css?v=${version}">
-  <script src="../js/main.js?v=${version}" defer></script>
+  <link rel="stylesheet" href="../css/styles.css?v=${cssVersion}">
+  <script src="../js/main.js?v=${scriptVersion}" defer></script>
 </head>`;
 };
 
@@ -88,6 +89,7 @@ const ukrainianHeaderLanguage = (file) => headerLanguageSwitch({ current: 'UA', 
 const englishHeaderLanguage = (file) => headerLanguageSwitch({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language' });
 const instagramHref = 'https://www.instagram.com/kkibp.official/';
 const facebookHref = 'https://www.facebook.com/pages/%D0%9A%D0%B8%D1%97%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9-%D0%BA%D0%BE%D0%BE%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D0%B8%D0%B9-%D1%96%D0%BD%D1%81%D1%82%D0%B8%D1%82%D1%83%D1%82-%D0%B1%D1%96%D0%B7%D0%BD%D0%B5%D1%81%D1%83-%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B0/1492832900785533/';
+const googleMapsHref = 'https://www.google.com/maps/search/?api=1&amp;query=%D0%95%D0%BA%D0%BE%D0%BD%D0%BE%D0%BC%D1%96%D0%BA%D0%BE-%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D0%B2%D0%B8%D0%B9%20%D1%84%D0%B0%D1%85%D0%BE%D0%B2%D0%B8%D0%B9%20%D0%BA%D0%BE%D0%BB%D0%B5%D0%B4%D0%B6%20%D0%9A%D0%B8%D1%97%D0%B2%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE%20%D0%BA%D0%BE%D0%BE%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%96%D0%BD%D1%81%D1%82%D0%B8%D1%82%D1%83%D1%82%D1%83%20%D0%B1%D1%96%D0%B7%D0%BD%D0%B5%D1%81%D1%83%20%D1%96%20%D0%BF%D1%80%D0%B0%D0%B2%D0%B0%2C%20%D0%B2%D1%83%D0%BB.%20%D0%AE%D0%BB%D1%96%D1%97%20%D0%97%D0%B4%D0%B0%D0%BD%D0%BE%D0%B2%D1%81%D1%8C%D0%BA%D0%BE%D1%97%2C%2018%2C%20%D0%9A%D0%B8%D1%97%D0%B2&amp;hl=uk';
 const contactEmail = 'rector@kkibp.edu.ua';
 const contactPhone = '+38 (044) 258-20-29';
 const contactPhoneHref = '+380442582029';
@@ -247,13 +249,12 @@ const footer = () => `
   <div class="container footer-grid">
     <div class="footer-brand"><a class="brand" href="index.html" aria-label="${collegeName} - home">
         <img class="brand-mark" src="../assets/logo_small.gif" alt="" width="56" height="56">
-        <span class="brand-text"><strong>${collegeBrandTitle}</strong><small>education · growth · future</small></span>
-      </a><p>A modern educational space for a professional start, growth and partnership.</p><div class="social-links"><a class="social-link social-link--instagram" href="https://www.instagram.com/kkibp.official/" aria-label="College Instagram" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a><a class="social-link social-link--facebook" href="https://www.facebook.com/pages/%D0%9A%D0%B8%D1%97%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9-%D0%BA%D0%BE%D0%BE%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D0%B8%D0%B9-%D1%96%D0%BD%D1%81%D1%82%D0%B8%D1%82%D1%83%D1%82-%D0%B1%D1%96%D0%B7%D0%BD%D0%B5%D1%81%D1%83-%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B0/1492832900785533/" aria-label="College Facebook" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a></div></div>
-    <div><h3>Navigation</h3><ul><li><a href="college.html">About the college</a></li><li><a href="admissions.html">Applicants</a></li><li><a href="students.html">Students</a></li><li><a href="science.html">Research</a></li></ul></div>
-    <div><h3>Services</h3><ul><li><a href="students.html#schedule">Schedule</a></li><li><a href="library.html#catalog">Electronic library</a></li><li><a href="college.html#documents">Public information</a></li><li><a href="students.html#career">Career Center</a></li></ul></div>
-    <div><h3>Contacts</h3><ul class="contact-list"><li>18 Yulii Zdanovskoi St., Kyiv, 03022</li><li><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li><li>Mon-Fri, 08:30-17:00</li></ul></div>
+        <span class="brand-text"><strong>${collegeBrandTitle}</strong></span>
+      </a><div class="footer-social"><h3>Social media</h3><div class="social-links"><a class="social-link social-link--instagram" href="${instagramHref}" aria-label="College Instagram" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a><a class="social-link social-link--facebook" href="${facebookHref}" aria-label="College Facebook" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a></div></div></div>
+    <div><h3>Navigation</h3><ul><li><a href="college.html">College</a></li><li><a href="admissions.html">Applicants</a></li><li><a href="students.html">Students</a></li><li><a href="alumni.html">Alumni</a></li><li><a href="science.html">Research</a></li><li><a href="library.html">Library</a></li><li><a href="news.html">News</a></li></ul></div>
+    <div><h3>Contacts</h3><ul class="contact-list"><li>18 Yulii Zdanovskoi St., Kyiv, 03022</li><li><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li><li>Mon-Fri, 08:00-17:00</li><li><a href="${googleMapsHref}" target="_blank" rel="noopener noreferrer">Open in Google Maps</a></li></ul></div>
   </div>
-  <div class="container footer-bottom"><p>© <span data-year></span> ${collegeName}.</p><div><a href="#">Privacy policy</a><a href="#">Accessibility</a></div></div>
+  <div class="container footer-bottom"><p>© <span data-year></span> ${collegeName}.</p><div><a href="#">Privacy policy</a></div></div>
 </footer>
 <button class="back-to-top" type="button" aria-label="Back to top">↑</button>
 <div class="toast" role="status" aria-live="polite"></div>
@@ -419,18 +420,14 @@ ${footer()}`;
 const updateUkrainianPage = async (file) => {
   let source = await readFile(file, 'utf8');
   source = source
-    .replace(/css\/styles\.css\?v=[^"]+/g, `css/styles.css?v=${version}`)
-    .replace(/js\/main\.js\?v=[^"]+/g, `js/main.js?v=${version}`);
+    .replace(/css\/styles\.css\?v=[^"]+/g, `css/styles.css?v=${cssVersion}`)
+    .replace(/js\/main\.js\?v=[^"]+/g, `js/main.js?v=${scriptVersion}`);
 
   source = source.replace(/\n  <div class="topbar">[\s\S]*?\n  <div class="header-main">/, '\n  <div class="header-main">');
 
   const headerActionsStart = source.indexOf('      <div class="header-actions">');
   const searchButtonMarker = '        <button class="icon-button search-open';
   let searchButtonStart = source.indexOf(searchButtonMarker, headerActionsStart);
-  const navShellStart = source.indexOf('    <div class="nav-shell"', headerActionsStart);
-  if (navShellStart !== -1) {
-    source = `${source.slice(0, navShellStart).replace('<small>освіта · розвиток · майбутнє</small>', '')}${source.slice(navShellStart)}`;
-  }
   if (headerActionsStart !== -1) {
     source = source.replace(/\n        <div class="header-contact"[\s\S]*?\n        <\/div>/, '');
     source = source.replace(/\n        <div class="language-switch header-language"[\s\S]*?\n        <\/div>/, '');
