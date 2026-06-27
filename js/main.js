@@ -153,6 +153,10 @@
 
   const onScroll = () => {
     header?.classList.toggle('is-scrolled', window.scrollY > 20);
+    const collapseOffset = window.innerWidth >= 720
+      ? header?.querySelector('.header-inner')?.offsetHeight || 0
+      : Number.POSITIVE_INFINITY;
+    header?.classList.toggle('is-condensed', window.scrollY >= collapseOffset);
     backToTop?.classList.toggle('is-visible', window.scrollY > 700);
   };
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -201,5 +205,6 @@
 
   window.addEventListener('resize', () => {
     if (window.innerWidth >= 720 && body.classList.contains('nav-open')) setNav(false);
+    onScroll();
   });
 })();

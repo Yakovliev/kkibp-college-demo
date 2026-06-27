@@ -1,8 +1,11 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
-const version = 'compact-header-20260627';
+const version = 'header-collapse-20260627';
 const files = ['index.html', 'college.html', 'admissions.html', 'students.html', 'alumni.html', 'science.html', 'library.html', 'news.html'];
-const collegeName = 'Economics and Law Professional College of Kyiv Cooperative Institute of Business and Law';
+const collegeNameMain = 'Professional College of Economics and Law';
+const collegeNameSub = 'of the Kyiv Cooperative Institute of Business and Law';
+const collegeName = `${collegeNameMain} ${collegeNameSub}`;
+const collegeBrandTitle = `<span class="brand-title-main">${collegeNameMain}</span> <span class="brand-title-sub">${collegeNameSub}</span>`;
 const arrow = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 const external = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6"/></svg>';
 const download = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14"/></svg>';
@@ -12,7 +15,7 @@ const pageMeta = {
   'index.html': {
     page: 'home',
     title: `Home - ${collegeName}`,
-    description: 'A modern responsive website for the Economics and Law Professional College of Kyiv Cooperative Institute of Business and Law.'
+    description: 'A modern responsive website for the Professional College of Economics and Law of the Kyiv Cooperative Institute of Business and Law.'
   },
   'college.html': {
     page: 'college',
@@ -83,10 +86,25 @@ const ukrainianNavLanguage = (file) => navLanguageSwitch({ current: 'UA', ukHref
 const englishNavLanguage = (file) => navLanguageSwitch({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language' });
 const ukrainianHeaderLanguage = (file) => headerLanguageSwitch({ current: 'UA', ukHref: file, enHref: `en/${file}`, label: 'Змінити мову' });
 const englishHeaderLanguage = (file) => headerLanguageSwitch({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language' });
+const instagramHref = 'https://www.instagram.com/kkibp.official/';
+const facebookHref = 'https://www.facebook.com/pages/%D0%9A%D0%B8%D1%97%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9-%D0%BA%D0%BE%D0%BE%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D0%B8%D0%B9-%D1%96%D0%BD%D1%81%D1%82%D0%B8%D1%82%D1%83%D1%82-%D0%B1%D1%96%D0%B7%D0%BD%D0%B5%D1%81%D1%83-%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B0/1492832900785533/';
+const contactEmail = 'rector@kkibp.edu.ua';
+const contactPhone = '+38 (044) 258-20-29';
+const contactPhoneHref = '+380442582029';
+const headerContact = ({ label }) => `<div class="header-contact" aria-label="${label}">
+          <a href="mailto:${contactEmail}">${contactEmail}</a>
+          <a href="tel:${contactPhoneHref}">${contactPhone}</a>
+        </div>`;
+const ukrainianHeaderContact = () => headerContact({ label: 'Електронна пошта та телефон' });
+const englishHeaderContact = () => headerContact({ label: 'Email and phone' });
+const headerSocialLinks = ({ instagramLabel, facebookLabel }) => `<a class="icon-button header-social header-social--instagram" href="${instagramHref}" aria-label="${instagramLabel}" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a>
+        <a class="icon-button header-social header-social--facebook" href="${facebookHref}" aria-label="${facebookLabel}" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a>`;
+const ukrainianHeaderSocialLinks = () => headerSocialLinks({ instagramLabel: 'Instagram коледжу', facebookLabel: 'Facebook коледжу' });
+const englishHeaderSocialLinks = () => headerSocialLinks({ instagramLabel: 'College Instagram', facebookLabel: 'College Facebook' });
 const ukrainianNavTools = (file) => `<li class="nav-item nav-item--tool nav-item--language">${ukrainianNavLanguage(file)}</li><li class="nav-item nav-item--tool nav-item--search"><button class="icon-button search-open nav-search" type="button" aria-label="Пошук по сайту"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button></li>`;
 const englishNavTools = (file) => `<li class="nav-item nav-item--tool nav-item--language">${englishNavLanguage(file)}</li><li class="nav-item nav-item--tool nav-item--search"><button class="icon-button search-open nav-search" type="button" aria-label="Search the site"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button></li>`;
 const ukrainianNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права — головна"><img src="assets/logo_small.gif" alt="" width="48" height="48"><span><strong>Економіко-правовий фаховий коледж</strong><small>Київського кооперативного інституту бізнесу і права</small></span></a></li>`;
-const englishNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="${collegeName} - home"><img src="../assets/logo_small.gif" alt="" width="48" height="48"><span><strong>Economics and Law Professional College</strong><small>Kyiv Cooperative Institute of Business and Law</small></span></a></li>`;
+const englishNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="${collegeName} - home"><img src="../assets/logo_small.gif" alt="" width="48" height="48"><span><strong>${collegeNameMain}</strong><small>${collegeNameSub}</small></span></a></li>`;
 
 const mobileLanguage = ({ current, ukHref, enHref, label, title }) => `<div class="mobile-language" aria-label="${label}">
             <span class="mobile-language-title">${title}</span>
@@ -113,9 +131,11 @@ const header = (file) => `<body>
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="${collegeName} - home">
         <img class="brand-mark" src="../assets/logo_small.gif" alt="" width="56" height="56">
-        <span class="brand-text"><strong>${collegeName}</strong><small>education · growth · future</small></span>
+        <span class="brand-text"><strong>${collegeBrandTitle}</strong></span>
       </a>
       <div class="header-actions">
+        ${englishHeaderContact()}
+        ${englishHeaderSocialLinks()}
         <button class="icon-button search-open header-search" type="button" aria-label="Search the site"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
         ${englishHeaderLanguage(file)}
         <button class="icon-button nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-navigation">
@@ -227,7 +247,7 @@ const footer = () => `
   <div class="container footer-grid">
     <div class="footer-brand"><a class="brand" href="index.html" aria-label="${collegeName} - home">
         <img class="brand-mark" src="../assets/logo_small.gif" alt="" width="56" height="56">
-        <span class="brand-text"><strong>${collegeName}</strong><small>education · growth · future</small></span>
+        <span class="brand-text"><strong>${collegeBrandTitle}</strong><small>education · growth · future</small></span>
       </a><p>A modern educational space for a professional start, growth and partnership.</p><div class="social-links"><a class="social-link social-link--instagram" href="https://www.instagram.com/kkibp.official/" aria-label="College Instagram" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a><a class="social-link social-link--facebook" href="https://www.facebook.com/pages/%D0%9A%D0%B8%D1%97%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9-%D0%BA%D0%BE%D0%BE%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D0%B8%D0%B9-%D1%96%D0%BD%D1%81%D1%82%D0%B8%D1%82%D1%83%D1%82-%D0%B1%D1%96%D0%B7%D0%BD%D0%B5%D1%81%D1%83-%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B0/1492832900785533/" aria-label="College Facebook" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a></div></div>
     <div><h3>Navigation</h3><ul><li><a href="college.html">About the college</a></li><li><a href="admissions.html">Applicants</a></li><li><a href="students.html">Students</a></li><li><a href="science.html">Research</a></li></ul></div>
     <div><h3>Services</h3><ul><li><a href="students.html#schedule">Schedule</a></li><li><a href="library.html#catalog">Electronic library</a></li><li><a href="college.html#documents">Public information</a></li><li><a href="students.html#career">Career Center</a></li></ul></div>
@@ -406,12 +426,20 @@ const updateUkrainianPage = async (file) => {
 
   const headerActionsStart = source.indexOf('      <div class="header-actions">');
   const searchButtonMarker = '        <button class="icon-button search-open';
-  const searchButtonStart = source.indexOf(searchButtonMarker, headerActionsStart);
+  let searchButtonStart = source.indexOf(searchButtonMarker, headerActionsStart);
+  const navShellStart = source.indexOf('    <div class="nav-shell"', headerActionsStart);
+  if (navShellStart !== -1) {
+    source = `${source.slice(0, navShellStart).replace('<small>освіта · розвиток · майбутнє</small>', '')}${source.slice(navShellStart)}`;
+  }
   if (headerActionsStart !== -1) {
-    source = source.replace(/\n        <div class="language-switch header-language"[\s\S]*?\n        <\/div>(?=\n        <button class="icon-button nav-toggle")/, '');
+    source = source.replace(/\n        <div class="header-contact"[\s\S]*?\n        <\/div>/, '');
+    source = source.replace(/\n        <div class="language-switch header-language"[\s\S]*?\n        <\/div>/, '');
+    source = source.replace(/\n        <a class="icon-button header-social[\s\S]*?header-social--facebook[\s\S]*?<\/a>/, '');
+    searchButtonStart = source.indexOf(searchButtonMarker, headerActionsStart);
   }
   if (headerActionsStart !== -1 && searchButtonStart !== -1) {
     source = source.replace('class="icon-button search-open"', 'class="icon-button search-open header-search"');
+    source = `${source.slice(0, searchButtonStart)}        ${ukrainianHeaderContact()}\n        ${ukrainianHeaderSocialLinks()}\n${source.slice(searchButtonStart)}`;
     const searchButtonEnd = source.indexOf('</button>', searchButtonStart);
     if (searchButtonEnd !== -1) {
       const insertionPoint = searchButtonEnd + '</button>'.length;
