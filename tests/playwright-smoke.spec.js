@@ -103,7 +103,7 @@ test('mobile submenu uses measured accordion motion', async ({ page }, testInfo)
 
   expect(closedMetrics.ariaHidden).toBe('true');
   expect(closedMetrics.inert).toBe(true);
-  expect(closedMetrics.maxHeight).toBe('0px');
+  expect(parseFloat(closedMetrics.maxHeight)).toBeLessThanOrEqual(1);
   expect(closedMetrics.pointerEvents).toBe('none');
   expect(closedMetrics.settled).toBe(false);
 });

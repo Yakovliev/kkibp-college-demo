@@ -1,8 +1,12 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
-const cssVersion = 'smooth-menu-scroll-fix-20260629';
+const cssVersion = 'global-header-footer-20260629';
 const scriptVersion = 'smooth-menu-scroll-fix-20260629';
 const files = ['index.html', 'college.html', 'admissions.html', 'students.html', 'alumni.html', 'science.html', 'library.html', 'news.html'];
+const ukrainianCollegeNameMain = 'Економіко-правовий фаховий коледж';
+const ukrainianCollegeNameSub = 'Київського кооперативного інституту бізнесу і права';
+const ukrainianCollegeName = `${ukrainianCollegeNameMain} ${ukrainianCollegeNameSub}`;
+const ukrainianCollegeBrandTitle = `<span class="brand-title-main">${ukrainianCollegeNameMain}</span> <span class="brand-title-sub">${ukrainianCollegeNameSub}</span>`;
 const collegeNameMain = 'Professional College of Economics and Law';
 const collegeNameSub = 'of the Kyiv Cooperative Institute of Business and Law';
 const collegeName = `${collegeNameMain} ${collegeNameSub}`;
@@ -105,6 +109,10 @@ const ukrainianHeaderSocialLinks = () => headerSocialLinks({ instagramLabel: 'In
 const englishHeaderSocialLinks = () => headerSocialLinks({ instagramLabel: 'College Instagram', facebookLabel: 'College Facebook' });
 const ukrainianNavTools = (file) => `<li class="nav-item nav-item--tool nav-item--language">${ukrainianNavLanguage(file)}</li><li class="nav-item nav-item--tool nav-item--search"><button class="icon-button search-open nav-search" type="button" aria-label="Пошук по сайту"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button></li>`;
 const englishNavTools = (file) => `<li class="nav-item nav-item--tool nav-item--language">${englishNavLanguage(file)}</li><li class="nav-item nav-item--tool nav-item--search"><button class="icon-button search-open nav-search" type="button" aria-label="Search the site"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button></li>`;
+const ukrainianAdmissionsCta = '<li class="nav-item nav-item--cta"><a class="nav-link nav-link--cta" href="admissions.html">Вступ</a></li>';
+const englishAdmissionsCta = '<li class="nav-item nav-item--cta"><a class="nav-link nav-link--cta" href="admissions.html">Admissions</a></li>';
+const ukrainianFooterQuickLinks = '<nav class="footer-quick-links" aria-label="Швидкі переходи"><a href="students.html#schedule">Розклад занять</a><a href="admissions.html#programs">Освітні програми</a><a href="admissions.html">Вступ</a><a href="admissions.html#documents">Правила прийому</a><a href="college.html#departments">Відділення</a><a href="college.html#departments">Циклові комісії</a></nav>';
+const englishFooterQuickLinks = '<nav class="footer-quick-links" aria-label="Quick links"><a href="students.html#schedule">Class schedule</a><a href="admissions.html#programs">Educational programs</a><a href="admissions.html">Admissions</a><a href="admissions.html#documents">Admission rules</a><a href="college.html#departments">Departments</a><a href="college.html#departments">Subject commissions</a></nav>';
 const ukrainianNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права — головна"><img src="assets/logo_small.gif" alt="" width="48" height="48"><span><strong>Економіко-правовий фаховий коледж</strong><small>Київського кооперативного інституту бізнесу і права</small></span></a></li>`;
 const englishNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="${collegeName} - home"><img src="../assets/logo_small.gif" alt="" width="48" height="48"><span><strong>${collegeNameMain}</strong><small>${collegeNameSub}</small></span></a></li>`;
 
@@ -221,7 +229,7 @@ const header = (file) => `<body>
             </div>
             <div class="mega-groups mega-groups--library"><section class="mega-group"><h3>About the Library</h3><ul><li><a href="library.html#about">Staff</a></li><li><a href="library.html#about">General information</a></li><li><a href="library.html#about">Library presentation</a></li><li><a href="library.html#about">Work plan</a></li><li><a href="library.html#about">Report</a></li><li><a href="library.html#about">Social media</a></li></ul></section><section class="mega-group"><h3>User Information</h3><ul><li><a href="library.html#about">Library rules</a></li><li><a href="library.html#about">For readers</a></li><li><a href="library.html#about">Reader form</a></li></ul></section><section class="mega-group"><h3>Book Collection</h3><ul><li><a href="library.html#catalog">Repository</a></li><li><a href="library.html#new-books">New acquisitions</a></li><li><a href="library.html#new-books">Book exhibitions</a></li><li><a href="library.html#catalog">Electronic library of textbooks</a></li></ul></section><section class="mega-group"><h3>Library Space</h3><ul><li><a href="library.html#space">Board games</a></li><li><a href="library.html#space">Library film club</a></li><li><a href="library.html#space">Healthy Library volunteering</a></li></ul></section><section class="mega-group"><h3>For Researchers</h3><ul><li><a href="library.html#researchers">For authors of scientific publications</a></li><li><a href="library.html#researchers">Scientometric indicators</a></li><li><a href="library.html#researchers">Open-access research resources</a></li><li><a href="library.html#researchers">Specialized scientific journals of Ukraine</a></li><li><a href="library.html#researchers">UDC/LBC indexes</a></li><li><a href="library.html#researchers">Staff research profiles</a></li></ul></section></div>
           </div>
-        </li><li class="nav-item"><a class="nav-link" href="news.html">News</a></li>${englishNavTools(file)}</ul>
+        </li><li class="nav-item"><a class="nav-link" href="news.html">News</a></li>${englishAdmissionsCta}${englishNavTools(file)}</ul>
         </nav>
       </div>
     </div>
@@ -250,13 +258,31 @@ const footer = () => `
     <div class="footer-brand"><a class="brand" href="index.html" aria-label="${collegeName} - home">
         <img class="brand-mark" src="../assets/logo_small.gif" alt="" width="56" height="56">
         <span class="brand-text"><strong>${collegeBrandTitle}</strong></span>
-      </a></div>
+      </a>${englishFooterQuickLinks}</div>
     <div><h3>Navigation</h3><ul><li><a href="college.html">College</a></li><li><a href="admissions.html">Applicants</a></li><li><a href="students.html">Students</a></li><li><a href="alumni.html">Alumni</a></li><li><a href="science.html">Research</a></li><li><a href="library.html">Library</a></li><li><a href="news.html">News</a></li></ul></div>
     <div><h3>Contacts</h3><ul class="contact-list"><li>18 Yulii Zdanovskoi St., Kyiv, 03022</li><li><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li><li>Mon-Fri, 08:00-17:00</li><li><a href="${googleMapsHref}" target="_blank" rel="noopener noreferrer">Open in Google Maps</a></li></ul><div class="footer-social"><div class="social-links"><a class="social-link social-link--instagram" href="${instagramHref}" aria-label="College Instagram" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a><a class="social-link social-link--facebook" href="${facebookHref}" aria-label="College Facebook" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a></div></div></div>
   </div>
   <div class="container footer-bottom"><p>© <span data-year></span> ${collegeName}.</p><div><a href="#">Privacy policy</a></div></div>
 </footer>
 <button class="back-to-top" type="button" aria-label="Back to top">↑</button>
+<div class="toast" role="status" aria-live="polite"></div>
+
+</body>
+</html>`;
+
+const ukrainianFooter = () => `
+<footer class="site-footer" id="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand"><a class="brand" href="index.html" aria-label="${ukrainianCollegeName} — головна">
+        <img class="brand-mark" src="assets/logo_small.gif" alt="" width="56" height="56">
+        <span class="brand-text"><strong>${ukrainianCollegeBrandTitle}</strong></span>
+      </a>${ukrainianFooterQuickLinks}</div>
+    <div><h3>Навігація</h3><ul><li><a href="college.html">Коледж</a></li><li><a href="admissions.html">Абітурієнту</a></li><li><a href="students.html">Студенту</a></li><li><a href="alumni.html">Випускнику</a></li><li><a href="science.html">Наука</a></li><li><a href="library.html">Бібліотека</a></li><li><a href="news.html">Новини</a></li></ul></div>
+    <div><h3>Контакти</h3><ul class="contact-list"><li>вул. Юлії Здановської, 18, м. Київ, 03022</li><li><a href="tel:${contactPhoneHref}">${contactPhone}</a></li><li><a href="mailto:${contactEmail}">${contactEmail}</a></li><li>Пн-Пт, 08:00–17:00</li><li><a href="${googleMapsHref}" target="_blank" rel="noopener noreferrer">Відкрити на Google Maps</a></li></ul><div class="footer-social"><div class="social-links"><a class="social-link social-link--instagram" href="${instagramHref}" aria-label="Instagram коледжу" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a><a class="social-link social-link--facebook" href="${facebookHref}" aria-label="Facebook коледжу" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a></div></div></div>
+  </div>
+  <div class="container footer-bottom"><p>© <span data-year></span> ${ukrainianCollegeName}.</p><div><a href="#">Політика конфіденційності</a></div></div>
+</footer>
+<button class="back-to-top" type="button" aria-label="Повернутися вгору">↑</button>
 <div class="toast" role="status" aria-live="polite"></div>
 
 </body>
@@ -458,11 +484,18 @@ const updateUkrainianPage = async (file) => {
   source = source.replace(/<li class="nav-item nav-item--brand">[\s\S]*?<\/li>/, '');
   source = source.replace('<ul class="nav-list">', `<ul class="nav-list">${ukrainianNavBrand()}`);
 
+  source = source.replace(/<li class="nav-item nav-item--cta"><a class="nav-link nav-link--cta" href="admissions\.html">Вступ<\/a><\/li>/g, '');
+
   const newsItem = '<li class="nav-item"><a class="nav-link" href="news.html">Новини</a></li>';
+  const activeNewsItem = '<li class="nav-item is-active"><a class="nav-link" href="news.html">Новини</a></li>';
   const newsStart = source.indexOf(newsItem);
+  const activeNewsStart = source.indexOf(activeNewsItem);
   const navListEnd = newsStart !== -1 ? source.indexOf('</ul>', newsStart) : -1;
+  const activeNavListEnd = activeNewsStart !== -1 ? source.indexOf('</ul>', activeNewsStart) : -1;
   if (newsStart !== -1 && navListEnd !== -1) {
-    source = `${source.slice(0, newsStart)}${newsItem}${ukrainianNavTools(file)}${source.slice(navListEnd)}`;
+    source = `${source.slice(0, newsStart)}${newsItem}${ukrainianAdmissionsCta}${ukrainianNavTools(file)}${source.slice(navListEnd)}`;
+  } else if (activeNewsStart !== -1 && activeNavListEnd !== -1) {
+    source = `${source.slice(0, activeNewsStart)}${activeNewsItem}${ukrainianAdmissionsCta}${ukrainianNavTools(file)}${source.slice(activeNavListEnd)}`;
   }
 
   source = source.replace(/\n        <div class="mobile-nav-footer">[\s\S]*?\n        <\/div>(?=\n      <\/div>\n    <\/div>\n  <\/div>\n<\/header>)/, '');
@@ -473,6 +506,8 @@ const updateUkrainianPage = async (file) => {
       `  <link rel="alternate" hreflang="uk" href="${file}">\n  <link rel="alternate" hreflang="en" href="en/${file}">\n  <link rel="icon" href="assets/logo_small.gif" type="image/gif">`
     );
   }
+
+  source = source.replace(/\n<footer class="site-footer"[\s\S]*?<\/html>\s*$/, ukrainianFooter());
 
   await writeFile(file, source);
 };
