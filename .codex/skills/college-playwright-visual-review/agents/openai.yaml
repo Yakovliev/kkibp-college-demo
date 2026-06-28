@@ -1,4 +1,4 @@
 interface:
   display_name: "College Playwright Visual Review"
-  short_description: "Review the demo with Playwright"
-  default_prompt: "Use $college-playwright-visual-review to visually verify the college demo site with Playwright."
+  short_description: "Verify visual and functional browser behavior"
+  default_prompt: "Use $college-playwright-visual-review to verify visual layout, interactions, browser logs, or screenshots for the college demo."

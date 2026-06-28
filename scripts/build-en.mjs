@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
-const cssVersion = 'mobile-nav-drawer-lock-20260629';
-const scriptVersion = 'mobile-nav-drawer-lock-20260629';
+const cssVersion = 'smooth-menu-scroll-fix-20260629';
+const scriptVersion = 'smooth-menu-scroll-fix-20260629';
 const files = ['index.html', 'college.html', 'admissions.html', 'students.html', 'alumni.html', 'science.html', 'library.html', 'news.html'];
 const collegeNameMain = 'Professional College of Economics and Law';
 const collegeNameSub = 'of the Kyiv Cooperative Institute of Business and Law';
@@ -150,9 +150,9 @@ const header = (file) => `<body>
         ${englishMobileNavTools(file)}
         <nav class="primary-nav" aria-label="Primary navigation">
           <ul class="nav-list">${englishNavBrand()}<li class="nav-item has-menu">
-          <a class="nav-link menu-toggle" href="college.html" aria-expanded="false" aria-controls="menu-0">
+          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-0">
             College<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </a>
+          </button>
           <div class="mega-menu" id="menu-0">
             <div class="mega-intro">
               <span class="eyebrow">Section</span>
@@ -162,9 +162,9 @@ const header = (file) => `<body>
             <div class="mega-groups"><section class="mega-group"><h3>General Information</h3><ul><li><a href="college.html#about">About the college</a></li><li><a href="college.html#leadership">Leadership</a></li><li><a href="college.html#departments">Departments</a></li><li><a href="college.html#departments">Subject commissions</a></li><li><a href="college.html#governance">Governance and self-government bodies</a></li><li><a href="college.html#contacts">Contacts</a></li></ul></section><section class="mega-group mega-group--main-info"><h3>Key Information</h3><div class="mega-subcolumns"><ul><li><a href="college.html#documents">College charter</a></li><li><a href="college.html#documents">Development concept</a></li><li><a href="college.html#documents">Collective agreement</a></li><li><a href="college.html#documents">Local regulatory documents</a></li><li><a href="college.html#documents">Access to public information</a></li><li><a href="college.html#documents">Educational activity licenses</a></li></ul><ul><li><a href="college.html#documents">Accreditation certificates for specialties and programs</a></li><li><a href="college.html#documents">Work plan</a></li><li><a href="college.html#documents">Report</a></li><li><a href="college.html#documents">Public discussion</a></li><li><a href="college.html#documents">Vacancies</a></li></ul></div></section><section class="mega-group"><h3>Activities</h3><ul><li><a href="college.html#about">Sustainable Development Goals</a></li><li><a href="college.html#about">Inclusive learning environment</a></li><li><a href="college.html#documents">Anti-corruption activity</a></li><li><a href="students.html#support">Psychological service</a></li><li><a href="science.html#projects">International activity</a></li><li><a href="college.html#campus">Practical training</a></li><li><a href="students.html#career">Career Center</a></li></ul></section></div>
           </div>
         </li><li class="nav-item has-menu">
-          <a class="nav-link menu-toggle" href="admissions.html" aria-expanded="false" aria-controls="menu-1">
+          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-1">
             Applicants<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </a>
+          </button>
           <div class="mega-menu" id="menu-1">
             <div class="mega-intro">
               <span class="eyebrow">Section</span>
@@ -174,9 +174,9 @@ const header = (file) => `<body>
             <div class="mega-groups"><section class="mega-group"><h3>Admissions</h3><ul><li><a href="admissions.html#documents">Official documents</a></li><li><a href="admissions.html#documents">Admission rules</a></li><li><a href="admissions.html#timeline">Ranking lists</a></li><li><a href="admissions.html#timeline">Enrollment orders</a></li><li><a href="admissions.html#tuition">Tuition fees</a></li><li><a href="admissions.html#timeline">Important dates</a></li><li><a href="admissions.html#documents">Application documents</a></li><li><a href="admissions.html#contacts">Admissions office</a></li><li><a href="admissions.html#contacts">Contact information</a></li></ul></section><section class="mega-group"><h3>Educational Programs</h3><ul><li><a href="admissions.html#programs">Educational programs</a></li></ul></section></div>
           </div>
         </li><li class="nav-item has-menu">
-          <a class="nav-link menu-toggle" href="students.html" aria-expanded="false" aria-controls="menu-2">
+          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-2">
             Students<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </a>
+          </button>
           <div class="mega-menu" id="menu-2">
             <div class="mega-intro">
               <span class="eyebrow">Section</span>
@@ -186,9 +186,9 @@ const header = (file) => `<body>
             <div class="mega-groups"><section class="mega-group"><h3>General Information</h3><ul><li><a href="students.html#learning">Educational programs</a></li><li><a href="students.html#schedule">Academic calendar</a></li><li><a href="students.html#schedule">Class schedule</a></li><li><a href="students.html#learning">Teacher contacts</a></li><li><a href="students.html#electives">Elective components catalog</a></li><li><a href="students.html#learning">Internal regulations</a></li><li><a href="admissions.html#faq">Dormitory</a></li></ul></section><section class="mega-group"><h3>Leisure</h3><ul><li><a href="students.html#community">Student self-government</a></li><li><a href="students.html#community">Volunteering</a></li><li><a href="students.html#community">Museum of Consumer Cooperation History of Kyiv Region</a></li></ul></section><section class="mega-group"><h3>Opportunities</h3><ul><li><a href="students.html#opportunities">Art studios</a></li><li><a href="students.html#opportunities">Sports sections</a></li><li><a href="students.html#opportunities">Foreign language courses</a></li></ul></section><section class="mega-group"><h3>Social and Legal Support</h3><ul><li><a href="students.html#support">Psychological service</a></li><li><a href="students.html#support">Legal clinic</a></li><li><a href="students.html#support">Anti-corruption activity</a></li><li><a href="students.html#support">Student ombudsperson</a></li></ul></section></div>
           </div>
         </li><li class="nav-item has-menu">
-          <a class="nav-link menu-toggle" href="alumni.html" aria-expanded="false" aria-controls="menu-3">
+          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-3">
             Alumni<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </a>
+          </button>
           <div class="mega-menu" id="menu-3">
             <div class="mega-intro">
               <span class="eyebrow">Section</span>
@@ -198,9 +198,9 @@ const header = (file) => `<body>
             <div class="mega-groups"><section class="mega-group"><h3>Community</h3><ul><li><a href="alumni.html#association">Alumni association</a></li><li><a href="alumni.html#stories">Successful alumni</a></li><li><a href="alumni.html#events">Alumni meetings</a></li></ul></section></div>
           </div>
         </li><li class="nav-item has-menu">
-          <a class="nav-link menu-toggle" href="science.html" aria-expanded="false" aria-controls="menu-4">
+          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-4">
             Research<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </a>
+          </button>
           <div class="mega-menu" id="menu-4">
             <div class="mega-intro">
               <span class="eyebrow">Section</span>
@@ -210,9 +210,9 @@ const header = (file) => `<body>
             <div class="mega-groups"><section class="mega-group"><h3>General Information</h3><ul><li><a href="science.html#directions">Research areas</a></li><li><a href="science.html#publications">Staff research profiles</a></li><li><a href="science.html#publications">Work plan</a></li><li><a href="science.html#publications">Report</a></li></ul></section><section class="mega-group"><h3>For Researchers</h3><ul><li><a href="science.html#publications">Scientific publications</a></li><li><a href="science.html#grants">State awards, honors and scholarships</a></li><li><a href="science.html#projects">International research projects and grants</a></li><li><a href="science.html#grants">Funding competitions</a></li></ul></section><section class="mega-group"><h3>Student Research</h3><ul><li><a href="science.html#student-science">Research clubs</a></li><li><a href="science.html#events">Ukrainian and international student research contests</a></li></ul></section><section class="mega-group"><h3>Academic Integrity</h3><ul><li><a href="library.html#integrity">Official documents and recommendations on academic integrity</a></li><li><a href="library.html#integrity">College documents on academic integrity</a></li><li><a href="library.html#integrity">Work plan</a></li><li><a href="library.html#integrity">Report</a></li><li><a href="library.html#integrity">Developing a culture of academic integrity</a></li><li><a href="library.html#integrity">Surveys</a></li><li><a href="library.html#integrity">Plagiarism check</a></li></ul></section></div>
           </div>
         </li><li class="nav-item has-menu">
-          <a class="nav-link menu-toggle" href="library.html" aria-expanded="false" aria-controls="menu-5">
+          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-5">
             Library<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </a>
+          </button>
           <div class="mega-menu" id="menu-5">
             <div class="mega-intro">
               <span class="eyebrow">Section</span>
@@ -280,7 +280,6 @@ const mains = {
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <span class="eyebrow">Admissions Campaign 2026</span>
       <h1>Education that opens <span>opportunities</span></h1>
       <p class="lead">Practical programs, lecturer support and an active student community for a confident professional start.</p>
       <div class="hero-actions"><a class="button button--accent" href="admissions.html#apply">Become a student ${arrow}</a><a class="button button--outline" href="#programs">Choose a specialty</a></div>
@@ -292,7 +291,7 @@ const mains = {
   </div>
 </section>
 <div class="quick-links"><div class="container quick-links-grid">
-  <a class="quick-link" href="admissions.html#documents"><span><strong>Admission Rules</strong><span>admissions campaign 2026</span></span>${arrow}</a>
+  <a class="quick-link" href="admissions.html#documents"><span><strong>Admission Rules</strong><span>rules and documents</span></span>${arrow}</a>
   <a class="quick-link" href="students.html#schedule"><span><strong>Class Schedule</strong><span>latest updates</span></span>${arrow}</a>
   <a class="quick-link" href="library.html#catalog"><span><strong>E-library</strong><span>catalog and repository</span></span>${arrow}</a>
   <a class="quick-link" href="college.html#contacts"><span><strong>Contacts</strong><span>how to find us</span></span>${arrow}</a>
