@@ -1,0 +1,4 @@
+interface:
+  display_name: "College Decision Documentation"
+  short_description: "Record design, feature, and handoff decisions"
+  default_prompt: "Use $college-decision-documentation to record accepted decisions, experiments, and technical-spec notes for the college demo."

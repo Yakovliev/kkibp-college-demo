@@ -1,0 +1,26 @@
+{
+  "name": "kkibp-college-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Статичний базовий сайт для Економіко-правового фахового коледжу Київського кооперативного інституту бізнесу і права. Структура основних розділів звірена з файлом `docs/Сайт структура коледж.docx`.",
+  "scripts": {
+    "test": "playwright test",
+    "test:playwright": "playwright test",
+    "playwright:install": "playwright install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yakovliev/kkibp-college-demo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Yakovliev/kkibp-college-demo/issues"
+  },
+  "homepage": "https://github.com/Yakovliev/kkibp-college-demo#readme",
+  "devDependencies": {
+    "@playwright/test": "1.61.1"
+  }
+}

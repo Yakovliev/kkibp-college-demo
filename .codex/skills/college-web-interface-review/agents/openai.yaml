@@ -1,0 +1,4 @@
+interface:
+  display_name: "College Web Interface Review"
+  short_description: "Audit the college demo interface"
+  default_prompt: "Use $college-web-interface-review to review the changed HTML, CSS, and JS for this college demo site."

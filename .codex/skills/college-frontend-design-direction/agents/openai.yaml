@@ -1,0 +1,4 @@
+interface:
+  display_name: "College Frontend Design Direction"
+  short_description: "Shape the college demo visual direction"
+  default_prompt: "Use $college-frontend-design-direction to propose or refine the college demo design direction."
