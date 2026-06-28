@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
-const cssVersion = 'footer-brand-mobile-align-20260628';
-const scriptVersion = 'header-collapse-20260627';
+const cssVersion = 'mobile-nav-drawer-lock-20260629';
+const scriptVersion = 'mobile-nav-drawer-lock-20260629';
 const files = ['index.html', 'college.html', 'admissions.html', 'students.html', 'alumni.html', 'science.html', 'library.html', 'news.html'];
 const collegeNameMain = 'Professional College of Economics and Law';
 const collegeNameSub = 'of the Kyiv Cooperative Institute of Business and Law';

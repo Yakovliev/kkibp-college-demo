@@ -1,9 +1,11 @@
 
 (() => {
   const body = document.body;
+  const root = document.documentElement;
   const header = document.querySelector('[data-header]');
   const navToggle = document.querySelector('.nav-toggle');
   const navBackdrop = document.querySelector('[data-nav-backdrop]');
+  const navShell = document.querySelector('.nav-shell');
   const menuButtons = [...document.querySelectorAll('.menu-toggle')];
   const searchDialog = document.querySelector('.search-dialog');
   const searchInput = document.querySelector('#site-search');
@@ -13,6 +15,8 @@
   const languageSwitches = [...document.querySelectorAll('[data-language-switch]')];
   const isEnglish = document.documentElement.lang.startsWith('en');
   const locale = isEnglish ? 'en' : 'uk';
+  let lockedNavScrollY = 0;
+  let restoringNavScroll = false;
   const ui = isEnglish
     ? {
         closeMenu: 'Close menu',
@@ -26,6 +30,7 @@
         noResults: 'Нічого не знайдено. Спробуйте інший запит.',
         futureLink: 'Це посилання підготовлене для майбутнього матеріалу.'
       };
+  let navTouchY = 0;
 
   const closeMenus = (except = null) => {
     document.querySelectorAll('.has-menu.menu-open').forEach(item => {
@@ -45,15 +50,64 @@
     });
   };
 
+  const lockPageScroll = () => {
+    lockedNavScrollY = window.scrollY;
+    root.classList.add('nav-open');
+    body.classList.add('nav-scroll-locked');
+  };
+
+  const unlockPageScroll = () => {
+    root.classList.remove('nav-open');
+    body.classList.remove('nav-scroll-locked');
+    lockedNavScrollY = window.scrollY;
+  };
+
+  const restoreLockedPageScroll = () => {
+    if (!body.classList.contains('nav-open') || restoringNavScroll) return false;
+    if (Math.abs(window.scrollY - lockedNavScrollY) <= 1) return false;
+    restoringNavScroll = true;
+    window.scrollTo(0, lockedNavScrollY);
+    requestAnimationFrame(() => { restoringNavScroll = false; });
+    return true;
+  };
+
+  const shouldStopNavScroll = (deltaY) => {
+    if (!navShell || navShell.scrollHeight <= navShell.clientHeight) return true;
+    const atTop = navShell.scrollTop <= 0;
+    const atBottom = navShell.scrollTop + navShell.clientHeight >= navShell.scrollHeight - 1;
+    return (atTop && deltaY < 0) || (atBottom && deltaY > 0);
+  };
+
   const setNav = (open) => {
+    if (open) lockPageScroll();
     body.classList.toggle('nav-open', open);
     navToggle?.setAttribute('aria-expanded', String(open));
     navToggle?.setAttribute('aria-label', open ? ui.closeMenu : ui.openMenu);
-    if (!open) closeMenus();
+    if (!open) {
+      closeMenus();
+      unlockPageScroll();
+    }
   };
 
   navToggle?.addEventListener('click', () => setNav(!body.classList.contains('nav-open')));
   navBackdrop?.addEventListener('click', () => setNav(false));
+  navShell?.addEventListener('touchstart', (event) => {
+    navTouchY = event.touches[0]?.clientY || 0;
+  }, { passive: true });
+  document.addEventListener('touchmove', (event) => {
+    if (!body.classList.contains('nav-open')) return;
+    if (!navShell?.contains(event.target)) {
+      event.preventDefault();
+      return;
+    }
+    const currentY = event.touches[0]?.clientY || navTouchY;
+    if (shouldStopNavScroll(navTouchY - currentY)) event.preventDefault();
+  }, { passive: false, capture: true });
+  document.addEventListener('wheel', (event) => {
+    if (!body.classList.contains('nav-open')) return;
+    if (navShell?.contains(event.target) && !shouldStopNavScroll(event.deltaY)) return;
+    event.preventDefault();
+  }, { passive: false, capture: true });
 
   languageSwitches.forEach(switcher => {
     const button = switcher.querySelector('.language-toggle');
@@ -152,6 +206,7 @@
   });
 
   const onScroll = () => {
+    if (restoreLockedPageScroll()) return;
     header?.classList.toggle('is-scrolled', window.scrollY > 20);
     const collapseOffset = window.innerWidth >= 720
       ? header?.querySelector('.header-inner')?.offsetHeight || 0
