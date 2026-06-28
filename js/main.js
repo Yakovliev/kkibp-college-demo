@@ -207,4 +207,58 @@
     if (window.innerWidth >= 720 && body.classList.contains('nav-open')) setNav(false);
     onScroll();
   });
+
+  // Demo theme switcher — lets reviewers preview color directions live.
+  // Self-contained UI tool: remove this block (and the matching CSS) for production.
+  (() => {
+    const themes = [
+      { id: '', uk: 'Синьо-бірюзова', en: 'Navy & Teal', swatch: 'linear-gradient(135deg,#0b2345,#4ca0d8)' },
+      { id: 'burgundy', uk: 'Бордова', en: 'Burgundy', swatch: 'linear-gradient(135deg,#3d0d1c,#d6a23f)' },
+      { id: 'purple', uk: 'Фіолетова', en: 'Royal Purple', swatch: 'linear-gradient(135deg,#2a0f49,#9a6ee6)' }
+    ];
+    const root = document.documentElement;
+    const stored = localStorage.getItem('demo-theme') || '';
+    const apply = (id) => { if (id) root.dataset.theme = id; else delete root.dataset.theme; };
+    apply(stored);
+
+    const label = isEnglish ? 'Demo theme' : 'Тема демо';
+    const wrap = document.createElement('div');
+    wrap.className = 'theme-demo';
+    wrap.innerHTML = `
+      <div class="theme-demo__panel" role="menu">
+        <span class="theme-demo__title">${label}</span>
+        ${themes.map(t => `<button class="theme-demo__opt" type="button" role="menuitemradio" data-theme-id="${t.id}"><span class="theme-demo__sw" style="background:${t.swatch}"></span>${isEnglish ? t.en : t.uk}</button>`).join('')}
+      </div>
+      <button class="theme-demo__toggle" type="button" aria-haspopup="true" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18 4.5 4.5 0 0 1 0-9 4.5 4.5 0 0 0 0-9Z"/></svg>${label}
+      </button>`;
+    document.body.appendChild(wrap);
+
+    const toggle = wrap.querySelector('.theme-demo__toggle');
+    const options = [...wrap.querySelectorAll('.theme-demo__opt')];
+    const setActive = (id) => options.forEach(b => {
+      const on = b.dataset.themeId === id;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-checked', String(on));
+    });
+    setActive(stored);
+
+    toggle.addEventListener('click', () => {
+      const open = !wrap.classList.contains('is-open');
+      wrap.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    options.forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.dataset.themeId;
+      apply(id);
+      localStorage.setItem('demo-theme', id);
+      setActive(id);
+    }));
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('.theme-demo')) {
+        wrap.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
 })();
