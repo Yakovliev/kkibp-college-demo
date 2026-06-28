@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
-const cssVersion = 'footer-social-map-20260627';
+const cssVersion = 'footer-brand-mobile-align-20260628';
 const scriptVersion = 'header-collapse-20260627';
 const files = ['index.html', 'college.html', 'admissions.html', 'students.html', 'alumni.html', 'science.html', 'library.html', 'news.html'];
 const collegeNameMain = 'Professional College of Economics and Law';
@@ -250,9 +250,9 @@ const footer = () => `
     <div class="footer-brand"><a class="brand" href="index.html" aria-label="${collegeName} - home">
         <img class="brand-mark" src="../assets/logo_small.gif" alt="" width="56" height="56">
         <span class="brand-text"><strong>${collegeBrandTitle}</strong></span>
-      </a><div class="footer-social"><h3>Social media</h3><div class="social-links"><a class="social-link social-link--instagram" href="${instagramHref}" aria-label="College Instagram" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a><a class="social-link social-link--facebook" href="${facebookHref}" aria-label="College Facebook" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a></div></div></div>
+      </a></div>
     <div><h3>Navigation</h3><ul><li><a href="college.html">College</a></li><li><a href="admissions.html">Applicants</a></li><li><a href="students.html">Students</a></li><li><a href="alumni.html">Alumni</a></li><li><a href="science.html">Research</a></li><li><a href="library.html">Library</a></li><li><a href="news.html">News</a></li></ul></div>
-    <div><h3>Contacts</h3><ul class="contact-list"><li>18 Yulii Zdanovskoi St., Kyiv, 03022</li><li><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li><li>Mon-Fri, 08:00-17:00</li><li><a href="${googleMapsHref}" target="_blank" rel="noopener noreferrer">Open in Google Maps</a></li></ul></div>
+    <div><h3>Contacts</h3><ul class="contact-list"><li>18 Yulii Zdanovskoi St., Kyiv, 03022</li><li><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li><li>Mon-Fri, 08:00-17:00</li><li><a href="${googleMapsHref}" target="_blank" rel="noopener noreferrer">Open in Google Maps</a></li></ul><div class="footer-social"><div class="social-links"><a class="social-link social-link--instagram" href="${instagramHref}" aria-label="College Instagram" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a><a class="social-link social-link--facebook" href="${facebookHref}" aria-label="College Facebook" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a></div></div></div>
   </div>
   <div class="container footer-bottom"><p>© <span data-year></span> ${collegeName}.</p><div><a href="#">Privacy policy</a></div></div>
 </footer>
