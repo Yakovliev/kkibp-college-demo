@@ -1,0 +1,4 @@
+interface:
+  display_name: "College Design Variants"
+  short_description: "Create and clean design variant previews"
+  default_prompt: "Use $college-design-variants to create responsive design variants for a college demo page."
