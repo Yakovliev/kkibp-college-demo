@@ -317,10 +317,10 @@ const mains = {
   </div>
 </section>
 <div class="quick-links"><div class="container quick-links-grid">
+  <a class="quick-link" href="admissions.html#programs"><span><strong>Educational Programs</strong><span>specialties and choice</span></span>${arrow}</a>
   <a class="quick-link" href="admissions.html#documents"><span><strong>Admission Rules</strong><span>rules and documents</span></span>${arrow}</a>
-  <a class="quick-link" href="students.html#schedule"><span><strong>Class Schedule</strong><span>latest updates</span></span>${arrow}</a>
-  <a class="quick-link" href="library.html#catalog"><span><strong>E-library</strong><span>catalog and repository</span></span>${arrow}</a>
-  <a class="quick-link" href="college.html#contacts"><span><strong>Contacts</strong><span>how to find us</span></span>${arrow}</a>
+  <a class="quick-link" href="admissions.html"><span><strong>Admissions</strong><span>applicant steps</span></span>${arrow}</a>
+  <a class="quick-link" href="admissions.html#contacts"><span><strong>Contacts</strong><span>admissions office</span></span>${arrow}</a>
 </div></div>
 <section class="section" id="about"><div class="container">
   <div class="section-heading"><div><span class="eyebrow">Main Sections</span><h2>Everything important is close at hand</h2></div><a class="text-link" href="college.html">Learn about the college ${arrow}</a></div>

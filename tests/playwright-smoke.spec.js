@@ -16,6 +16,37 @@ test('home page renders without horizontal overflow', async ({ page }) => {
   expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth);
 });
 
+test('home about-college carousel renders and can be controlled', async ({ page }) => {
+  await page.goto('/index.html');
+
+  const section = page.locator('#college-about');
+  const carousel = section.locator('[data-college-carousel]');
+  const slides = carousel.locator('.college-photo-track img');
+  const dots = carousel.locator('[data-carousel-dot]');
+
+  await expect(section.getByRole('heading', { name: 'Коледж для впевненого професійного старту' })).toBeVisible();
+  await section.scrollIntoViewIfNeeded();
+  await expect(slides).toHaveCount(4);
+  await expect(dots).toHaveCount(4);
+  await expect(section.locator('.college-combo-more')).toHaveAttribute('href', 'college.html#about');
+
+  const imageSources = await slides.evaluateAll((images) => images.map((image) => new URL(image.getAttribute('src'), window.location.href).href));
+  for (const src of imageSources) {
+    const response = await page.request.get(src);
+    expect(response.ok(), `${src} should be available`).toBe(true);
+  }
+
+  const activeBefore = await dots.evaluateAll((buttons) => buttons.findIndex((button) => button.classList.contains('is-active')));
+  await carousel.getByRole('button', { name: 'Наступне фото' }).click();
+  const activeAfter = await dots.evaluateAll((buttons) => buttons.findIndex((button) => button.classList.contains('is-active')));
+  const trackTransform = await carousel.locator('.college-photo-track').evaluate((track) => track.style.transform);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
+
+  expect(activeAfter).toBe((activeBefore + 1) % 4);
+  expect(trackTransform).toBe(`translateX(-${activeAfter * 100}%)`);
+  expect(overflow).toBe(false);
+});
+
 test('primary menu toggles submenus without navigating', async ({ page }) => {
   await page.goto('/index.html');
 

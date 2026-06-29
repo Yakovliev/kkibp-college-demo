@@ -322,6 +322,74 @@
 
   document.querySelectorAll('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 
+  document.querySelectorAll('[data-college-carousel]').forEach(carousel => {
+    const track = carousel.querySelector('.college-photo-track');
+    const slides = [...carousel.querySelectorAll('.college-photo-track img')];
+    const prev = carousel.querySelector('[data-carousel-prev]');
+    const next = carousel.querySelector('[data-carousel-next]');
+    const dotsWrap = carousel.querySelector('.college-carousel-dots');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let dots = [...carousel.querySelectorAll('[data-carousel-dot]')];
+    let active = 0;
+    let timer = null;
+
+    if (!track || slides.length <= 1) return;
+
+    if (dotsWrap && dots.length !== slides.length) {
+      dotsWrap.innerHTML = slides.map((_, index) => `<button type="button" aria-label="Фото ${index + 1}" data-carousel-dot></button>`).join('');
+      dots = [...dotsWrap.querySelectorAll('[data-carousel-dot]')];
+    }
+
+    const setActiveSlide = (index) => {
+      active = (index + slides.length) % slides.length;
+      track.style.transform = `translateX(-${active * 100}%)`;
+      slides.forEach((slide, slideIndex) => {
+        slide.setAttribute('aria-hidden', String(slideIndex !== active));
+      });
+      dots.forEach((dot, dotIndex) => {
+        const isActive = dotIndex === active;
+        dot.classList.toggle('is-active', isActive);
+        dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+      });
+    };
+
+    const stop = () => {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+    };
+
+    const start = () => {
+      if (reduceMotion || timer) return;
+      timer = window.setInterval(() => setActiveSlide(active + 1), 5200);
+    };
+
+    prev?.addEventListener('click', () => {
+      setActiveSlide(active - 1);
+      stop();
+      start();
+    });
+    next?.addEventListener('click', () => {
+      setActiveSlide(active + 1);
+      stop();
+      start();
+    });
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        setActiveSlide(index);
+        stop();
+        start();
+      });
+    });
+
+    carousel.addEventListener('mouseenter', stop);
+    carousel.addEventListener('mouseleave', start);
+    carousel.addEventListener('focusin', stop);
+    carousel.addEventListener('focusout', start);
+
+    setActiveSlide(0);
+    start();
+  });
+
   const showToast = (message) => {
     if (!toast) return;
     toast.textContent = message;
