@@ -113,7 +113,7 @@ const ukrainianAdmissionsCta = '<li class="nav-item nav-item--cta"><a class="nav
 const englishAdmissionsCta = '<li class="nav-item nav-item--cta"><a class="nav-link nav-link--cta" href="admissions.html">Admissions</a></li>';
 const ukrainianFooterQuickLinks = '<nav class="footer-quick-links" aria-label="Швидкі переходи"><a href="students.html#schedule">Розклад занять</a><a href="admissions.html#programs">Освітні програми</a><a href="admissions.html">Вступ</a><a href="admissions.html#documents">Правила прийому</a><a href="college.html#departments">Відділення</a><a href="college.html#departments">Циклові комісії</a></nav>';
 const englishFooterQuickLinks = '<nav class="footer-quick-links" aria-label="Quick links"><a href="students.html#schedule">Class schedule</a><a href="admissions.html#programs">Educational programs</a><a href="admissions.html">Admissions</a><a href="admissions.html#documents">Admission rules</a><a href="college.html#departments">Departments</a><a href="college.html#departments">Subject commissions</a></nav>';
-const ukrainianNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права — головна"><img src="assets/logo_small.gif" alt="" width="48" height="48"><span><strong>Економіко-правовий фаховий коледж</strong><small>Київського кооперативного інституту бізнесу і права</small></span></a></li>`;
+const ukrainianNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права – головна"><img src="assets/logo_small.gif" alt="" width="48" height="48"><span><strong>Економіко-правовий фаховий коледж</strong><small>Київського кооперативного інституту бізнесу і права</small></span></a></li>`;
 const englishNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="${collegeName} - home"><img src="../assets/logo_small.gif" alt="" width="48" height="48"><span><strong>${collegeNameMain}</strong><small>${collegeNameSub}</small></span></a></li>`;
 
 const mobileLanguage = ({ current, ukHref, enHref, label, title }) => `<div class="mobile-language" aria-label="${label}">
@@ -273,7 +273,7 @@ const footer = () => `
 const ukrainianFooter = () => `
 <footer class="site-footer" id="footer">
   <div class="container footer-grid">
-    <div class="footer-brand"><a class="brand" href="index.html" aria-label="${ukrainianCollegeName} — головна">
+    <div class="footer-brand"><a class="brand" href="index.html" aria-label="${ukrainianCollegeName} – головна">
         <img class="brand-mark" src="assets/logo_small.gif" alt="" width="56" height="56">
         <span class="brand-text"><strong>${ukrainianCollegeBrandTitle}</strong></span>
       </a>${ukrainianFooterQuickLinks}</div>

@@ -78,6 +78,8 @@ Use English ids and filenames. UI labels inside preview pages may be Ukrainian.
 4. Create the run without modifying the target page.
    - Put temporary files under `design-lab/YYYY-MM-DD-page-scope/`.
    - Keep the real `index.html` or other target unchanged until the user chooses a winner.
+   - For page-section experiments, start each variant from a full copy of the current target HTML. Preserve the page header, footer, scripts, metadata, global navigation, dialogs, search, language switch, and surrounding sections unless the experiment explicitly targets them.
+   - Change only the scoped section, plus the smallest necessary variant stylesheet hook. Do not rebuild a partial standalone mockup when the user needs to judge the design in the real page context.
 5. Build responsive variants.
    - Every variant must work at desktop and mobile widths.
    - Do not create separate mobile content pages. Use the same variant HTML and show it in `mobile.html`.
