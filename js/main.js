@@ -22,13 +22,15 @@
         closeMenu: 'Close menu',
         openMenu: 'Open menu',
         noResults: 'No results found. Try another query.',
-        futureLink: 'This link is prepared for a future material.'
+        futureLink: 'This link is prepared for a future material.',
+        readFull: 'Read in full'
       }
     : {
         closeMenu: 'Закрити меню',
         openMenu: 'Відкрити меню',
         noResults: 'Нічого не знайдено. Спробуйте інший запит.',
-        futureLink: 'Це посилання підготовлене для майбутнього матеріалу.'
+        futureLink: 'Це посилання підготовлене для майбутнього матеріалу.',
+        readFull: 'Читати повністю'
   };
   let navTouchY = 0;
   const mobileAccordionQuery = window.matchMedia('(max-width: 719px)');
@@ -321,6 +323,51 @@
   backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
   document.querySelectorAll('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
+
+  const newsItems = Array.isArray(window.COLLEGE_NEWS) ? window.COLLEGE_NEWS : [];
+  const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+  const normalizeNewsDate = (item) => Date.parse(item.loadedAt || item.publishedAt || '') || 0;
+  const resolveNewsAsset = (path) => {
+    if (!path || /^(https?:|\/|\.\/|\.\.\/)/.test(path)) return path;
+    return isEnglish ? `../${path}` : path;
+  };
+  const truncateNewsText = (value, maxLength) => {
+    const text = String(value || '').replace(/\s+/g, ' ').trim();
+    if (text.length <= maxLength) return text;
+    const slice = text.slice(0, maxLength + 1);
+    const lastSpace = slice.lastIndexOf(' ');
+    const end = lastSpace > maxLength * 0.65 ? lastSpace : maxLength;
+    return `${text.slice(0, end).replace(/[.,;:!?…]+$/, '')}...`;
+  };
+  const renderNewsCard = (item, excerptLength) => {
+    const href = item.url || '#';
+    const linkAttrs = /^https?:\/\//.test(href) ? ' target="_blank" rel="noopener noreferrer"' : '';
+    const idAttr = item.id ? ` id="${escapeHtml(item.id)}"` : '';
+    const image = item.image
+      ? `<div class="news-media news-media--image"><img src="${escapeHtml(resolveNewsAsset(item.image))}" alt="${escapeHtml(item.alt || item.title)}" loading="lazy"></div>`
+      : '<div class="news-media" aria-hidden="true"></div>';
+    const excerpt = item.excerpt || item.content || item.body || '';
+
+    return `<article class="news-card"${idAttr}>${image}<div class="news-content"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(truncateNewsText(excerpt, excerptLength))}</p><a class="text-link" href="${escapeHtml(href)}"${linkAttrs}>${ui.readFull} <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6"/></svg></a></div></article>`;
+  };
+
+  if (newsItems.length) {
+    const orderedNews = [...newsItems].sort((a, b) => normalizeNewsDate(b) - normalizeNewsDate(a));
+    document.querySelectorAll('[data-news-list]').forEach(grid => {
+      const limit = Number(grid.dataset.newsLimit) || orderedNews.length;
+      const excerptLength = Number(grid.dataset.newsExcerptLength) || 185;
+      grid.innerHTML = orderedNews.slice(0, limit).map(item => renderNewsCard(item, excerptLength)).join('');
+    });
+    document.querySelectorAll('[data-news-count]').forEach(element => {
+      element.textContent = orderedNews.length;
+    });
+  }
 
   document.querySelectorAll('[data-college-carousel]').forEach(carousel => {
     const track = carousel.querySelector('.college-photo-track');

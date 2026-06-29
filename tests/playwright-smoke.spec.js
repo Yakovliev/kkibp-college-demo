@@ -107,6 +107,83 @@ test('home main sections expose accepted navigation structure', async ({ page })
   }
 });
 
+test('home latest news renders exactly three newest shared cards', async ({ page }) => {
+  await page.goto('/index.html');
+
+  const section = page.locator('[data-news-list]').first();
+  const cards = section.locator('.news-card');
+
+  await expect(cards).toHaveCount(3);
+  await expect(cards.locator('h3')).toHaveText([
+    'К.і.н., доцент Юлія Руденко взяла участь в освітньому тренінгу «ЗНОвУ відновлюємось 2026»',
+    '«Першокурсники: рік по тому»: творчий звіт студентів',
+    'Захист виробничої практики студентів спеціальності «Облік і оподаткування»: підсумки професійного становлення'
+  ]);
+  await expect(section.locator('.news-media img')).toHaveCount(3);
+  await expect(section.locator('.text-link')).toHaveCount(3);
+  await expect(section.locator('.news-media-label, .news-meta')).toHaveCount(0);
+
+  const allNews = page.getByRole('link', { name: /Усі новини/ });
+  await expect(allNews).toHaveAttribute('href', 'news.html');
+});
+
+test('news page uses the same news card structure for the full feed', async ({ page }) => {
+  await page.goto('/news.html');
+
+  const grid = page.locator('[data-news-list]');
+  const cards = grid.locator('.news-card');
+
+  await expect(page.locator('[data-news-count]')).toHaveText('4');
+  await expect(page.locator('.filter-bar')).toHaveCount(0);
+  await expect(cards).toHaveCount(4);
+  await expect(cards.locator('h3')).toHaveText([
+    'К.і.н., доцент Юлія Руденко взяла участь в освітньому тренінгу «ЗНОвУ відновлюємось 2026»',
+    '«Першокурсники: рік по тому»: творчий звіт студентів',
+    'Захист виробничої практики студентів спеціальності «Облік і оподаткування»: підсумки професійного становлення',
+    'Сила в єдності: інститут відзначено нагородою від Повітряного командування «Центр»'
+  ]);
+  await expect(grid.locator('.news-media img')).toHaveCount(4);
+  await expect(grid.locator('.text-link')).toHaveCount(4);
+  await expect(grid.locator('.news-media-label, .news-meta')).toHaveCount(0);
+});
+
+test('english home mirrors the accepted home structure', async ({ page }) => {
+  await page.goto('/en/index.html');
+
+  const about = page.locator('#college-about');
+  await expect(about.getByRole('heading', { name: 'A college for a confident professional start' })).toBeVisible();
+  await expect(about.locator('.college-photo-track img')).toHaveCount(4);
+
+  const mainSections = page.locator('.main-sections#about');
+  const cards = mainSections.locator('.main-section-card');
+  await expect(cards).toHaveCount(6);
+  await expect(cards.locator('h3')).toHaveText(['College', 'Applicants', 'Students', 'Alumni', 'Research', 'Library']);
+  await expect(mainSections.locator('.feature-icon')).toHaveCount(0);
+  await expect(mainSections.getByRole('heading', { name: 'Public Information' })).toHaveCount(0);
+  await expect(mainSections.getByRole('link', { name: /Contacts/ })).toHaveAttribute('href', 'college.html#contacts');
+
+  const allSpecialties = page.getByRole('link', { name: /All specialties/ });
+  await expect(allSpecialties).toHaveClass(/main-sections-contact--filled/);
+  await expect(page.locator('.program-card .program-meta')).toHaveCount(0);
+
+  const news = page.locator('[data-news-list]').first();
+  await expect(news.locator('.news-card')).toHaveCount(3);
+  await expect(news.locator('.news-media-label, .news-meta')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: /All news/ })).toHaveClass(/main-sections-contact--filled/);
+});
+
+test('english news page uses the shared card feed without legacy filters', async ({ page }) => {
+  await page.goto('/en/news.html');
+
+  const grid = page.locator('[data-news-list]');
+  await expect(page.locator('[data-news-count]')).toHaveText('4');
+  await expect(page.locator('.filter-bar')).toHaveCount(0);
+  await expect(grid.locator('.news-card')).toHaveCount(4);
+  await expect(grid.locator('.news-media img')).toHaveCount(4);
+  await expect(grid.locator('.news-media-label, .news-meta')).toHaveCount(0);
+  await expect(grid.locator('.text-link').first()).toContainText('Read in full');
+});
+
 test('primary menu toggles submenus without navigating', async ({ page }) => {
   await page.goto('/index.html');
 
