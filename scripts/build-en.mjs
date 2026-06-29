@@ -346,15 +346,6 @@ const mains = {
   <div class="section-heading"><div><span class="eyebrow">Latest News</span><h2>College Life</h2><p>Real events, learning practice, creative reports and volunteer initiatives from the community.</p></div><a class="text-link" href="news.html">All news ${arrow}</a></div>
   ${newsCardsHome}
 </div></section>
-<section class="section section--soft"><div class="container events-layout">
-  <article class="date-card"><div><span class="big-date">28</span><span class="month">March</span></div><div><span class="tag tag--light">Upcoming Event</span><h3>Open Day</h3><p>Campus tour, program presentation and admissions office consultations.</p></div></article>
-  <div><span class="eyebrow">Calendar</span><h2>Do not miss what matters</h2><div class="event-list">
-    <article class="event-item"><div class="event-date">02<small>Apr</small></div><div><h3>Presentation Design Workshop</h3><p>15:30 · media lab</p></div><a href="#" aria-label="Details">${arrow}</a></article>
-    <article class="event-item"><div class="event-date">09<small>Apr</small></div><div><h3>Career Opportunities Fair</h3><p>11:00 · assembly hall</p></div><a href="#" aria-label="Details">${arrow}</a></article>
-    <article class="event-item"><div class="event-date">17<small>Apr</small></div><div><h3>Student Research Conference</h3><p>10:00 · building B</p></div><a href="#" aria-label="Details">${arrow}</a></article>
-  </div></div>
-</div></section>
-<section class="section" id="tour"><div class="container"><div class="cta-panel"><div><span class="eyebrow eyebrow--light">Meet the College</span><h2>See you at Open Day</h2><p>Feel the atmosphere, ask questions and choose your educational route.</p></div></div></div></section>
 </main>`,
   'college.html': `<main id="main"><section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>College</span></nav><div class="page-hero-grid"><div><span class="eyebrow eyebrow--light">College</span><h1>A place where professional futures are shaped</h1><p>We combine a strong academic foundation, practical learning and a culture of mutual support.</p></div><div class="page-hero-card"><strong>42 years</strong><span>working for education and community growth</span></div></div></div></section>
 <section class="section"><div class="container content-layout">

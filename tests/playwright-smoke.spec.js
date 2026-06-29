@@ -47,6 +47,66 @@ test('home about-college carousel renders and can be controlled', async ({ page 
   expect(overflow).toBe(false);
 });
 
+test('home main sections expose accepted navigation structure', async ({ page }) => {
+  await page.goto('/index.html');
+
+  const section = page.locator('.main-sections#about');
+  await section.scrollIntoViewIfNeeded();
+
+  await expect(section.getByRole('heading', { name: 'Усе важливе поруч' })).toBeVisible();
+  await expect(section.locator('.main-sections-heading p')).toHaveText('Для вступників, студентів, випускників і гостей сайту: основні розділи, з яких починається знайомство з коледжем.');
+
+  const contact = section.getByRole('link', { name: /Контакти/ });
+  await expect(contact).toHaveAttribute('href', 'college.html#contacts');
+
+  const cards = section.locator('.main-section-card');
+  await expect(cards).toHaveCount(6);
+  await expect(cards.locator('h3')).toHaveText(['Коледж', 'Абітурієнту', 'Студенту', 'Випускнику', 'Наука', 'Бібліотека']);
+  await expect(cards.locator('.section-card-a__marker')).toHaveText(['Про коледж', 'Вступ', 'Навчання', 'Спільнота', 'Дослідження', 'Ресурси']);
+
+  const links = await cards.locator('a.text-link').evaluateAll((items) => items.map((item) => item.getAttribute('href')));
+  expect(links).toEqual(['college.html', 'admissions.html', 'students.html', 'alumni.html', 'science.html', 'library.html']);
+  await expect(section.locator('.feature-icon')).toHaveCount(0);
+  await expect(section.getByRole('heading', { name: 'Публічна інформація' })).toHaveCount(0);
+
+  const layout = await section.evaluate((element) => {
+    const grid = element.querySelector('.main-section-grid');
+    const heading = element.querySelector('.main-sections-heading');
+    const paragraph = element.querySelector('.main-sections-heading p');
+    const title = element.querySelector('.main-sections-heading h2');
+    const contactLink = element.querySelector('.main-sections-contact');
+    const gridColumns = getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length;
+    const headingRect = heading.getBoundingClientRect();
+    const paragraphRect = paragraph.getBoundingClientRect();
+    const titleRect = title.getBoundingClientRect();
+    const contactRect = contactLink.getBoundingClientRect();
+
+    return {
+      contactTop: contactRect.top,
+      contactBottom: contactRect.bottom,
+      contactWidth: contactRect.width,
+      gridColumns,
+      headingWidth: headingRect.width,
+      paragraphBottom: paragraphRect.bottom,
+      titleBottom: titleRect.bottom,
+      viewportWidth: window.innerWidth
+    };
+  });
+
+  if (layout.viewportWidth < 720) {
+    expect(layout.gridColumns).toBe(1);
+    expect(layout.contactWidth).toBeGreaterThanOrEqual(layout.headingWidth - 1);
+    expect(layout.contactTop).toBeGreaterThan(layout.paragraphBottom);
+  } else if (layout.viewportWidth < 1100) {
+    expect(layout.gridColumns).toBe(2);
+  } else {
+    expect(layout.gridColumns).toBe(3);
+    expect(layout.contactTop).toBeGreaterThanOrEqual(layout.titleBottom - 1);
+    expect(layout.contactTop).toBeLessThan(layout.paragraphBottom);
+    expect(layout.contactBottom).toBeGreaterThan(layout.contactTop);
+  }
+});
+
 test('primary menu toggles submenus without navigating', async ({ page }) => {
   await page.goto('/index.html');
 
