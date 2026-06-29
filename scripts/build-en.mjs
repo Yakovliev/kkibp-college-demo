@@ -11,6 +11,10 @@ const collegeNameMain = 'Professional College of Economics and Law';
 const collegeNameSub = 'of the Kyiv Cooperative Institute of Business and Law';
 const collegeName = `${collegeNameMain} ${collegeNameSub}`;
 const collegeBrandTitle = `<span class="brand-title-main">${collegeNameMain}</span> <span class="brand-title-sub">${collegeNameSub}</span>`;
+const siteBaseUrl = 'https://yakovliev.github.io/kkibp-college-demo';
+const socialImageUrl = `${siteBaseUrl}/assets/logo_small.gif`;
+const englishSocialSiteName = 'Professional College of Economics and Law, KCIBL';
+const englishSocialDescription = 'Official college website: admissions, studies, student life, news and useful services.';
 const arrow = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 const external = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6"/></svg>';
 const download = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14"/></svg>';
@@ -20,47 +24,56 @@ const pageMeta = {
   'index.html': {
     page: 'home',
     title: `Home - ${collegeName}`,
-    description: 'A modern responsive website for the Professional College of Economics and Law of the Kyiv Cooperative Institute of Business and Law.'
+    description: englishSocialDescription,
+    socialTitle: englishSocialSiteName
   },
   'college.html': {
     page: 'college',
     title: `College - ${collegeName}`,
-    description: 'About the college, leadership, departments, public information, campus and contacts.'
+    description: englishSocialDescription,
+    socialTitle: `College - ${englishSocialSiteName}`
   },
   'admissions.html': {
     page: 'admissions',
     title: `Admissions - ${collegeName}`,
-    description: 'Admissions campaign 2026, programs, dates, documents, tuition and admissions office contacts.'
+    description: englishSocialDescription,
+    socialTitle: `Admissions - ${englishSocialSiteName}`
   },
   'students.html': {
     page: 'students',
     title: `Students - ${collegeName}`,
-    description: 'Class schedule, learning services, electives, student life, support and career opportunities.'
+    description: englishSocialDescription,
+    socialTitle: `Students - ${englishSocialSiteName}`
   },
   'alumni.html': {
     page: 'alumni',
     title: `Alumni - ${collegeName}`,
-    description: 'Alumni association, success stories, mentoring and community meetings.'
+    description: englishSocialDescription,
+    socialTitle: `Alumni - ${englishSocialSiteName}`
   },
   'science.html': {
     page: 'science',
     title: `Research - ${collegeName}`,
-    description: 'Research areas, projects, grants, publications and student research.'
+    description: englishSocialDescription,
+    socialTitle: `Research - ${englishSocialSiteName}`
   },
   'library.html': {
     page: 'library',
     title: `Library - ${collegeName}`,
-    description: 'Electronic catalog, book collection, library space, resources for researchers and academic integrity.'
+    description: englishSocialDescription,
+    socialTitle: `Library - ${englishSocialSiteName}`
   },
   'news.html': {
     page: 'news',
     title: `News - ${collegeName}`,
-    description: 'Latest news, events, research and student materials from the college.'
+    description: englishSocialDescription,
+    socialTitle: `News - ${englishSocialSiteName}`
   }
 };
 
 const head = (file) => {
   const meta = pageMeta[file];
+  const socialUrl = file === 'index.html' ? `${siteBaseUrl}/en/` : `${siteBaseUrl}/en/${file}`;
   return `<!doctype html>
 <html lang="en" data-page="${meta.page}">
 <head>
@@ -69,6 +82,22 @@ const head = (file) => {
   <meta name="description" content="${meta.description}">
   <meta name="theme-color" content="#0b2345">
   <title>${meta.title}</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="${englishSocialSiteName}">
+  <meta property="og:title" content="${meta.socialTitle}">
+  <meta property="og:description" content="${meta.description}">
+  <meta property="og:url" content="${socialUrl}">
+  <meta property="og:image" content="${socialImageUrl}">
+  <meta property="og:image:type" content="image/gif">
+  <meta property="og:image:width" content="827">
+  <meta property="og:image:height" content="827">
+  <meta property="og:image:alt" content="Professional College of Economics and Law logo">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="${meta.socialTitle}">
+  <meta name="twitter:description" content="${meta.description}">
+  <meta name="twitter:image" content="${socialImageUrl}">
+  <meta name="twitter:image:alt" content="Professional College of Economics and Law logo">
   <link rel="alternate" hreflang="uk" href="../${file}">
   <link rel="alternate" hreflang="en" href="${file}">
   <link rel="icon" href="../assets/logo_small.gif" type="image/gif">

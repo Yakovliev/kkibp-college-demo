@@ -488,16 +488,17 @@
   // Self-contained UI tool: remove this block (and the matching CSS) for production.
   (() => {
     const themes = [
-      { id: '', uk: 'Синьо-бірюзова', en: 'Navy & Teal', swatch: 'linear-gradient(135deg,#0b2345,#4ca0d8)' },
-      { id: 'burgundy', uk: 'Бордова', en: 'Burgundy', swatch: 'linear-gradient(135deg,#3d0d1c,#d6a23f)' },
-      { id: 'purple', uk: 'Фіолетова', en: 'Royal Purple', swatch: 'linear-gradient(135deg,#2a0f49,#9a6ee6)' }
+      { id: '', uk: 'Основна', en: 'Primary', swatch: 'linear-gradient(135deg,#0b2345,#4ca0d8)' },
+      { id: 'night', uk: 'Нічний режим', en: 'Night mode', swatch: 'linear-gradient(135deg,#071420,#38aee5)' },
+      { id: 'purple', uk: 'Фіолетова', en: 'Royal Purple', swatch: 'linear-gradient(135deg,#2a0f49,#9a6ee6)' },
+      { id: 'burgundy', uk: 'Бордова', en: 'Burgundy', swatch: 'linear-gradient(135deg,#3d0d1c,#d6a23f)' }
     ];
     const root = document.documentElement;
     const stored = localStorage.getItem('demo-theme') || '';
     const apply = (id) => { if (id) root.dataset.theme = id; else delete root.dataset.theme; };
     apply(stored);
 
-    const label = isEnglish ? 'Demo theme' : 'Тема демо';
+    const label = isEnglish ? 'Theme' : 'Тема';
     const wrap = document.createElement('div');
     wrap.className = 'theme-demo';
     wrap.innerHTML = `

@@ -43,6 +43,71 @@
   --media-light:#e3d8f6; --media-deep:#7e63b8;
   --portrait-1:#e7ddf6; --portrait-2:#bda7e3;
 }
+[data-theme="night"]{
+  color-scheme:dark;
+  --navy-950:#06101b; --navy-900:#0b1d2f; --navy-800:#11334f; --navy-700:#18577c;
+  --teal-700:#84d5ff; --teal-600:#63c4f3; --teal-500:#38aee5; --teal-100:#102c45;
+  --gold-500:#ffcf6a; --gold-100:#302a17;
+  --ink:#e8f2fb; --muted:#a7b6c8; --line:#284056; --surface:#071420; --surface-soft:#0d1d2b; --surface-blue:#10283a;
+  --success:#8de0c1; --danger:#ff8f94;
+  --shadow-sm:0 8px 25px rgba(0,0,0,.3); --shadow-md:0 18px 50px rgba(0,0,0,.4); --shadow-lg:0 28px 80px rgba(0,0,0,.48);
+  --accent-bright:#9ed7ff;
+  --hero-1:#071420; --hero-2:#0b1d2c; --hero-3:#11263a;
+  --hero-blob-1:rgba(56,174,229,.16); --hero-blob-2:rgba(255,207,106,.08);
+  --prog-1b:#0d2a42; --prog-2a:#0a2237; --prog-2b:#174b6d; --prog-3a:#091b2c; --prog-3b:#205d82;
+  --media-light:#12324a; --media-deep:#2f7fa7;
+  --portrait-1:#10283a; --portrait-2:#244b63;
+}
+[data-theme="night"] .site-header{background:rgba(7,20,32,.96);border-bottom-color:rgba(40,64,86,.9)}
+[data-theme="night"] .header-main,
+[data-theme="night"] .nav-shell,
+[data-theme="night"] .language-menu,
+[data-theme="night"] .mega-menu,
+[data-theme="night"] .search-panel,
+[data-theme="night"] .quick-links-grid,
+[data-theme="night"] .college-combo-card,
+[data-theme="night"] .main-section-card,
+[data-theme="night"] .feature-card,
+[data-theme="night"] .news-card,
+[data-theme="night"] .anchor-card,
+[data-theme="night"] .info-card,
+[data-theme="night"] .profile-card,
+[data-theme="night"] .filter-button,
+[data-theme="night"] .icon-button,
+[data-theme="night"] .mobile-language-option,
+[data-theme="night"] .theme-demo__panel{background:var(--surface);color:var(--ink)}
+[data-theme="night"] .college-about-section{background:linear-gradient(180deg,var(--surface) 0%,var(--surface-soft) 100%)}
+[data-theme="night"] .hero-trust{background:rgba(13,29,43,.78)}
+[data-theme="night"] .brand-text strong,
+[data-theme="night"] .header-contact a,
+[data-theme="night"] .nav-link,
+[data-theme="night"] .nav-brand,
+[data-theme="night"] .text-link,
+[data-theme="night"] .button--outline,
+[data-theme="night"] .main-sections-contact,
+[data-theme="night"] .document-item a,
+[data-theme="night"] .event-item>a,
+[data-theme="night"] .program-doc-link,
+[data-theme="night"] .quick-link strong,
+[data-theme="night"] .hero-copy h1,
+[data-theme="night"] .hero-trust strong,
+[data-theme="night"] .college-about-section h2,
+[data-theme="night"] .main-section-card h3,
+[data-theme="night"] .program-title strong{color:var(--ink)}
+[data-theme="night"] .header-contact a:first-child{color:var(--muted)}
+[data-theme="night"] .mega-group a,
+[data-theme="night"] .news-content p,
+[data-theme="night"] .anchor-card a,
+[data-theme="night"] .check-list li,
+[data-theme="night"] .filter-button,
+[data-theme="night"] .status--muted{color:var(--muted)}
+[data-theme="night"] .button--outline:hover,
+[data-theme="night"] .quick-link:hover,
+[data-theme="night"] .anchor-card a:hover,
+[data-theme="night"] .program-doc-link:hover,
+[data-theme="night"] .theme-demo__opt:hover,
+[data-theme="night"] .theme-demo__opt.is-active{background:var(--teal-100)}
+[data-theme="night"] .skip-link{background:var(--surface);color:var(--ink)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:145px;overflow-x:clip}
 body{margin:0;overflow-x:clip;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--surface);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
@@ -229,3 +294,14 @@ details.faq{border-bottom:1px solid var(--line)}details.faq:first-of-type{border
 .theme-demo__toggle{display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border:0;border-radius:999px;background:var(--navy-900);color:#fff;font-size:.82rem;font-weight:800;box-shadow:var(--shadow-md);cursor:pointer}
 .theme-demo__toggle svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8}
 @media (max-width:719px){.theme-demo{right:14px;bottom:74px}}
+
+[data-theme="night"] .button--outline,
+[data-theme="night"] .button--outline:hover,
+[data-theme="night"] .header-contact a,
+[data-theme="night"] .main-sections-contact,
+[data-theme="night"] .document-item a,
+[data-theme="night"] .event-item>a,
+[data-theme="night"] .program-doc-link{color:var(--ink)}
+[data-theme="night"] .button--outline,
+[data-theme="night"] .button--outline:hover{-webkit-text-fill-color:var(--ink)}
+[data-theme="night"] .header-contact a:first-child{color:var(--muted)}
