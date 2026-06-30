@@ -379,10 +379,13 @@
       : '';
     return `<div class="news-tags">${renderNewsTagLink(list[0])}${moreChip}</div>`;
   };
-  // Article view: show every tag.
-  const renderNewsTagsAll = (tags) => (Array.isArray(tags) ? tags : [])
-    .map(renderNewsTagLink)
-    .join('');
+  // Article view: show every tag on its own metadata row.
+  const renderNewsTagsAll = (tags) => {
+    const links = (Array.isArray(tags) ? tags : [])
+      .map(renderNewsTagLink)
+      .join('');
+    return links ? `<div class="news-article-tags">${links}</div>` : '';
+  };
 
   // Sustainable Development Goals catalogue (official palette + short titles).
   const SDG = {

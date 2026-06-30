@@ -168,6 +168,41 @@ test('news page paginates the latest twelve materials as nine plus three', async
   await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('2');
 });
 
+test('header actions and news article metadata keep the updated layout', async ({ page }) => {
+  await page.goto('/news-4873-rozvytok-tsyfrovykh-kompetentnostei-vykladachi-ta-zdobuvachi-osvity-mahisterskoi-opp-komertsiia-ta-torhivlia-uspishno-zavershyly-pidvyshchennia-kvalifikatsii-u-mezhakh-proiektu-prof2it.html');
+  await page.locator('.header-theme').waitFor();
+
+  const boxes = await page.evaluate(() => {
+    const rect = (selector) => {
+      const element = document.querySelector(selector);
+      if (!element) return null;
+      const { width, height, top } = element.getBoundingClientRect();
+      return {
+        width: Math.round(width),
+        height: Math.round(height),
+        top: Math.round(top)
+      };
+    };
+
+    return {
+      search: rect('.header-search'),
+      theme: rect('.header-theme'),
+      language: rect('.header-language .language'),
+      time: rect('.news-article-meta time'),
+      tags: rect('.news-article-tags'),
+      languageVisible: getComputedStyle(document.querySelector('.header-language')).display !== 'none',
+      overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth
+    };
+  });
+
+  expect(boxes.theme).toEqual(boxes.search);
+  if (boxes.languageVisible) expect(boxes.language).toEqual(boxes.search);
+  await expect(page.locator('.news-article-tags .news-tag')).toHaveCount(3);
+  expect(boxes.tags.top).toBeGreaterThan(boxes.time.top);
+  expect(boxes.overflow).toBe(false);
+  await expect(page.locator('.news-article-neighbors span')).toHaveText(['Наступна новина', 'Попередня новина']);
+});
+
 test('english home mirrors the accepted home structure', async ({ page }) => {
   await page.goto('/en/index.html');
 

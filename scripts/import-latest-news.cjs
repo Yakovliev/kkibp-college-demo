@@ -279,8 +279,8 @@ function buildArticleMain(article, allArticles) {
   const newer = allArticles[currentIndex - 1];
   const older = allArticles[currentIndex + 1];
   const articleNav = [
-    newer ? `<a href="${newer.url}"><span>Новіша</span><strong>${escapeHtml(newer.title)}</strong></a>` : '',
-    older ? `<a href="${older.url}"><span>Попереднє</span><strong>${escapeHtml(older.title)}</strong></a>` : ''
+    newer ? `<a href="${newer.url}"><span>Наступна новина</span><strong>${escapeHtml(newer.title)}</strong></a>` : '',
+    older ? `<a href="${older.url}"><span>Попередня новина</span><strong>${escapeHtml(older.title)}</strong></a>` : ''
   ].filter(Boolean).join('');
 
   return `<main id="main"><section class="page-hero page-hero--solo news-article-hero"><div class="container"><nav class="breadcrumbs" aria-label="Хлібні крихти"><a href="index.html">Головна</a><a href="news.html">Новини</a><span>${escapeHtml(article.title)}</span></nav><div class="page-hero-grid"><div class="page-hero-copy"><span class="eyebrow eyebrow--light">Новина</span><h1>${escapeHtml(article.title)}</h1><p>${escapeHtml(article.excerpt)}</p></div></div></div></section>
