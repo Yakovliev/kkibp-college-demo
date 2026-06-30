@@ -350,6 +350,40 @@
     const end = lastSpace > maxLength * 0.65 ? lastSpace : maxLength;
     return `${text.slice(0, end).replace(/[.,;:!?…]+$/, '')}...`;
   };
+  // Department (циклова комісія) tags — the "Циклова комісія" prefix is intentionally dropped.
+  const NEWS_TAGS = [
+    { id: 'oblik-finance', uk: 'Обліково-фінансові дисципліни', en: 'Accounting and Finance' },
+    { id: 'economics-trade', uk: 'Економіка, торгівля та маркетинг', en: 'Economics, Trade and Marketing' },
+    { id: 'social-law', uk: 'Соціально-гуманітарні та правознавчі дисципліни', en: 'Social, Humanities and Law' },
+    { id: 'it-science', uk: 'Інформаційно-технічні та природничі дисципліни', en: 'IT and Natural Sciences' },
+    { id: 'food-hospitality', uk: 'Харчові технології, організація готельно-ресторанного бізнесу', en: 'Food Technology and Hospitality' }
+  ];
+  const NEWS_TAG_MAP = Object.fromEntries(NEWS_TAGS.map(t => [t.id, t]));
+  const newsTagLabel = (id) => {
+    const tag = NEWS_TAG_MAP[id];
+    return tag ? (isEnglish ? tag.en : tag.uk) : '';
+  };
+  const renderNewsTagLink = (id) => {
+    const label = newsTagLabel(id);
+    if (!label) return '';
+    const href = resolveSiteHref(`news.html?tag=${encodeURIComponent(id)}`);
+    return `<a class="news-tag" href="${escapeHtml(href)}" title="${escapeHtml(label)}">${escapeHtml(label)}</a>`;
+  };
+  // Card view: keep tags on a single line — first tag (truncated if needed) plus a "+N" chip.
+  const renderNewsTagsCompact = (tags) => {
+    const list = (Array.isArray(tags) ? tags : []).filter(id => NEWS_TAG_MAP[id]);
+    if (!list.length) return '';
+    const rest = list.slice(1).map(newsTagLabel);
+    const moreChip = rest.length
+      ? `<span class="news-tag news-tag--more" title="${escapeHtml(rest.join(', '))}">+${rest.length}</span>`
+      : '';
+    return `<div class="news-tags">${renderNewsTagLink(list[0])}${moreChip}</div>`;
+  };
+  // Article view: show every tag.
+  const renderNewsTagsAll = (tags) => (Array.isArray(tags) ? tags : [])
+    .map(renderNewsTagLink)
+    .join('');
+
   // Sustainable Development Goals catalogue (official palette + short titles).
   const SDG = {
     1:  { c: '#E5243B', uk: 'Подолання бідності', en: 'No Poverty' },
@@ -388,11 +422,14 @@
       ? `<div class="news-media news-media--image"><img src="${escapeHtml(resolveNewsAsset(item.image))}" alt="${escapeHtml(item.alt || item.title)}" loading="lazy"></div>`
       : '<div class="news-media" aria-hidden="true"></div>';
     const excerpt = item.excerpt || item.content || item.body || '';
-    const meta = item.publishedLabel ? `<div class="news-meta"><span>${escapeHtml(item.publishedLabel)}</span></div>` : '';
+    const tags = renderNewsTagsCompact(item.tags);
+    const meta = (item.publishedLabel || tags)
+      ? `<div class="news-meta">${item.publishedLabel ? `<span>${escapeHtml(item.publishedLabel)}</span>` : ''}${tags}</div>`
+      : '';
 
     return `<article class="news-card"${idAttr}>${image}<div class="news-content">${meta}<h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(truncateNewsText(excerpt, excerptLength))}</p><a class="text-link" href="${escapeHtml(href)}"${linkAttrs}>${ui.readFull} <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6"/></svg></a></div></article>`;
   };
-  const renderNewsPagination = (container, currentPage, totalPages) => {
+  const renderNewsPagination = (container, currentPage, totalPages, activeTag = '') => {
     if (!container) return;
     if (totalPages <= 1) {
       container.hidden = true;
@@ -400,10 +437,12 @@
       return;
     }
 
+    const tagQuery = activeTag ? `tag=${encodeURIComponent(activeTag)}` : '';
     container.hidden = false;
     container.innerHTML = Array.from({ length: totalPages }, (_, index) => {
       const page = index + 1;
-      const href = page === 1 ? 'news.html' : `news.html?page=${page}`;
+      const params = [tagQuery, page === 1 ? '' : `page=${page}`].filter(Boolean).join('&');
+      const href = params ? `news.html?${params}` : 'news.html';
       const active = page === currentPage ? ' class="is-active" aria-current="page"' : '';
       return `<a href="${href}"${active}>${page}</a>`;
     }).join('');
@@ -411,30 +450,86 @@
 
   if (newsItems.length) {
     const orderedNews = [...newsItems].sort((a, b) => normalizeNewsDate(b) - normalizeNewsDate(a));
-    document.querySelectorAll('[data-news-list]').forEach(grid => {
-      const limit = Number(grid.dataset.newsLimit) || orderedNews.length;
-      const excerptLength = Number(grid.dataset.newsExcerptLength) || 185;
-      const pageSize = Number(grid.dataset.newsPageSize) || 0;
-      const items = orderedNews.slice(0, limit);
-      const totalPages = pageSize ? Math.ceil(items.length / pageSize) : 1;
-      const requestedPage = Number(new URLSearchParams(window.location.search).get('page')) || 1;
-      const currentPage = Math.min(Math.max(requestedPage, 1), totalPages);
-      const visibleItems = pageSize
-        ? items.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-        : items;
+    let activeTag = '';
+    const syncTagFromUrl = () => {
+      const tag = new URLSearchParams(window.location.search).get('tag');
+      activeTag = NEWS_TAG_MAP[tag] ? tag : '';
+    };
+    syncTagFromUrl();
+    const hasTag = (item) => Array.isArray(item.tags) && item.tags.includes(activeTag);
+    const filterBars = [...document.querySelectorAll('[data-news-filter]')];
+    const newsGrids = [...document.querySelectorAll('[data-news-list]')];
 
-      grid.innerHTML = visibleItems.map(item => renderNewsCard(item, excerptLength)).join('');
-      renderNewsPagination(grid.parentElement?.querySelector('[data-news-pagination]'), currentPage, totalPages);
-    });
-    document.querySelectorAll('[data-news-count]').forEach(element => {
-      element.textContent = orderedNews.length;
-    });
-    // Full news article: list the related SDG icon(s) under the article body.
+    // Department filter bar (rendered only where a container opts in, e.g. the news page).
+    const renderFilterBars = () => {
+      const button = (id, label, isActive) => {
+        const href = resolveSiteHref(id ? `news.html?tag=${encodeURIComponent(id)}` : 'news.html');
+        const cls = `news-filter__btn${isActive ? ' is-active' : ''}`;
+        const current = isActive ? ' aria-current="true"' : '';
+        return `<a class="${cls}" href="${escapeHtml(href)}"${current}>${escapeHtml(label)}</a>`;
+      };
+      filterBars.forEach(bar => {
+        bar.innerHTML = button('', isEnglish ? 'All' : 'Усі', !activeTag)
+          + NEWS_TAGS.map(tag => button(tag.id, isEnglish ? tag.en : tag.uk, activeTag === tag.id)).join('');
+      });
+    };
+
+    const renderGrids = () => {
+      newsGrids.forEach(grid => {
+        const filtered = activeTag ? orderedNews.filter(hasTag) : orderedNews;
+        const limit = Number(grid.dataset.newsLimit) || filtered.length;
+        const excerptLength = Number(grid.dataset.newsExcerptLength) || 185;
+        const pageSize = Number(grid.dataset.newsPageSize) || 0;
+        const items = filtered.slice(0, limit);
+        const totalPages = pageSize ? Math.max(1, Math.ceil(items.length / pageSize)) : 1;
+        const requestedPage = Number(new URLSearchParams(window.location.search).get('page')) || 1;
+        const currentPage = Math.min(Math.max(requestedPage, 1), totalPages);
+        const visibleItems = pageSize
+          ? items.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+          : items;
+
+        grid.innerHTML = visibleItems.length
+          ? visibleItems.map(item => renderNewsCard(item, excerptLength)).join('')
+          : `<p class="news-empty">${isEnglish ? 'No news for this department yet.' : 'Поки немає новин за цією цикловою комісією.'}</p>`;
+        renderNewsPagination(grid.parentElement?.querySelector('[data-news-pagination]'), currentPage, totalPages, activeTag);
+      });
+      document.querySelectorAll('[data-news-count]').forEach(element => {
+        element.textContent = (activeTag ? orderedNews.filter(hasTag) : orderedNews).length;
+      });
+    };
+
+    const renderFeed = () => { renderFilterBars(); renderGrids(); };
+    renderFeed();
+
+    // On the news page, filter/paginate in place (no reload, no jump to top).
+    if (filterBars.length) {
+      const scrollToFeed = () => {
+        const y = filterBars[0].getBoundingClientRect().top + window.scrollY - 110;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      };
+      document.addEventListener('click', (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.button) return;
+        const link = event.target.closest('.news-filter__btn, .news-tag, [data-news-pagination] a');
+        if (!link) return;
+        event.preventDefault();
+        window.history.pushState({}, '', link.href);
+        syncTagFromUrl();
+        renderFeed();
+        if (!link.classList.contains('news-filter__btn')) scrollToFeed();
+      });
+      window.addEventListener('popstate', () => { syncTagFromUrl(); renderFeed(); });
+    }
+
+    // Full news article: tag + related SDG icon(s).
+    const current = newsItems.find(item => (item.url || '').split('/').pop() === window.location.pathname.split('/').pop());
+    const articleMeta = document.querySelector('.news-article-meta');
+    if (current && articleMeta && !articleMeta.querySelector('.news-tag')) {
+      const tags = renderNewsTagsAll(current.tags);
+      if (tags) articleMeta.insertAdjacentHTML('beforeend', tags);
+    }
     const articleBody = document.querySelector('.news-article-body');
-    if (articleBody && !articleBody.parentElement.querySelector('.news-article-sdg')) {
-      const currentFile = window.location.pathname.split('/').pop();
-      const current = newsItems.find(item => (item.url || '').split('/').pop() === currentFile);
-      const goals = current ? (Array.isArray(current.sdgs) ? current.sdgs : current.sdg ? [current.sdg] : []) : [];
+    if (current && articleBody && !articleBody.parentElement.querySelector('.news-article-sdg')) {
+      const goals = Array.isArray(current.sdgs) ? current.sdgs : current.sdg ? [current.sdg] : [];
       const icons = goals.map(goal => renderSdgIcon(goal)).join('');
       if (icons) {
         const title = isEnglish ? 'Sustainable Development Goals' : 'Цілі сталого розвитку';

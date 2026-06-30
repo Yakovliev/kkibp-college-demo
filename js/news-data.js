@@ -11,6 +11,9 @@ window.COLLEGE_NEWS = [
     "sdgs": [
       2,
       16
+    ],
+    "tags": [
+      "economics-trade"
     ]
   },
   {
@@ -26,6 +29,10 @@ window.COLLEGE_NEWS = [
       9,
       13,
       14
+    ],
+    "tags": [
+      "it-science",
+      "economics-trade"
     ]
   },
   {
@@ -39,6 +46,11 @@ window.COLLEGE_NEWS = [
     "url": "news-4873-rozvytok-tsyfrovykh-kompetentnostei-vykladachi-ta-zdobuvachi-osvity-mahisterskoi-opp-komertsiia-ta-torhivlia-uspishno-zavershyly-pidvyshchennia-kvalifikatsii-u-mezhakh-proiektu-prof2it.html",
     "sdgs": [
       11
+    ],
+    "tags": [
+      "oblik-finance",
+      "it-science",
+      "economics-trade"
     ]
   },
   {
@@ -54,6 +66,9 @@ window.COLLEGE_NEWS = [
       2,
       4,
       11
+    ],
+    "tags": [
+      "social-law"
     ]
   },
   {
@@ -67,6 +82,10 @@ window.COLLEGE_NEWS = [
     "url": "news-4871-akademichna-dobrochesnist-i-shi-prorektorka-z-navchalno-metodychnoi-ta-naukovoi-roboty-inna-raikovska-doluchylysia-do-onlain-kursu-shchodo-novykh-vymoh-zakonodavstva.html",
     "sdgs": [
       6
+    ],
+    "tags": [
+      "food-hospitality",
+      "social-law"
     ]
   },
   {
@@ -82,6 +101,11 @@ window.COLLEGE_NEWS = [
       5,
       8,
       9
+    ],
+    "tags": [
+      "economics-trade",
+      "food-hospitality",
+      "social-law"
     ]
   },
   {
@@ -96,6 +120,9 @@ window.COLLEGE_NEWS = [
     "sdgs": [
       4,
       7
+    ],
+    "tags": [
+      "it-science"
     ]
   },
   {
@@ -109,6 +136,10 @@ window.COLLEGE_NEWS = [
     "url": "news-4867-skrynka-doviry-zabezpechennia-zvorotnoho-zv-iazku-ta-zakhyst-prav-studentiv.html",
     "sdgs": [
       14
+    ],
+    "tags": [
+      "oblik-finance",
+      "it-science"
     ]
   },
   {
@@ -123,6 +154,11 @@ window.COLLEGE_NEWS = [
     "sdgs": [
       6,
       14
+    ],
+    "tags": [
+      "social-law",
+      "oblik-finance",
+      "it-science"
     ]
   },
   {
@@ -136,6 +172,9 @@ window.COLLEGE_NEWS = [
     "url": "news-4865-zdobuvachi-osvity-spetsialnosti-hotelno-restoranna-sprava-prokhodiat-navchalnu-praktyku.html",
     "sdgs": [
       6
+    ],
+    "tags": [
+      "food-hospitality"
     ]
   },
   {
@@ -151,6 +190,10 @@ window.COLLEGE_NEWS = [
       3,
       11,
       13
+    ],
+    "tags": [
+      "economics-trade",
+      "food-hospitality"
     ]
   },
   {
@@ -165,6 +208,11 @@ window.COLLEGE_NEWS = [
     "sdgs": [
       1,
       3
+    ],
+    "tags": [
+      "it-science",
+      "economics-trade",
+      "food-hospitality"
     ]
   }
 ];
