@@ -415,7 +415,8 @@
     if (!track || slides.length <= 1) return;
 
     if (dotsWrap && dots.length !== slides.length) {
-      dotsWrap.innerHTML = slides.map((_, index) => `<button type="button" aria-label="Фото ${index + 1}" data-carousel-dot></button>`).join('');
+      const photoLabel = isEnglish ? 'Photo' : 'Фото';
+      dotsWrap.innerHTML = slides.map((_, index) => `<button type="button" aria-label="${photoLabel} ${index + 1}" data-carousel-dot></button>`).join('');
       dots = [...dotsWrap.querySelectorAll('[data-carousel-dot]')];
     }
 

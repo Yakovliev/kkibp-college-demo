@@ -200,12 +200,43 @@ test('english news page uses the shared card feed without legacy filters', async
   const grid = page.locator('[data-news-list]');
   await expect(page.locator('[data-news-count]')).toHaveText('12');
   await expect(page.locator('.filter-bar')).toHaveCount(0);
-  await expect(grid.locator('.news-card')).toHaveCount(12);
-  await expect(grid.locator('.news-media img')).toHaveCount(12);
+  await expect(grid.locator('.news-card')).toHaveCount(9);
+  await expect(grid.locator('.news-media img')).toHaveCount(9);
   await expect(grid.locator('.news-media-label')).toHaveCount(0);
-  await expect(grid.locator('.news-meta')).toHaveCount(12);
+  await expect(grid.locator('.news-meta')).toHaveCount(9);
+  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2']);
+  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('1');
   await expect(grid.locator('.text-link').first()).toContainText('Read in full');
   await expect(grid.locator('.text-link').first()).toHaveAttribute('href', /\.\.\/news-4875-.*\.html$/);
+
+  await page.goto('/en/news.html?page=2');
+  const secondPageCards = page.locator('[data-news-list] .news-card');
+  await expect(secondPageCards).toHaveCount(3);
+  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('2');
+});
+
+test('english section pages use the current hub template', async ({ page }) => {
+  const pages = [
+    'college.html',
+    'admissions.html',
+    'students.html',
+    'alumni.html',
+    'science.html',
+    'library.html'
+  ];
+
+  for (const pageName of pages) {
+    await page.goto(`/en/${pageName}`);
+
+    await expect(page.locator('.page-hero.page-hero--guide')).toHaveCount(1);
+    await expect(page.locator('.page-hero-guide')).toBeVisible();
+    await expect(page.locator('main .page-hero-card')).toHaveCount(0);
+    await expect(page.locator('#apply, #timeline, #tuition, #faq')).toHaveCount(0);
+    await expect(page.locator('.subpage-link-card').first()).toBeVisible();
+
+    const mainText = await page.locator('main').innerText();
+    expect(mainText).not.toMatch(/[А-Яа-яІіЇїЄєҐґ]/);
+  }
 });
 
 test('primary menu toggles submenus without navigating', async ({ page }) => {

@@ -1,537 +1,421 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
-const cssVersion = 'global-header-footer-20260629';
-const scriptVersion = 'smooth-menu-scroll-fix-20260629';
-const files = ['index.html', 'college.html', 'admissions.html', 'students.html', 'alumni.html', 'science.html', 'library.html', 'news.html'];
-const ukrainianCollegeNameMain = 'Економіко-правовий фаховий коледж';
-const ukrainianCollegeNameSub = 'Київського кооперативного інституту бізнесу і права';
-const ukrainianCollegeName = `${ukrainianCollegeNameMain} ${ukrainianCollegeNameSub}`;
-const ukrainianCollegeBrandTitle = `<span class="brand-title-main">${ukrainianCollegeNameMain}</span> <span class="brand-title-sub">${ukrainianCollegeNameSub}</span>`;
-const collegeNameMain = 'Professional College of Economics and Law';
-const collegeNameSub = 'of the Kyiv Cooperative Institute of Business and Law';
-const collegeName = `${collegeNameMain} ${collegeNameSub}`;
-const collegeBrandTitle = `<span class="brand-title-main">${collegeNameMain}</span> <span class="brand-title-sub">${collegeNameSub}</span>`;
+const cssVersion = 'college-subpages-20260630';
+const scriptVersion = 'college-subpages-20260630';
+const sectionFiles = ['college.html', 'admissions.html', 'students.html', 'alumni.html', 'science.html', 'library.html'];
+const shellOnlyFiles = ['index.html', 'news.html'];
+const allFiles = [...shellOnlyFiles, ...sectionFiles];
 const siteBaseUrl = 'https://yakovliev.github.io/kkibp-college-demo';
-const socialImageUrl = `${siteBaseUrl}/assets/logo_small.gif`;
-const englishSocialSiteName = 'Professional College of Economics and Law, KCIBL';
-const englishSocialDescription = 'Official college website: admissions, studies, student life, news and useful services.';
-const arrow = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-const external = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6"/></svg>';
-const download = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14"/></svg>';
-const down = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>';
 
 const pageMeta = {
   'index.html': {
     page: 'home',
-    title: `Home - ${collegeName}`,
-    description: englishSocialDescription,
-    socialTitle: englishSocialSiteName
+    title: 'Home - Professional College of Economics and Law of the Kyiv Cooperative Institute of Business and Law',
+    socialTitle: 'Professional College of Economics and Law, KCIBL'
   },
   'college.html': {
     page: 'college',
-    title: `College - ${collegeName}`,
-    description: englishSocialDescription,
-    socialTitle: `College - ${englishSocialSiteName}`
+    title: 'College - Professional College of Economics and Law of the Kyiv Cooperative Institute of Business and Law',
+    socialTitle: 'College - Professional College of Economics and Law, KCIBL'
   },
   'admissions.html': {
     page: 'admissions',
-    title: `Admissions - ${collegeName}`,
-    description: englishSocialDescription,
-    socialTitle: `Admissions - ${englishSocialSiteName}`
+    title: 'Admissions - Professional College of Economics and Law of the Kyiv Cooperative Institute of Business and Law',
+    socialTitle: 'Admissions - Professional College of Economics and Law, KCIBL'
   },
   'students.html': {
     page: 'students',
-    title: `Students - ${collegeName}`,
-    description: englishSocialDescription,
-    socialTitle: `Students - ${englishSocialSiteName}`
+    title: 'Students - Professional College of Economics and Law of the Kyiv Cooperative Institute of Business and Law',
+    socialTitle: 'Students - Professional College of Economics and Law, KCIBL'
   },
   'alumni.html': {
     page: 'alumni',
-    title: `Alumni - ${collegeName}`,
-    description: englishSocialDescription,
-    socialTitle: `Alumni - ${englishSocialSiteName}`
+    title: 'Alumni - Professional College of Economics and Law of the Kyiv Cooperative Institute of Business and Law',
+    socialTitle: 'Alumni - Professional College of Economics and Law, KCIBL'
   },
   'science.html': {
     page: 'science',
-    title: `Research - ${collegeName}`,
-    description: englishSocialDescription,
-    socialTitle: `Research - ${englishSocialSiteName}`
+    title: 'Research - Professional College of Economics and Law of the Kyiv Cooperative Institute of Business and Law',
+    socialTitle: 'Research - Professional College of Economics and Law, KCIBL'
   },
   'library.html': {
     page: 'library',
-    title: `Library - ${collegeName}`,
-    description: englishSocialDescription,
-    socialTitle: `Library - ${englishSocialSiteName}`
+    title: 'Library - Professional College of Economics and Law of the Kyiv Cooperative Institute of Business and Law',
+    socialTitle: 'Library - Professional College of Economics and Law, KCIBL'
   },
   'news.html': {
     page: 'news',
-    title: `News - ${collegeName}`,
-    description: englishSocialDescription,
-    socialTitle: `News - ${englishSocialSiteName}`
+    title: 'News - Professional College of Economics and Law of the Kyiv Cooperative Institute of Business and Law',
+    socialTitle: 'News - Professional College of Economics and Law, KCIBL'
   }
 };
 
-const head = (file) => {
+const translations = {
+  'Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права': 'Professional College of Economics and Law of the Kyiv Cooperative Institute of Business and Law',
+  'Економіко-правовий фаховий коледж': 'Professional College of Economics and Law',
+  'Київського кооперативного інституту бізнесу і права': 'of the Kyiv Cooperative Institute of Business and Law',
+  'Офіційний сайт коледжу: вступ, навчання, студентське життя, новини та корисні сервіси.': 'Official college website: admissions, studies, student life, news and useful services.',
+  'Логотип Економіко-правового фахового коледжу': 'Professional College of Economics and Law logo',
+  'Головна – Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права': pageMeta['index.html'].title,
+  'Про коледж – Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права': pageMeta['college.html'].title,
+  'Абітурієнту – Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права': pageMeta['admissions.html'].title,
+  'Студенту – Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права': pageMeta['students.html'].title,
+  'Випускнику – Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права': pageMeta['alumni.html'].title,
+  'Наука – Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права': pageMeta['science.html'].title,
+  'Бібліотека – Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права': pageMeta['library.html'].title,
+  'Новини – Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права': pageMeta['news.html'].title,
+  'Про коледж – Економіко-правовий фаховий коледж ККІБП': pageMeta['college.html'].socialTitle,
+  'Абітурієнту – Економіко-правовий фаховий коледж ККІБП': pageMeta['admissions.html'].socialTitle,
+  'Студенту – Економіко-правовий фаховий коледж ККІБП': pageMeta['students.html'].socialTitle,
+  'Випускнику – Економіко-правовий фаховий коледж ККІБП': pageMeta['alumni.html'].socialTitle,
+  'Наука – Економіко-правовий фаховий коледж ККІБП': pageMeta['science.html'].socialTitle,
+  'Бібліотека – Економіко-правовий фаховий коледж ККІБП': pageMeta['library.html'].socialTitle,
+  'Новини – Економіко-правовий фаховий коледж ККІБП': pageMeta['news.html'].socialTitle,
+  'Економіко-правовий фаховий коледж ККІБП': pageMeta['index.html'].socialTitle,
+
+  'Перейти до основного вмісту': 'Skip to main content',
+  'Електронна пошта та телефон': 'Email and phone',
+  'Instagram коледжу': 'College Instagram',
+  'Facebook коледжу': 'College Facebook',
+  'Пошук по сайту': 'Search the site',
+  'Змінити мову': 'Change language',
+  'Зміна мови': 'Change language',
+  'Мова сайту': 'Site language',
+  'Відкрити меню': 'Open menu',
+  'Основна навігація': 'Primary navigation',
+  'Хлібні крихти': 'Breadcrumbs',
+  'Навігація сторінкою': 'Page navigation',
+  'Швидкі переходи': 'Quick links',
+  'Закрити пошук': 'Close search',
+  'Пошук': 'Search',
+  'Що ви шукаєте?': 'What are you looking for?',
+  'Пошуковий запит': 'Search query',
+  'Наприклад, розклад або правила прийому': 'For example, schedule or admission rules',
+  'Популярне:': 'Popular:',
+  'правила прийому': 'admission rules',
+  'розклад занять': 'class schedule',
+  'електронний каталог': 'electronic catalog',
+  'Навігація': 'Navigation',
+  'Політика конфіденційності': 'Privacy policy',
+  'Повернутися вгору': 'Back to top',
+  'Підсторінки:': 'Subpages:',
+  '– головна': '- home',
+  'Відкрити на Google Maps': 'Open in Google Maps',
+  'Пн-Пт, 08:00–17:00': 'Mon-Fri, 08:00-17:00',
+  'вул. Юлії Здановської, 18, м. Київ, 03022': '18 Yulii Zdanovskoi St., Kyiv, 03022',
+  'Карта розташування Економіко-правового фахового коледжу': 'Map showing the location of the Professional College of Economics and Law',
+  'Карта розташування приймальної комісії': 'Map showing the admissions office location',
+
+  'Корисні матеріали, документи та сервіси розділу.': 'Useful materials, documents and services for this section.',
+  'На цій сторінці': 'On this page',
+  'Перейти': 'Open',
+  'Головна': 'Home',
+  'Розділ': 'Section',
+  'Коледж': 'College',
+  'Абітурієнту': 'Applicants',
+  'Студенту': 'Students',
+  'Випускнику': 'Alumni',
+  'Наука': 'Research',
+  'Бібліотека': 'Library',
+  'Новини': 'News',
+  'Вступ': 'Admissions',
+  'Контакти': 'Contacts',
+
+  'Загальна інформація': 'General information',
+  'Про коледж': 'About the college',
+  'Керівництво коледжу': 'College leadership',
+  'Керівництво': 'Leadership',
+  'Відділення': 'Departments',
+  'Циклові комісії': 'Subject commissions',
+  'Органи управління та органи самоврядування': 'Governance and self-government bodies',
+  'Основна інформація': 'Key information',
+  'Статут коледжу': 'College charter',
+  'Концепція діяльності': 'Development concept',
+  'Колективний договір': 'Collective agreement',
+  'Документи локального нормотворення': 'Local regulatory documents',
+  'Доступ до публічної інформації': 'Access to public information',
+  'Ліцензії на провадження освітньої діяльності': 'Educational activity licenses',
+  'Сертифікати про акредитацію спеціальностей та освітніх програм': 'Accreditation certificates for specialties and programs',
+  'План роботи': 'Work plan',
+  'Звіт': 'Report',
+  'Громадське обговорення': 'Public discussion',
+  'Вакансії': 'Vacancies',
+  'Діяльність': 'Activities',
+  'Цілі сталого розвитку': 'Sustainable Development Goals',
+  'Інклюзивне освітнє середовище': 'Inclusive learning environment',
+  'Антикорупційна діяльність': 'Anti-corruption activity',
+  'Психологічна служба': 'Psychological service',
+  'Міжнародна діяльність': 'International activity',
+  'Практична підготовка': 'Practical training',
+  'Центр кар’єри': 'Career Center',
+
+  'Місце, де формується професійне майбутнє': 'A place where professional futures are shaped',
+  'Ми поєднуємо сильну академічну базу, практичне навчання та культуру взаємної підтримки.': 'We combine a strong academic foundation, practical learning and a culture of mutual support.',
+  'Коротка сторінка для базового опису коледжу, місії, історії та освітнього середовища.': 'A short page for the basic description of the college, its mission, history and learning environment.',
+  'Сторінка для актуальної інформації про адміністрацію та напрями відповідальності.': 'A page for current information about administration and areas of responsibility.',
+  'Перелік відділень, освітніх напрямів і контактів для подальшого наповнення.': 'A list of departments, educational areas and contacts for further content.',
+  'Місце для складу комісій, напрямів роботи та методичних матеріалів.': 'A place for commission membership, areas of work and methodological materials.',
+  'Структура управління, колегіальні органи та органи студентського самоврядування.': 'Governance structure, collegial bodies and student self-government bodies.',
+  'Адреса, телефони, електронна пошта та службові контакти коледжу.': 'Address, phone numbers, email and service contacts of the college.',
+  'Сторінка для чинного статуту, супровідних матеріалів і короткого пояснення документа.': 'A page for the current charter, supporting materials and a brief explanation of the document.',
+  'Напрями розвитку, стратегічні орієнтири та принципи діяльності коледжу.': 'Development directions, strategic guidelines and principles of college activity.',
+  'Матеріали щодо домовленостей між адміністрацією та трудовим колективом.': 'Materials on agreements between the administration and the staff team.',
+  'Положення, правила, регламенти та інші внутрішні документи коледжу.': 'Policies, rules, regulations and other internal college documents.',
+  'Порядок подання запитів, відкриті дані та матеріали для публічного доступу.': 'Request procedures, open data and materials for public access.',
+  'Сторінка для ліцензій, додатків і документів щодо освітньої діяльності.': 'A page for licenses, appendices and documents on educational activity.',
+  'Акредитаційні матеріали за спеціальностями та освітніми програмами.': 'Accreditation materials for specialties and educational programs.',
+  'Поточні плани роботи коледжу та ключові організаційні пріоритети.': 'Current college work plans and key organizational priorities.',
+  'Звітні матеріали про роботу коледжу, результати та виконані завдання.': 'Reporting materials on college work, results and completed tasks.',
+  'Оголошення, проєкти документів та матеріали для відкритого обговорення.': 'Announcements, draft documents and materials for open discussion.',
+  'Відкриті позиції, умови участі в конкурсі та контактна інформація.': 'Open positions, competition conditions and contact information.',
+  'Ініціативи коледжу, пов’язані зі сталим розвитком, відповідальністю та спільнотами.': 'College initiatives related to sustainable development, responsibility and communities.',
+  'Доступність, підтримка студентів і принципи інклюзивної взаємодії.': 'Accessibility, student support and principles of inclusive interaction.',
+  'Політики доброчесності, повідомлення, профілактика та відповідальні особи.': 'Integrity policies, reporting, prevention and responsible persons.',
+  'Підтримка студентів, консультації, профілактичні матеріали та контакти служби.': 'Student support, consultations, prevention materials and service contacts.',
+  'Партнерства, міжнародні проєкти, академічні можливості та співпраця.': 'Partnerships, international projects, academic opportunities and cooperation.',
+  'Практики, бази практичної підготовки, роботодавці та супровід студентів.': 'Practical training, practice bases, employers and student support.',
+  'Кар’єрні консультації, вакансії для студентів, партнерства та події.': 'Career consultations, student vacancies, partnerships and events.',
+  'Адміністрація': 'Administration',
+  'Керівництво відповідає за стратегічний розвиток коледжу, якість освітнього процесу та організацію навчально-методичної роботи.': 'The leadership team is responsible for strategic development, educational quality and academic-methodological work.',
+  'Гіджеліцький Віталій Миколайович': 'Vitalii Hidzhelitskyi',
+  'Директор, кандидат технічних наук, доцент': 'Director, Candidate of Technical Sciences, Associate Professor',
+  'Райковська Інна Тадеушівна': 'Inna Raikovska',
+  'Заступниця директора з навчально-методичної роботи, кандидат економічних наук, доцент': 'Deputy Director for Academic and Methodological Work, Candidate of Economic Sciences, Associate Professor',
+  'Завітайте до нас': 'Visit us',
+
+  'Вступ 2026: твій наступний крок': 'Admissions 2026: your next step',
+  'Зрозумілий маршрут від вибору програми до першого студентського дня.': 'A clear route from choosing a program to your first student day.',
+  'Вступна інформація': 'Admissions information',
+  'Освітні програми': 'Educational programs',
+  'Приймальна комісія': 'Admissions office',
+  'Офіційні документи': 'Official documents',
+  'Правила прийому': 'Admission rules',
+  'Рейтингові списки': 'Ranking lists',
+  'Накази про зарахування': 'Enrollment orders',
+  'Вартість навчання': 'Tuition fees',
+  'Важливі дати': 'Important dates',
+  'Документи для вступу': 'Application documents',
+  'Контактна інформація': 'Contact information',
+  'Сторінка для офіційних документів вступної кампанії, витягів, додатків і супровідних матеріалів.': 'A page for official admissions campaign documents, extracts, appendices and supporting materials.',
+  'Окреме місце для правил прийому, умов вступу та документів, які визначають порядок зарахування.': 'A dedicated place for admission rules, entry conditions and documents that define enrollment procedures.',
+  'Майбутня сторінка для рейтингових списків, статусів заяв і оновлень під час вступної кампанії.': 'A future page for ranking lists, application statuses and updates during the admissions campaign.',
+  'Сторінка для наказів про зарахування та пов’язаних із ними оголошень.': 'A page for enrollment orders and related announcements.',
+  'Інформація про вартість навчання, фінансові умови та можливі формати оплати.': 'Information about tuition fees, financial terms and possible payment formats.',
+  'Календар вступника з ключовими строками, дедлайнами та етапами кампанії.': 'An applicant calendar with key dates, deadlines and campaign stages.',
+  'Перелік документів, вимоги до подання та підказки для вступника.': 'A list of documents, submission requirements and tips for applicants.',
+  'Контакти, графік роботи та інформація про консультації приймальної комісії.': 'Contacts, working hours and information about admissions office consultations.',
+  'Канали зв’язку для вступників, адреси, телефони та електронна пошта.': 'Communication channels for applicants, addresses, phone numbers and email.',
+  'Сторінка для переліку освітніх програм, описів спеціальностей і документів ОПП.': 'A page for the list of educational programs, specialty descriptions and program documents.',
+  'Поставте запитання': 'Ask a question',
+  'Контакти приймальної комісії': 'Admissions office contacts',
+  'Зателефонуйте до приймальної комісії у робочий час або напишіть на email у зручний для вас час.': 'Call the admissions office during working hours or email whenever convenient.',
+
+  'Навчання, можливості та підтримка': 'Learning, opportunities and support',
+  'Швидкий доступ до розкладу, освітніх сервісів, студентського життя й кар’єрних ресурсів.': 'Quick access to schedules, learning services, student life and career resources.',
+  'Можливості': 'Opportunities',
+  'Соціально-правова підтримка': 'Social and legal support',
+  'Графік навчального процесу': 'Academic calendar',
+  'Розклад занять': 'Class schedule',
+  'Контакти викладачів': 'Teacher contacts',
+  'Каталог вибіркових освітніх компонентів': 'Elective components catalog',
+  'Правила внутрішнього розпорядку': 'Internal regulations',
+  'Гуртожиток': 'Dormitory',
+  'Мистецькі студії': 'Art studios',
+  'Спортивні секції': 'Sports sections',
+  'Курси вивчення іноземних мов': 'Foreign language courses',
+  'Юридична клініка': 'Legal clinic',
+  'Студентський омбудсмен': 'Student ombudsperson',
+  'Сторінка для навчальних програм, освітніх компонентів і матеріалів для студентів.': 'A page for study programs, educational components and materials for students.',
+  'Календар семестрів, сесій, практик, канікул та інших етапів навчального року.': 'Calendar of semesters, exam sessions, practical training, holidays and other stages of the academic year.',
+  'Окрема сторінка для розкладу занять, замін і навчальних аудиторій.': 'A dedicated page for class schedules, substitutions and classrooms.',
+  'Контактна інформація викладачів і правила освітньої комунікації.': 'Teacher contact information and rules for academic communication.',
+  'Добірка вибіркових дисциплін, описів компонентів і правил вибору.': 'A selection of electives, component descriptions and selection rules.',
+  'Сторінка для правил поведінки, навчального режиму й організації освітнього процесу.': 'A page for conduct rules, study mode and organization of the educational process.',
+  'Інформація про поселення, умови проживання та контакти щодо гуртожитку.': 'Information about accommodation, living conditions and dormitory contacts.',
+  'Сторінка для творчих студій, подій, гуртків і студентських мистецьких ініціатив.': 'A page for creative studios, events, clubs and student art initiatives.',
+  'Інформація про спортивні секції, тренування, змагання та команди коледжу.': 'Information about sports sections, training, competitions and college teams.',
+  'Можливості мовного навчання, розмовні клуби та додаткові курси.': 'Language learning opportunities, speaking clubs and additional courses.',
+  'Сторінка для правової підтримки, консультацій і студентських юридичних ініціатив.': 'A page for legal support, consultations and student legal initiatives.',
+  'Матеріали про доброчесність, повідомлення, політики та відповідальних осіб.': 'Materials about integrity, reporting, policies and responsible persons.',
+  'Канал звернень щодо прав студентів, безпечного середовища й вирішення конфліктів.': 'A contact channel for student rights, a safe environment and conflict resolution.',
+
+  'Спільнота, яка залишається поруч': 'A community that stays close',
+  'Зберігайте зв’язок із коледжем, діліться досвідом і підтримуйте нове покоління студентів.': 'Stay connected with the college, share experience and support the next generation of students.',
+  'Спільнота': 'Community',
+  'Асоціація випускників': 'Alumni association',
+  'Успішні випускники': 'Successful alumni',
+  'Зустрічі випускників': 'Alumni meetings',
+  'Сторінка для асоціації випускників, форм участі та контактів спільноти.': 'A page for the alumni association, participation formats and community contacts.',
+  'Місце для історій випускників, професійних траєкторій і прикладів кар’єрного зростання.': 'A place for alumni stories, professional paths and career growth examples.',
+  'Оголошення, архів подій і матеріали для зустрічей випускників різних років.': 'Announcements, event archive and materials for alumni meetings from different years.',
+
+  'Дослідження, що переходять у практику': 'Research that turns into practice',
+  'Підтримуємо викладацькі та студентські проєкти, відкриту науку й міжнародну співпрацю.': 'We support faculty and student projects, open science and international cooperation.',
+  'Можливості для науковців': 'Opportunities for researchers',
+  'Студентська наука': 'Student research',
+  'Академічна доброчесність': 'Academic integrity',
+  'Напрями наукової діяльності': 'Research areas',
+  'Наукові профілі працівників': 'Staff research profiles',
+  'Наукові видання': 'Scientific publications',
+  'Державні премії та нагороди, стипендії': 'State awards, honors and scholarships',
+  'Міжнародні наукові проєкти та гранти': 'International research projects and grants',
+  'Конкурси на отримання фінансування': 'Funding competitions',
+  'Наукові гуртки': 'Research clubs',
+  'Всеукраїнські та міжнародні конкурси студентських наукових робіт': 'Ukrainian and international student research contests',
+  'Офіційні документи та рекомендації з питань академічної доброчесності': 'Official documents and recommendations on academic integrity',
+  'Документи коледжу з питань академічної доброчесності': 'College documents on academic integrity',
+  'Розвиток культури академічної доброчесності': 'Developing a culture of academic integrity',
+  'Анкетування': 'Surveys',
+  'Перевірка на плагіат': 'Plagiarism check',
+  'Пріоритети наукової роботи, тематичні напрями та прикладні дослідження.': 'Research priorities, thematic areas and applied studies.',
+  'Сторінка для профілів науково-педагогічних працівників, ідентифікаторів і публікацій.': 'A page for academic staff profiles, identifiers and publications.',
+  'План наукової роботи, ключові заходи, етапи та відповідальні особи.': 'Research work plan, key events, stages and responsible persons.',
+  'Звітні матеріали про результати наукової діяльності та виконані завдання.': 'Reporting materials on research results and completed work.',
+  'Добірка наукових видань, вимог до публікацій та редакційної інформації.': 'A selection of scientific journals, publication requirements and editorial information.',
+  'Інформація про премії, нагороди, стипендії та умови участі.': 'Information about awards, honors, scholarships and participation conditions.',
+  'Міжнародні проєкти, грантові програми, партнерства й можливості співпраці.': 'International projects, grant programs, partnerships and cooperation opportunities.',
+  'Оголошення про конкурси, дедлайни, вимоги та корисні матеріали для заявок.': 'Competition announcements, deadlines, requirements and useful application materials.',
+  'Гуртки, дослідницькі команди, графік зустрічей і напрями роботи студентів.': 'Clubs, research teams, meeting schedules and student work areas.',
+  'Конкурси студентських наукових робіт, вимоги, дедлайни й результати.': 'Student research contests, requirements, deadlines and results.',
+  'Офіційні документи, методичні рекомендації та корисні матеріали з доброчесності.': 'Official documents, methodological recommendations and useful integrity materials.',
+  'Внутрішні документи, положення та процедури коледжу щодо академічної доброчесності.': 'Internal college documents, policies and procedures on academic integrity.',
+  'План заходів із розвитку академічної доброчесності та відповідальної освітньої культури.': 'Action plan for developing academic integrity and a responsible educational culture.',
+  'Звітні матеріали щодо виконаних заходів і результатів роботи з доброчесності.': 'Reports on completed activities and integrity work results.',
+  'Матеріали, ініціативи та події для формування культури академічної доброчесності.': 'Materials, initiatives and events for building a culture of academic integrity.',
+  'Опитування, аналітика та результати з питань академічної доброчесності.': 'Surveys, analytics and results on academic integrity.',
+  'Інформація про процедури перевірки робіт, інструменти та порядок звернення.': 'Information about work-checking procedures, tools and request process.',
+
+  'Знання у зручному форматі': 'Knowledge in a convenient format',
+  'Навчальна література, електронні ресурси, дослідницька підтримка та простір для спільної роботи.': 'Learning literature, electronic resources, research support and space for collaboration.',
+  'Про бібліотеку': 'About the library',
+  'Інформація для користувачів': 'User information',
+  'Бібліотечний простір': 'Library space',
+  'Науковцям': 'For researchers',
+  'Склад': 'Staff',
+  'Презентація бібліотеки': 'Library presentation',
+  'Соціальні мережі': 'Social media',
+  'Правила користування': 'Library rules',
+  'Читачам': 'For readers',
+  'Анкета читача': 'Reader form',
+  'Книжковий фонд': 'Book collection',
+  'Репозитарій': 'Repository',
+  'Нові надходження': 'New acquisitions',
+  'Книжкові виставки': 'Book exhibitions',
+  'Електронна бібліотека навчальної літератури': 'Electronic library of textbooks',
+  'Настільні ігри': 'Board games',
+  'Бібліотечний кіноклуб': 'Library film club',
+  'Волонтерство «Здорова бібліотека»': 'Healthy Library volunteering',
+  'Авторам наукових публікацій': 'For authors of scientific publications',
+  'Наукометричні показники': 'Scientometric indicators',
+  'Наукові ресурси відкритого доступу': 'Open-access research resources',
+  'Наукові фахові видання України': 'Specialized scientific journals of Ukraine',
+  'Визначення індексів УДК/ББК': 'UDC/LBC indexes',
+  'Сторінка для команди бібліотеки, зон відповідальності та контактної інформації.': 'A page for the library team, areas of responsibility and contact information.',
+  'Базовий опис бібліотеки, фонду, сервісів і формату роботи.': 'A basic description of the library, collection, services and work format.',
+  'Матеріали презентації бібліотеки, її можливостей, простору та сервісів.': 'Library presentation materials, opportunities, space and services.',
+  'План роботи бібліотеки, події, завдання та ключові напрями розвитку.': 'Library work plan, events, tasks and key development areas.',
+  'Звітні матеріали про роботу бібліотеки, фонд, сервіси та заходи.': 'Reporting materials on library work, collection, services and events.',
+  'Посилання на соціальні мережі, рубрики та комунікаційні канали бібліотеки.': 'Links to social media, sections and communication channels of the library.',
+  'Правила користування бібліотекою, ресурсами, просторами та сервісами.': 'Rules for using the library, resources, spaces and services.',
+  'Корисна інформація для читачів, послуги, консультації та порядок звернення.': 'Useful information for readers, services, consultations and request process.',
+  'Форма або опис анкети читача для зворотного зв’язку та уточнення потреб.': 'A reader form or description for feedback and clarifying needs.',
+  'Інформація про настільні ігри, клубні зустрічі й неформальне навчання.': 'Information about board games, club meetings and informal learning.',
+  'Сторінка для кіноклубу, анонсів переглядів, обговорень і тематичних добірок.': 'A page for the film club, screening announcements, discussions and thematic selections.',
+  'Волонтерські ініціативи бібліотеки, події та можливості долучитися.': 'Library volunteer initiatives, events and opportunities to join.',
+  'Матеріали для авторів, вимоги до публікацій, оформлення й добір журналів.': 'Materials for authors, publication requirements, formatting and journal selection.',
+  'Пояснення наукометричних показників, профілів, баз і аналітики цитувань.': 'Explanation of scientometric indicators, profiles, databases and citation analytics.',
+  'Добірка відкритих наукових ресурсів, баз даних і корисних платформ.': 'A selection of open research resources, databases and useful platforms.',
+  'Перелік і пояснення щодо наукових фахових видань України.': 'A list and explanation of specialized scientific journals of Ukraine.',
+  'Сторінка для консультацій щодо індексів УДК/ББК та правил класифікації.': 'A page for consultations on UDC/LBC indexes and classification rules.',
+  'Підтримка створення й оновлення наукових профілів працівників.': 'Support for creating and updating staff research profiles.',
+
+  'Дозвілля': 'Leisure',
+  'Студентське самоврядування': 'Student self-government',
+  'Волонтерська діяльність': 'Volunteering',
+  'Музей історії споживчої кооперації Київщини': 'Museum of Consumer Cooperation History of Kyiv Region'
+};
+
+const orderedTranslations = Object.entries(translations).sort((a, b) => b[0].length - a[0].length);
+
+const replaceText = (html) => orderedTranslations.reduce(
+  (result, [source, target]) => result.split(source).join(target),
+  html
+);
+
+const prefixRootPaths = (html) => html
+  .replace(/(href|src)="(assets|css|js|college|admissions|students|alumni|science|library)\//g, '$1="../$2/')
+  .replace(/srcset="(assets)\//g, 'srcset="../$1/');
+
+const extractMain = (html) => html.match(/<main[\s\S]*?<\/main>/)?.[0] || '';
+
+const patchHead = (html, file) => {
   const meta = pageMeta[file];
   const socialUrl = file === 'index.html' ? `${siteBaseUrl}/en/` : `${siteBaseUrl}/en/${file}`;
-  return `<!doctype html>
-<html lang="en" data-page="${meta.page}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="${meta.description}">
-  <meta name="theme-color" content="#0b2345">
-  <title>${meta.title}</title>
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="${englishSocialSiteName}">
-  <meta property="og:title" content="${meta.socialTitle}">
-  <meta property="og:description" content="${meta.description}">
-  <meta property="og:url" content="${socialUrl}">
-  <meta property="og:image" content="${socialImageUrl}">
-  <meta property="og:image:type" content="image/gif">
-  <meta property="og:image:width" content="827">
-  <meta property="og:image:height" content="827">
-  <meta property="og:image:alt" content="Professional College of Economics and Law logo">
-  <meta property="og:locale" content="en_US">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="${meta.socialTitle}">
-  <meta name="twitter:description" content="${meta.description}">
-  <meta name="twitter:image" content="${socialImageUrl}">
-  <meta name="twitter:image:alt" content="Professional College of Economics and Law logo">
-  <link rel="alternate" hreflang="uk" href="../${file}">
-  <link rel="alternate" hreflang="en" href="${file}">
-  <link rel="icon" href="../assets/logo_small.gif" type="image/gif">
-  <link rel="stylesheet" href="../css/styles.css?v=${cssVersion}">
-  <script src="../js/main.js?v=${scriptVersion}" defer></script>
-</head>`;
+  return html
+    .replace(/<html lang="uk" data-page="[^"]+">/, `<html lang="en" data-page="${meta.page}">`)
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${meta.title}</title>`)
+    .replace(/<meta property="og:site_name" content="[^"]+">/, '<meta property="og:site_name" content="Professional College of Economics and Law, KCIBL">')
+    .replace(/<meta property="og:title" content="[^"]+">/, `<meta property="og:title" content="${meta.socialTitle}">`)
+    .replace(/<meta property="og:description" content="[^"]+">/, '<meta property="og:description" content="Official college website: admissions, studies, student life, news and useful services.">')
+    .replace(/<meta property="og:url" content="[^"]+">/, `<meta property="og:url" content="${socialUrl}">`)
+    .replace(/<meta property="og:image:alt" content="[^"]+">/, '<meta property="og:image:alt" content="Professional College of Economics and Law logo">')
+    .replace(/<meta property="og:locale" content="uk_UA">/, '<meta property="og:locale" content="en_US">')
+    .replace(/<meta name="twitter:title" content="[^"]+">/, `<meta name="twitter:title" content="${meta.socialTitle}">`)
+    .replace(/<meta name="twitter:description" content="[^"]+">/, '<meta name="twitter:description" content="Official college website: admissions, studies, student life, news and useful services.">')
+    .replace(/<meta name="twitter:image:alt" content="[^"]+">/, '<meta name="twitter:image:alt" content="Professional College of Economics and Law logo">')
+    .replace(/<link rel="alternate" hreflang="uk" href="[^"]+">/, `<link rel="alternate" hreflang="uk" href="../${file}">`)
+    .replace(/<link rel="alternate" hreflang="en" href="[^"]+">/, `<link rel="alternate" hreflang="en" href="${file}">`)
+    .replace(/(\.\.\/)?css\/styles\.css\?v=[^"]+/g, `../css/styles.css?v=${cssVersion}`)
+    .replace(/(\.\.\/)?js\/main\.js\?v=[^"]+/g, `../js/main.js?v=${scriptVersion}`);
 };
 
-const languageSwitch = ({ current, ukHref, enHref, label }) => `<div class="language-switch" data-language-switch>
-          <button class="language language-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="${label}">${current}${down}</button>
-          <div class="language-menu" role="menu">
-            <a class="language-option${current === 'UA' ? ' is-active' : ''}" href="${ukHref}" hreflang="uk" role="menuitem"${current === 'UA' ? ' aria-current="true"' : ''}>UA</a>
-            <a class="language-option${current === 'EN' ? ' is-active' : ''}" href="${enHref}" hreflang="en" role="menuitem"${current === 'EN' ? ' aria-current="true"' : ''}>EN</a>
-          </div>
-        </div>`;
+const patchLanguageSwitches = (html, file) => html
+  .replace(/aria-label="Змінити мову">UA/g, 'aria-label="Change language">EN')
+  .replace(/aria-label="Зміна мови"/g, 'aria-label="Change language"')
+  .replace(
+    new RegExp(`<a class="language-option is-active" href="${file}" hreflang="uk" role="menuitem" aria-current="true">UA<\\/a>\\s*<a class="language-option" href="en\\/${file}" hreflang="en" role="menuitem">EN<\\/a>`, 'g'),
+    `<a class="language-option" href="../${file}" hreflang="uk" role="menuitem">UA</a>\n            <a class="language-option is-active" href="${file}" hreflang="en" role="menuitem" aria-current="true">EN</a>`
+  )
+  .replace(
+    new RegExp(`<a class="mobile-language-option is-active" href="${file}" hreflang="uk" aria-current="true">UA<\\/a>\\s*<a class="mobile-language-option" href="en\\/${file}" hreflang="en">EN<\\/a>`, 'g'),
+    `<a class="mobile-language-option" href="../${file}" hreflang="uk">UA</a>\n              <a class="mobile-language-option is-active" href="${file}" hreflang="en" aria-current="true">EN</a>`
+  );
 
-const navLanguageSwitch = (options) => languageSwitch(options).replace('class="language-switch"', 'class="language-switch nav-language"');
-const headerLanguageSwitch = (options) => languageSwitch(options).replace('class="language-switch"', 'class="language-switch header-language"');
-const ukrainianNavLanguage = (file) => navLanguageSwitch({ current: 'UA', ukHref: file, enHref: `en/${file}`, label: 'Змінити мову' });
-const englishNavLanguage = (file) => navLanguageSwitch({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language' });
-const ukrainianHeaderLanguage = (file) => headerLanguageSwitch({ current: 'UA', ukHref: file, enHref: `en/${file}`, label: 'Змінити мову' });
-const englishHeaderLanguage = (file) => headerLanguageSwitch({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language' });
-const instagramHref = 'https://www.instagram.com/kkibp.official/';
-const facebookHref = 'https://www.facebook.com/pages/%D0%9A%D0%B8%D1%97%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9-%D0%BA%D0%BE%D0%BE%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D0%B8%D0%B9-%D1%96%D0%BD%D1%81%D1%82%D0%B8%D1%82%D1%83%D1%82-%D0%B1%D1%96%D0%B7%D0%BD%D0%B5%D1%81%D1%83-%D1%96-%D0%BF%D1%80%D0%B0%D0%B2%D0%B0/1492832900785533/';
-const googleMapsHref = 'https://www.google.com/maps/search/?api=1&amp;query=%D0%95%D0%BA%D0%BE%D0%BD%D0%BE%D0%BC%D1%96%D0%BA%D0%BE-%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D0%B2%D0%B8%D0%B9%20%D1%84%D0%B0%D1%85%D0%BE%D0%B2%D0%B8%D0%B9%20%D0%BA%D0%BE%D0%BB%D0%B5%D0%B4%D0%B6%20%D0%9A%D0%B8%D1%97%D0%B2%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE%20%D0%BA%D0%BE%D0%BE%D0%BF%D0%B5%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%96%D0%BD%D1%81%D1%82%D0%B8%D1%82%D1%83%D1%82%D1%83%20%D0%B1%D1%96%D0%B7%D0%BD%D0%B5%D1%81%D1%83%20%D1%96%20%D0%BF%D1%80%D0%B0%D0%B2%D0%B0%2C%20%D0%B2%D1%83%D0%BB.%20%D0%AE%D0%BB%D1%96%D1%97%20%D0%97%D0%B4%D0%B0%D0%BD%D0%BE%D0%B2%D1%81%D1%8C%D0%BA%D0%BE%D1%97%2C%2018%2C%20%D0%9A%D0%B8%D1%97%D0%B2&amp;hl=uk';
-const contactEmail = 'rector@kkibp.edu.ua';
-const contactPhone = '+38 (044) 258-20-29';
-const contactPhoneHref = '+380442582029';
-const headerContact = ({ label }) => `<div class="header-contact" aria-label="${label}">
-          <a href="mailto:${contactEmail}">${contactEmail}</a>
-          <a href="tel:${contactPhoneHref}">${contactPhone}</a>
-        </div>`;
-const ukrainianHeaderContact = () => headerContact({ label: 'Електронна пошта та телефон' });
-const englishHeaderContact = () => headerContact({ label: 'Email and phone' });
-const headerSocialLinks = ({ instagramLabel, facebookLabel }) => `<a class="icon-button header-social header-social--instagram" href="${instagramHref}" aria-label="${instagramLabel}" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a>
-        <a class="icon-button header-social header-social--facebook" href="${facebookHref}" aria-label="${facebookLabel}" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a>`;
-const ukrainianHeaderSocialLinks = () => headerSocialLinks({ instagramLabel: 'Instagram коледжу', facebookLabel: 'Facebook коледжу' });
-const englishHeaderSocialLinks = () => headerSocialLinks({ instagramLabel: 'College Instagram', facebookLabel: 'College Facebook' });
-const ukrainianNavTools = (file) => `<li class="nav-item nav-item--tool nav-item--language">${ukrainianNavLanguage(file)}</li><li class="nav-item nav-item--tool nav-item--search"><button class="icon-button search-open nav-search" type="button" aria-label="Пошук по сайту"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button></li>`;
-const englishNavTools = (file) => `<li class="nav-item nav-item--tool nav-item--language">${englishNavLanguage(file)}</li><li class="nav-item nav-item--tool nav-item--search"><button class="icon-button search-open nav-search" type="button" aria-label="Search the site"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button></li>`;
-const ukrainianAdmissionsCta = '<li class="nav-item nav-item--cta"><a class="nav-link nav-link--cta" href="admissions.html">Вступ</a></li>';
-const englishAdmissionsCta = '<li class="nav-item nav-item--cta"><a class="nav-link nav-link--cta" href="admissions.html">Admissions</a></li>';
-const ukrainianFooterQuickLinks = '<nav class="footer-quick-links" aria-label="Швидкі переходи"><a href="students.html#schedule">Розклад занять</a><a href="admissions.html#programs">Освітні програми</a><a href="admissions.html">Вступ</a><a href="admissions.html#documents">Правила прийому</a><a href="college.html#departments">Відділення</a><a href="college.html#departments">Циклові комісії</a></nav>';
-const englishFooterQuickLinks = '<nav class="footer-quick-links" aria-label="Quick links"><a href="students.html#schedule">Class schedule</a><a href="admissions.html#programs">Educational programs</a><a href="admissions.html">Admissions</a><a href="admissions.html#documents">Admission rules</a><a href="college.html#departments">Departments</a><a href="college.html#departments">Subject commissions</a></nav>';
-const ukrainianNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="Економіко-правовий фаховий коледж Київського кооперативного інституту бізнесу і права – головна"><img src="assets/logo_small.gif" alt="" width="48" height="48"><span><strong>Економіко-правовий фаховий коледж</strong><small>Київського кооперативного інституту бізнесу і права</small></span></a></li>`;
-const englishNavBrand = () => `<li class="nav-item nav-item--brand"><a class="nav-brand" href="index.html" aria-label="${collegeName} - home"><img src="../assets/logo_small.gif" alt="" width="48" height="48"><span><strong>${collegeNameMain}</strong><small>${collegeNameSub}</small></span></a></li>`;
-
-const mobileLanguage = ({ current, ukHref, enHref, label, title }) => `<div class="mobile-language" aria-label="${label}">
-            <span class="mobile-language-title">${title}</span>
-            <div class="mobile-language-options">
-              <a class="mobile-language-option${current === 'UA' ? ' is-active' : ''}" href="${ukHref}" hreflang="uk"${current === 'UA' ? ' aria-current="true"' : ''}>UA</a>
-              <a class="mobile-language-option${current === 'EN' ? ' is-active' : ''}" href="${enHref}" hreflang="en"${current === 'EN' ? ' aria-current="true"' : ''}>EN</a>
-            </div>
-          </div>`;
-
-const ukrainianMobileLanguage = (file) => mobileLanguage({ current: 'UA', ukHref: file, enHref: `en/${file}`, label: 'Зміна мови', title: 'Мова сайту' });
-const englishMobileLanguage = (file) => mobileLanguage({ current: 'EN', ukHref: `../${file}`, enHref: file, label: 'Change language', title: 'Site language' });
-const ukrainianMobileNavTools = (file) => `<div class="mobile-nav-tools">
-          ${ukrainianMobileLanguage(file)}
-        </div>`;
-const englishMobileNavTools = (file) => `<div class="mobile-nav-tools">
-          ${englishMobileLanguage(file)}
-        </div>`;
-
-const header = (file) => `<body>
-
-<a class="skip-link" href="#main">Skip to main content</a>
-<header class="site-header" data-header>
-  <div class="header-main">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="${collegeName} - home">
-        <img class="brand-mark" src="../assets/logo_small.gif" alt="" width="56" height="56">
-        <span class="brand-text"><strong>${collegeBrandTitle}</strong></span>
-      </a>
-      <div class="header-actions">
-        ${englishHeaderContact()}
-        ${englishHeaderSocialLinks()}
-        <button class="icon-button search-open header-search" type="button" aria-label="Search the site"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
-        ${englishHeaderLanguage(file)}
-        <button class="icon-button nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-navigation">
-          <span class="menu-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><span class="close-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></span>
-        </button>
-      </div>
-    </div>
-    <div class="nav-shell" id="site-navigation">
-      <div class="container nav-inner">
-        ${englishMobileNavTools(file)}
-        <nav class="primary-nav" aria-label="Primary navigation">
-          <ul class="nav-list">${englishNavBrand()}<li class="nav-item has-menu">
-          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-0">
-            College<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </button>
-          <div class="mega-menu" id="menu-0">
-            <div class="mega-intro">
-              <span class="eyebrow">Section</span>
-              <a class="mega-title" href="college.html">College${arrow}</a>
-              <p>Useful materials, documents and services for this section.</p>
-            </div>
-            <div class="mega-groups"><section class="mega-group"><h3>General Information</h3><ul><li><a href="college.html#about">About the college</a></li><li><a href="college.html#leadership">Leadership</a></li><li><a href="college.html#departments">Departments</a></li><li><a href="college.html#departments">Subject commissions</a></li><li><a href="college.html#governance">Governance and self-government bodies</a></li><li><a href="college.html#contacts">Contacts</a></li></ul></section><section class="mega-group mega-group--main-info"><h3>Key Information</h3><div class="mega-subcolumns"><ul><li><a href="college.html#documents">College charter</a></li><li><a href="college.html#documents">Development concept</a></li><li><a href="college.html#documents">Collective agreement</a></li><li><a href="college.html#documents">Local regulatory documents</a></li><li><a href="college.html#documents">Access to public information</a></li><li><a href="college.html#documents">Educational activity licenses</a></li></ul><ul><li><a href="college.html#documents">Accreditation certificates for specialties and programs</a></li><li><a href="college.html#documents">Work plan</a></li><li><a href="college.html#documents">Report</a></li><li><a href="college.html#documents">Public discussion</a></li><li><a href="college.html#documents">Vacancies</a></li></ul></div></section><section class="mega-group"><h3>Activities</h3><ul><li><a href="college.html#about">Sustainable Development Goals</a></li><li><a href="college.html#about">Inclusive learning environment</a></li><li><a href="college.html#documents">Anti-corruption activity</a></li><li><a href="students.html#support">Psychological service</a></li><li><a href="science.html#projects">International activity</a></li><li><a href="college.html#campus">Practical training</a></li><li><a href="students.html#career">Career Center</a></li></ul></section></div>
-          </div>
-        </li><li class="nav-item has-menu">
-          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-1">
-            Applicants<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </button>
-          <div class="mega-menu" id="menu-1">
-            <div class="mega-intro">
-              <span class="eyebrow">Section</span>
-              <a class="mega-title" href="admissions.html">Applicants${arrow}</a>
-              <p>Useful materials, documents and services for this section.</p>
-            </div>
-            <div class="mega-groups"><section class="mega-group"><h3>Admissions</h3><ul><li><a href="admissions.html#documents">Official documents</a></li><li><a href="admissions.html#documents">Admission rules</a></li><li><a href="admissions.html#timeline">Ranking lists</a></li><li><a href="admissions.html#timeline">Enrollment orders</a></li><li><a href="admissions.html#tuition">Tuition fees</a></li><li><a href="admissions.html#timeline">Important dates</a></li><li><a href="admissions.html#documents">Application documents</a></li><li><a href="admissions.html#contacts">Admissions office</a></li><li><a href="admissions.html#contacts">Contact information</a></li></ul></section><section class="mega-group"><h3>Educational Programs</h3><ul><li><a href="admissions.html#programs">Educational programs</a></li></ul></section></div>
-          </div>
-        </li><li class="nav-item has-menu">
-          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-2">
-            Students<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </button>
-          <div class="mega-menu" id="menu-2">
-            <div class="mega-intro">
-              <span class="eyebrow">Section</span>
-              <a class="mega-title" href="students.html">Students${arrow}</a>
-              <p>Useful materials, documents and services for this section.</p>
-            </div>
-            <div class="mega-groups"><section class="mega-group"><h3>General Information</h3><ul><li><a href="students.html#learning">Educational programs</a></li><li><a href="students.html#schedule">Academic calendar</a></li><li><a href="students.html#schedule">Class schedule</a></li><li><a href="students.html#learning">Teacher contacts</a></li><li><a href="students.html#electives">Elective components catalog</a></li><li><a href="students.html#learning">Internal regulations</a></li><li><a href="admissions.html#faq">Dormitory</a></li></ul></section><section class="mega-group"><h3>Leisure</h3><ul><li><a href="students.html#community">Student self-government</a></li><li><a href="students.html#community">Volunteering</a></li><li><a href="students.html#community">Museum of Consumer Cooperation History of Kyiv Region</a></li></ul></section><section class="mega-group"><h3>Opportunities</h3><ul><li><a href="students.html#opportunities">Art studios</a></li><li><a href="students.html#opportunities">Sports sections</a></li><li><a href="students.html#opportunities">Foreign language courses</a></li></ul></section><section class="mega-group"><h3>Social and Legal Support</h3><ul><li><a href="students.html#support">Psychological service</a></li><li><a href="students.html#support">Legal clinic</a></li><li><a href="students.html#support">Anti-corruption activity</a></li><li><a href="students.html#support">Student ombudsperson</a></li></ul></section></div>
-          </div>
-        </li><li class="nav-item has-menu">
-          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-3">
-            Alumni<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </button>
-          <div class="mega-menu" id="menu-3">
-            <div class="mega-intro">
-              <span class="eyebrow">Section</span>
-              <a class="mega-title" href="alumni.html">Alumni${arrow}</a>
-              <p>Useful materials, documents and services for this section.</p>
-            </div>
-            <div class="mega-groups"><section class="mega-group"><h3>Community</h3><ul><li><a href="alumni.html#association">Alumni association</a></li><li><a href="alumni.html#stories">Successful alumni</a></li><li><a href="alumni.html#events">Alumni meetings</a></li></ul></section></div>
-          </div>
-        </li><li class="nav-item has-menu">
-          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-4">
-            Research<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </button>
-          <div class="mega-menu" id="menu-4">
-            <div class="mega-intro">
-              <span class="eyebrow">Section</span>
-              <a class="mega-title" href="science.html">Research${arrow}</a>
-              <p>Useful materials, documents and services for this section.</p>
-            </div>
-            <div class="mega-groups"><section class="mega-group"><h3>General Information</h3><ul><li><a href="science.html#directions">Research areas</a></li><li><a href="science.html#publications">Staff research profiles</a></li><li><a href="science.html#publications">Work plan</a></li><li><a href="science.html#publications">Report</a></li></ul></section><section class="mega-group"><h3>For Researchers</h3><ul><li><a href="science.html#publications">Scientific publications</a></li><li><a href="science.html#grants">State awards, honors and scholarships</a></li><li><a href="science.html#projects">International research projects and grants</a></li><li><a href="science.html#grants">Funding competitions</a></li></ul></section><section class="mega-group"><h3>Student Research</h3><ul><li><a href="science.html#student-science">Research clubs</a></li><li><a href="science.html#events">Ukrainian and international student research contests</a></li></ul></section><section class="mega-group"><h3>Academic Integrity</h3><ul><li><a href="library.html#integrity">Official documents and recommendations on academic integrity</a></li><li><a href="library.html#integrity">College documents on academic integrity</a></li><li><a href="library.html#integrity">Work plan</a></li><li><a href="library.html#integrity">Report</a></li><li><a href="library.html#integrity">Developing a culture of academic integrity</a></li><li><a href="library.html#integrity">Surveys</a></li><li><a href="library.html#integrity">Plagiarism check</a></li></ul></section></div>
-          </div>
-        </li><li class="nav-item has-menu">
-          <button class="nav-link menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="menu-5">
-            Library<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 9 5 5 5-5"/></svg>
-          </button>
-          <div class="mega-menu" id="menu-5">
-            <div class="mega-intro">
-              <span class="eyebrow">Section</span>
-              <a class="mega-title" href="library.html">Library${arrow}</a>
-              <p>Useful materials, documents and services for this section.</p>
-            </div>
-            <div class="mega-groups mega-groups--library"><section class="mega-group"><h3>About the Library</h3><ul><li><a href="library.html#about">Staff</a></li><li><a href="library.html#about">General information</a></li><li><a href="library.html#about">Library presentation</a></li><li><a href="library.html#about">Work plan</a></li><li><a href="library.html#about">Report</a></li><li><a href="library.html#about">Social media</a></li></ul></section><section class="mega-group"><h3>User Information</h3><ul><li><a href="library.html#about">Library rules</a></li><li><a href="library.html#about">For readers</a></li><li><a href="library.html#about">Reader form</a></li></ul></section><section class="mega-group"><h3>Book Collection</h3><ul><li><a href="library.html#catalog">Repository</a></li><li><a href="library.html#new-books">New acquisitions</a></li><li><a href="library.html#new-books">Book exhibitions</a></li><li><a href="library.html#catalog">Electronic library of textbooks</a></li></ul></section><section class="mega-group"><h3>Library Space</h3><ul><li><a href="library.html#space">Board games</a></li><li><a href="library.html#space">Library film club</a></li><li><a href="library.html#space">Healthy Library volunteering</a></li></ul></section><section class="mega-group"><h3>For Researchers</h3><ul><li><a href="library.html#researchers">For authors of scientific publications</a></li><li><a href="library.html#researchers">Scientometric indicators</a></li><li><a href="library.html#researchers">Open-access research resources</a></li><li><a href="library.html#researchers">Specialized scientific journals of Ukraine</a></li><li><a href="library.html#researchers">UDC/LBC indexes</a></li><li><a href="library.html#researchers">Staff research profiles</a></li></ul></section></div>
-          </div>
-        </li><li class="nav-item"><a class="nav-link" href="news.html">News</a></li>${englishAdmissionsCta}${englishNavTools(file)}</ul>
-        </nav>
-      </div>
-    </div>
-  </div>
-</header>
-<div class="nav-backdrop" data-nav-backdrop></div>
-<div class="search-dialog" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
-  <div class="search-panel">
-    <button class="icon-button search-close" type="button" aria-label="Close search"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
-    <span class="eyebrow">Search</span>
-    <h2 id="search-title">What are you looking for?</h2>
-    <label class="search-field">
-      <span class="sr-only">Search query</span>
-      <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="site-search" type="search" placeholder="For example, schedule or admission rules" autocomplete="off">
-    </label>
-    <div class="search-suggestions" aria-live="polite">
-      <p class="search-hint">Popular: <a href="admissions.html#documents">admission rules</a>, <a href="students.html#schedule">class schedule</a>, <a href="library.html#catalog">electronic catalog</a>.</p>
-      <div class="search-results" id="search-results"></div>
-    </div>
-  </div>
-</div>`;
-
-const footer = () => `
-<footer class="site-footer" id="footer">
-  <div class="container footer-grid">
-    <div class="footer-brand"><a class="brand" href="index.html" aria-label="${collegeName} - home">
-        <img class="brand-mark" src="../assets/logo_small.gif" alt="" width="56" height="56">
-        <span class="brand-text"><strong>${collegeBrandTitle}</strong></span>
-      </a>${englishFooterQuickLinks}</div>
-    <div><h3>Navigation</h3><ul><li><a href="college.html">College</a></li><li><a href="admissions.html">Applicants</a></li><li><a href="students.html">Students</a></li><li><a href="alumni.html">Alumni</a></li><li><a href="science.html">Research</a></li><li><a href="library.html">Library</a></li><li><a href="news.html">News</a></li></ul></div>
-    <div><h3>Contacts</h3><ul class="contact-list"><li>18 Yulii Zdanovskoi St., Kyiv, 03022</li><li><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li><li>Mon-Fri, 08:00-17:00</li><li><a href="${googleMapsHref}" target="_blank" rel="noopener noreferrer">Open in Google Maps</a></li></ul><div class="footer-social"><div class="social-links"><a class="social-link social-link--instagram" href="${instagramHref}" aria-label="College Instagram" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a><a class="social-link social-link--facebook" href="${facebookHref}" aria-label="College Facebook" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a></div></div></div>
-  </div>
-  <div class="container footer-bottom"><p>© <span data-year></span> ${collegeName}.</p><div><a href="#">Privacy policy</a></div></div>
-</footer>
-<button class="back-to-top" type="button" aria-label="Back to top">↑</button>
-<div class="toast" role="status" aria-live="polite"></div>
-
-</body>
-</html>`;
-
-const ukrainianFooter = () => `
-<footer class="site-footer" id="footer">
-  <div class="container footer-grid">
-    <div class="footer-brand"><a class="brand" href="index.html" aria-label="${ukrainianCollegeName} – головна">
-        <img class="brand-mark" src="assets/logo_small.gif" alt="" width="56" height="56">
-        <span class="brand-text"><strong>${ukrainianCollegeBrandTitle}</strong></span>
-      </a>${ukrainianFooterQuickLinks}</div>
-    <div><h3>Навігація</h3><ul><li><a href="college.html">Коледж</a></li><li><a href="admissions.html">Абітурієнту</a></li><li><a href="students.html">Студенту</a></li><li><a href="alumni.html">Випускнику</a></li><li><a href="science.html">Наука</a></li><li><a href="library.html">Бібліотека</a></li><li><a href="news.html">Новини</a></li></ul></div>
-    <div><h3>Контакти</h3><ul class="contact-list"><li>вул. Юлії Здановської, 18, м. Київ, 03022</li><li><a href="tel:${contactPhoneHref}">${contactPhone}</a></li><li><a href="mailto:${contactEmail}">${contactEmail}</a></li><li>Пн-Пт, 08:00–17:00</li><li><a href="${googleMapsHref}" target="_blank" rel="noopener noreferrer">Відкрити на Google Maps</a></li></ul><div class="footer-social"><div class="social-links"><a class="social-link social-link--instagram" href="${instagramHref}" aria-label="Instagram коледжу" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a><a class="social-link social-link--facebook" href="${facebookHref}" aria-label="Facebook коледжу" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 8h2V5h-2.4C10.9 5 9 6.8 9 9.6V12H7v3h2v6h3v-6h2.5l.5-3h-3V9.8c0-1.1.5-1.8 2-1.8Z"/></svg></a></div></div></div>
-  </div>
-  <div class="container footer-bottom"><p>© <span data-year></span> ${ukrainianCollegeName}.</p><div><a href="#">Політика конфіденційності</a></div></div>
-</footer>
-<button class="back-to-top" type="button" aria-label="Повернутися вгору">↑</button>
-<div class="toast" role="status" aria-live="polite"></div>
-
-</body>
-</html>`;
-
-const newsCardsHome = `<div class="news-grid">
-    <article class="news-card"><div class="news-media news-media--image"><img src="../assets/news/znovu-vidnovliuiemos-2026.jpg" alt="Учасники освітнього тренінгу ЗНОвУ відновлюємось 2026" loading="lazy"><span class="news-media-label">Наука</span></div><div class="news-content"><div class="news-meta"><span>15-18 червня 2026</span><span>Освітній тренінг</span></div><h3>Юлія Руденко взяла участь у тренінгу «ЗНОвУ відновлюємось 2026»</h3><p>Викладачка долучилася до програми професійної підтримки педагогів, які працюють з учнями, що постраждали від війни.</p><a class="text-link" href="news.html#znovu-vidnovliuiemos-2026">Read ${arrow}</a></div></article>
-    <article class="news-card"><div class="news-media news-media--image"><img src="../assets/news/pershokursnyky-rik-potomu.jpg" alt="Творчий звіт студентів першого курсу" loading="lazy"><span class="news-media-label">Подія</span></div><div class="news-content"><div class="news-meta"><span>18 червня 2026</span><span>Студентське життя</span></div><h3>«Першокурсники: рік по тому»: творчий звіт студентів</h3><p>Академічні групи першого курсу представили концертну програму про адаптацію, згуртованість і студентське зростання.</p><a class="text-link" href="news.html#pershokursnyky-rik-potomu">Read ${arrow}</a></div></article>
-    <article class="news-card"><div class="news-media news-media--image"><img src="../assets/news/praktyka-oblik.jpg" alt="Захист виробничої практики студентів спеціальності Облік і оподаткування" loading="lazy"><span class="news-media-label">Практика</span></div><div class="news-content"><div class="news-meta"><span>15 червня 2026</span><span>Навчання</span></div><h3>Захист виробничої практики студентів спеціальності «Облік і оподаткування»</h3><p>Третьокурсники презентували результати практики, професійні навички та досвід роботи з обліковими процесами.</p><a class="text-link" href="news.html#praktyka-oblik">Read ${arrow}</a></div></article>
-  </div>`;
-
-const newsCardsPage = `<div class="news-grid">
-<article class="news-card" id="znovu-vidnovliuiemos-2026" data-category="science"><div class="news-media news-media--image"><img src="../assets/news/znovu-vidnovliuiemos-2026.jpg" alt="Учасники освітнього тренінгу ЗНОвУ відновлюємось 2026" loading="lazy"><span class="news-media-label">Наука</span></div><div class="news-content"><div class="news-meta"><span>15-18 червня 2026</span><span>Освітній тренінг</span></div><h3>К.і.н., доцент Юлія Руденко взяла участь в освітньому тренінгу «ЗНОвУ відновлюємось 2026»</h3><p>Юлія Руденко долучилася до тренінгу громадської організації «ЗНОвУ», присвяченого підтримці педагогів, психологічній стійкості, профілактиці вигорання та роботі з учнями, які зазнали впливу війни.</p><a class="text-link" href="https://kkibp.edu.ua/uk/news/4863-k-i-n-dotsent-yuliya-rudenko-vzyala-uchast-v-osvitnomu-treninhu-znovu-vidnovlyuyemos-2026" target="_blank" rel="noopener noreferrer">Read in full ${external}</a></div></article>
-<article class="news-card" id="pershokursnyky-rik-potomu" data-category="events"><div class="news-media news-media--image"><img src="../assets/news/pershokursnyky-rik-potomu.jpg" alt="Творчий звіт студентів першого курсу" loading="lazy"><span class="news-media-label">Подія</span></div><div class="news-content"><div class="news-meta"><span>18 червня 2026</span><span>Студентське життя</span></div><h3>«Першокурсники: рік по тому»: творчий звіт студентів</h3><p>У коледжі відбувся звітний концерт академічних груп першого курсу. Програма поєднала хореографічно-театральні постановки, кавер-номери, вокальні виступи та привітання студентської спільноти.</p><a class="text-link" href="https://kkibp.edu.ua/uk/news/4862-pershokursnyky-rik-po-tomu-tvorchyi-zvit-studentiv" target="_blank" rel="noopener noreferrer">Read in full ${external}</a></div></article>
-<article class="news-card" id="praktyka-oblik" data-category="education"><div class="news-media news-media--image"><img src="../assets/news/praktyka-oblik.jpg" alt="Захист виробничої практики студентів спеціальності Облік і оподаткування" loading="lazy"><span class="news-media-label">Навчання</span></div><div class="news-content"><div class="news-meta"><span>15 червня 2026</span><span>Виробнича практика</span></div><h3>Захист виробничої практики студентів спеціальності «Облік і оподаткування»</h3><p>Студенти третього курсу презентували результати практики, описали бази практики, виконані завдання та набуті професійні навички у сфері бухгалтерського обліку й фінансової звітності.</p><a class="text-link" href="https://kkibp.edu.ua/uk/news/4861-zakhyst-vyrobnychoi-praktyky-studentiv-spetsialnosti-oblik-i-opodatkuvannia-pidsumky-profesiinoho-stanovlennia" target="_blank" rel="noopener noreferrer">Read in full ${external}</a></div></article>
-<article class="news-card" id="syla-v-iednosti" data-category="community"><div class="news-media news-media--image"><img src="../assets/news/syla-v-iednosti.jpg" alt="Нагорода від Повітряного командування Центр" loading="lazy"><span class="news-media-label">Спільнота</span></div><div class="news-content"><div class="news-meta"><span>червень 2026</span><span>Волонтерство</span></div><h3>Сила в єдності: інститут відзначено нагородою від Повітряного командування «Центр»</h3><p>Підтримка захисників України отримала офіційне визнання. Нагороду пов’язано із системною допомогою Збройним Силам України та волонтерською роботою спільноти інституту.</p><a class="text-link" href="https://kkibp.edu.ua/uk/news/4851-syla-v-iednosti-instytut-vidznacheno-nahorodoiu-vid-povitrianoho-komanduvannia-tsentr" target="_blank" rel="noopener noreferrer">Read in full ${external}</a></div></article>
-</div>`;
-
-const mains = {
-  'index.html': `<main id="main">
-<section class="hero">
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <h1>Education that opens <span>opportunities</span></h1>
-      <p class="lead">Practical programs, lecturer support and an active student community for a confident professional start.</p>
-      <div class="hero-actions"><a class="button button--accent" href="admissions.html#apply">Become a student ${arrow}</a><a class="button button--outline" href="#programs">Choose a specialty</a></div>
-      <div class="hero-trust"><p><strong>Real college community</strong>Lecturers and students work together through learning, practice and events.</p></div>
-    </div>
-    <div class="hero-visual">
-      <div class="hero-image-card"><img src="../assets/college_logo_official.gif" alt="Official logo of Kyiv Cooperative Institute of Business and Law" width="3376" height="4219"></div>
-    </div>
-  </div>
-</section>
-<div class="quick-links"><div class="container quick-links-grid">
-  <a class="quick-link" href="admissions.html#programs"><span><strong>Educational Programs</strong><span>specialties and choice</span></span>${arrow}</a>
-  <a class="quick-link" href="admissions.html#documents"><span><strong>Admission Rules</strong><span>rules and documents</span></span>${arrow}</a>
-  <a class="quick-link" href="admissions.html"><span><strong>Admissions</strong><span>applicant steps</span></span>${arrow}</a>
-  <a class="quick-link" href="admissions.html#contacts"><span><strong>Contacts</strong><span>admissions office</span></span>${arrow}</a>
-</div></div>
-<section class="section" id="about"><div class="container">
-  <div class="section-heading"><div><span class="eyebrow">Main Sections</span><h2>Everything important is close at hand</h2></div><a class="text-link" href="college.html">Learn about the college ${arrow}</a></div>
-  <div class="card-grid">
-    <article class="feature-card"><div class="feature-icon">01</div><h3>Applicants</h3><p>Admission rules, educational programs, tuition fees and the applicant calendar.</p><a class="text-link" href="admissions.html">Open ${arrow}</a></article>
-    <article class="feature-card"><div class="feature-icon">02</div><h3>Students</h3><p>Schedule, electives, student life, support and career opportunities.</p><a class="text-link" href="students.html">Open ${arrow}</a></article>
-    <article class="feature-card"><div class="feature-icon">03</div><h3>Research</h3><p>Research clubs, conferences, grants, international projects and publications.</p><a class="text-link" href="science.html">Open ${arrow}</a></article>
-    <article class="feature-card"><div class="feature-icon">04</div><h3>Library</h3><p>Electronic catalog, new acquisitions, repository and academic integrity resources.</p><a class="text-link" href="library.html">Open ${arrow}</a></article>
-    <article class="feature-card"><div class="feature-icon">05</div><h3>Alumni</h3><p>Alumni association, success stories, mentoring and community meetings.</p><a class="text-link" href="alumni.html">Open ${arrow}</a></article>
-    <article class="feature-card"><div class="feature-icon">06</div><h3>Public Information</h3><p>Charter, licenses, educational programs, reports and open-access documents.</p><a class="text-link" href="college.html#documents">Open ${arrow}</a></article>
-  </div>
-</div></section>
-<section class="section section--soft" id="programs"><div class="container">
-  <div class="section-heading"><div><span class="eyebrow">Educational Programs</span><h2>Choose a direction that inspires</h2><p>Programs combine fundamental knowledge, project work and practice with partner organizations.</p></div><a class="button button--outline" href="admissions.html#programs">All specialties</a></div>
-  <div class="program-grid">
-    <article class="program-card"><span class="tag tag--light">IT and Digital Solutions</span><h3>Computer Science</h3><p>Web development, programming, databases, UX and team IT projects.</p><div class="program-meta"><span>2 years 10 months</span><span>full-time</span></div><a class="text-link" href="admissions.html#programs">Details ${arrow}</a></article>
-    <article class="program-card"><span class="tag tag--light">Business and Management</span><h3>Entrepreneurship and Trade</h3><p>Marketing, e-commerce, financial literacy and students' own startups.</p><div class="program-meta"><span>2 years 10 months</span><span>full-time</span></div><a class="text-link" href="admissions.html#programs">Details ${arrow}</a></article>
-    <article class="program-card"><span class="tag tag--light">Communications</span><h3>Design and Media</h3><p>Visual communication, content, graphic design and creative campaigns.</p><div class="program-meta"><span>3 years 10 months</span><span>full-time</span></div><a class="text-link" href="admissions.html#programs">Details ${arrow}</a></article>
-  </div>
-</div></section>
-<section class="stats-band"><div class="container stats-grid"><div class="stat"><strong>Education</strong><span>professional training with practical substance</span></div><div class="stat"><strong>Practice</strong><span>learning tasks, projects and first professional trials</span></div><div class="stat"><strong>Support</strong><span>lecturers, mentors and the student community nearby</span></div><div class="stat"><strong>Community</strong><span>events, initiatives and an environment for growth</span></div></div></section>
-<section class="section"><div class="container">
-  <div class="section-heading"><div><span class="eyebrow">Latest News</span><h2>College Life</h2><p>Real events, learning practice, creative reports and volunteer initiatives from the community.</p></div><a class="text-link" href="news.html">All news ${arrow}</a></div>
-  ${newsCardsHome}
-</div></section>
-</main>`,
-  'college.html': `<main id="main"><section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>College</span></nav><div class="page-hero-grid"><div><span class="eyebrow eyebrow--light">College</span><h1>A place where professional futures are shaped</h1><p>We combine a strong academic foundation, practical learning and a culture of mutual support.</p></div><div class="page-hero-card"><strong>42 years</strong><span>working for education and community growth</span></div></div></div></section>
-<section class="section"><div class="container content-layout">
-<aside class="anchor-nav"><nav class="anchor-card" aria-label="Page navigation"><h2>On this page</h2><a href="#about"><span>About the college</span><span>→</span></a><a href="#history"><span>History</span><span>→</span></a><a href="#leadership"><span>Leadership</span><span>→</span></a><a href="#departments"><span>Departments</span><span>→</span></a><a href="#governance"><span>Governance</span><span>→</span></a><a href="#documents"><span>Documents</span><span>→</span></a><a href="#campus"><span>Facilities</span><span>→</span></a><a href="#contacts"><span>Contacts</span><span>→</span></a></nav></aside>
-<div>
-  <section class="content-block" id="about"><span class="eyebrow">About the College</span><h2>Education focused on economics, law and practice</h2><p class="lead">${collegeName} is a distinct educational space within Kyiv Cooperative Institute of Business and Law, combining professional training, practical learning and support for student development.</p><div class="three-col"><article class="info-card info-card--teal"><div class="icon-badge">F</div><h3>Our founder</h3><p>Kyiv Cooperative Institute of Business and Law supports the academic foundation, partnerships and development of the college.</p></article><article class="info-card info-card--gold"><div class="icon-badge">M</div><h3>Educational mission</h3><p>To train specialists for economics, law, services, food technologies and entrepreneurship.</p></article><article class="info-card info-card--soft"><div class="icon-badge">E</div><h3>Environment</h3><p>Practical training, student self-government, psychological support and career opportunities.</p></article></div></section>
-  <section class="content-block" id="history"><span class="eyebrow">History</span><h2>From a training center to a modern college</h2><div class="timeline"><article class="timeline-item"><div class="timeline-dot">1984</div><div><time>Start</time><h3>Training center founded</h3><p>The first programs focused on economics, trade and production organization.</p></div></article><article class="timeline-item"><div class="timeline-dot">2002</div><div><time>Growth</time><h3>Status and programs updated</h3><p>The IT direction was opened, classrooms were modernized and employer partnerships expanded.</p></div></article><article class="timeline-item"><div class="timeline-dot">2018</div><div><time>Campus</time><h3>Media lab opened</h3><p>Students gained a space for projects, podcasts, design and digital production.</p></div></article><article class="timeline-item"><div class="timeline-dot">2026</div><div><time>Today</time><h3>Flexible learning model</h3><p>Practice-oriented modules, mentoring and individual educational paths.</p></div></article></div></section>
-  <section class="content-block" id="leadership"><span class="eyebrow">Administration</span><h2>College Leadership</h2><p class="lead">The leadership team is responsible for strategic development, educational quality and academic-methodical work.</p><div class="profile-grid profile-grid--leadership"><article class="profile-card"><div class="profile-photo profile-photo--image"><img src="../assets/people/vitalii-hidzhelitskyi.jpg" alt="Vitalii Hidzhelitskyi" loading="lazy"></div><h3>Vitalii Hidzhelitskyi</h3><p>Director, Candidate of Technical Sciences, Associate Professor</p><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></article><article class="profile-card"><div class="profile-photo profile-photo--image"><img src="../assets/people/inna-raikovska.jpg" alt="Inna Raikovska" loading="lazy"></div><h3>Inna Raikovska</h3><p>Deputy Director for Academic and Methodical Work, Candidate of Economic Sciences, Associate Professor</p><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></article></div></section>
-  <section class="content-block" id="departments"><span class="eyebrow">Structure</span><h2>Departments and subject commissions</h2><div class="three-col"><article class="info-card info-card--teal"><h3>Departments</h3><ul class="check-list"><li>Economics and Law Department</li><li>Department of Food Technologies and Commodity Studies</li></ul></article><article class="info-card"><h3>Subject commissions</h3><ul class="check-list"><li>Accounting and finance disciplines</li><li>Economics, trade and marketing</li><li>Social, humanities and legal disciplines</li></ul></article><article class="info-card"><h3>Professional training</h3><ul class="check-list"><li>Information technology and natural sciences</li><li>Food technologies and hotel-restaurant business organization</li><li>Practical training and the Career Center</li></ul></article></div></section>
-  <section class="content-block" id="governance"><span class="eyebrow">Governance Bodies</span><h2>Quality, self-government and collegial decisions</h2><div class="two-col"><article class="info-card"><h3>Collegial bodies</h3><ul class="check-list"><li>Labor collective conference</li><li>Methodical council</li><li>Pedagogical council</li></ul></article><article class="info-card info-card--gold"><h3>Quality and self-government</h3><ul class="check-list"><li>Education quality assurance center</li><li>Student self-government</li><li>Student ombudsperson</li></ul></article></div></section>
-  <section class="content-block" id="documents"><span class="eyebrow">Open Data</span><h2>Documents and public information</h2><div class="document-list"><div class="document-item"><div><strong>College charter</strong><small>Official document</small></div><a href="#" aria-label="Download the charter">${download}</a></div><div class="document-item"><div><strong>Development concept</strong><small>Strategic development principles</small></div><a href="#" aria-label="Download the concept">${download}</a></div><div class="document-item"><div><strong>Collective agreement</strong><small>Terms of cooperation within the team</small></div><a href="#" aria-label="Download the collective agreement">${download}</a></div><div class="document-item"><div><strong>Local regulatory documents</strong><small>Regulations, rules and procedures</small></div><a href="#" aria-label="Open local documents">${external}</a></div><div class="document-item"><div><strong>Access to public information</strong><small>Requests, open data and reporting</small></div><a href="#" aria-label="Open public information">${external}</a></div><div class="document-item"><div><strong>Licenses and accreditation certificates</strong><small>Educational activity, specialties and programs</small></div><a href="#" aria-label="Open licenses archive">${external}</a></div><div class="document-item"><div><strong>Work plan and report</strong><small>Current academic year</small></div><a href="#" aria-label="Download the plan and report">${download}</a></div><div class="document-item"><div><strong>Public discussion and vacancies</strong><small>Announcements, consultations and open positions</small></div><a href="#" aria-label="Open announcements">${external}</a></div></div></section>
-  <section class="content-block" id="campus"><span class="eyebrow">Campus</span><h2>Spaces for learning and creativity</h2><div class="three-col"><article class="info-card"><div class="icon-badge">12</div><h3>Multimedia classrooms</h3><p>Flexible spaces for lectures, teamwork and presentations.</p></article><article class="info-card"><div class="icon-badge">4</div><h3>Computer labs</h3><p>Modern equipment, training servers and prototyping studios.</p></article><article class="info-card"><div class="icon-badge">2</div><h3>Coworking spaces</h3><p>Areas for independent work, meetings and student initiatives.</p></article></div></section>
-  <section class="content-block" id="contacts"><span class="eyebrow">Contacts</span><h2>Visit us</h2><div class="contact-grid"><div class="contact-card"><h3>${collegeName}</h3><p>Contacts are based on the current institute and college website.</p><ul><li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>18 Yulii Zdanovskoi St., Kyiv, 03022</span></li><li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 3.8 9 8.2 6.9 10c1.3 3 3.1 4.8 6.1 6.1L14.8 14l4.4 2.4-1 4.1c-.2.8-.9 1.3-1.7 1.3C8.7 21.3 2.7 15.3 2.2 7.5c0-.8.5-1.5 1.3-1.7l3.1-2Z"/></svg><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li></ul></div><div class="map-placeholder" aria-label="Schematic map of the college location"><div class="map-pin"><span>C</span></div></div></div></section>
-</div></div></section>
-</main>`,
-  'admissions.html': `<main id="main"><section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>Applicants</span></nav><div class="page-hero-grid"><div><span class="eyebrow eyebrow--light">Applicants</span><h1>Admissions 2026: your next step</h1><p>A clear route from choosing a program to your first student day.</p></div><div class="page-hero-card"><strong>12</strong><span>educational programs for applicants after grades 9 and 11</span></div></div></div></section>
-<section class="section"><div class="container content-layout">
-<aside class="anchor-nav"><nav class="anchor-card" aria-label="Page navigation"><h2>On this page</h2><a href="#apply"><span>How to apply</span><span>→</span></a><a href="#timeline"><span>Calendar</span><span>→</span></a><a href="#programs"><span>Programs</span><span>→</span></a><a href="#documents"><span>Documents</span><span>→</span></a><a href="#tuition"><span>Tuition</span><span>→</span></a><a href="#faq"><span>Questions</span><span>→</span></a><a href="#contacts"><span>Admissions office</span><span>→</span></a></nav></aside>
-<div>
-  <section class="content-block" id="apply"><span class="eyebrow">Step by Step</span><h2>How to become a student</h2><div class="three-col"><article class="info-card info-card--teal"><div class="icon-badge">1</div><h3>Choose a program</h3><p>Review curricula, professional prospects and the study format.</p></article><article class="info-card info-card--gold"><div class="icon-badge">2</div><h3>Prepare documents</h3><p>Create an applicant e-cabinet and upload the required materials.</p></article><article class="info-card info-card--soft"><div class="icon-badge">3</div><h3>Submit an application</h3><p>Track the ranking and complete enrollment requirements on time.</p></article></div></section>
-  <section class="content-block" id="timeline"><span class="eyebrow">Applicant Calendar</span><h2>Key dates</h2><div class="timeline"><article class="timeline-item"><div class="timeline-dot">01</div><div><time>May 15</time><h3>Consultations begin</h3><p>Online meetings with the admissions office and presentations of educational programs.</p></div></article><article class="timeline-item"><div class="timeline-dot">02</div><div><time>July 1</time><h3>E-cabinet registration</h3><p>Create an applicant profile and upload documents.</p></div></article><article class="timeline-item"><div class="timeline-dot">03</div><div><time>July 8-22</time><h3>Application period</h3><p>Submit applications for state-funded or contract-based study.</p></div></article><article class="timeline-item"><div class="timeline-dot">04</div><div><time>August 5</time><h3>Recommendations published</h3><p>Check ranking lists and complete enrollment requirements.</p></div></article></div></section>
-  <section class="content-block" id="programs"><span class="eyebrow">Educational Programs</span><h2>Specialties</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>Program</th><th>Entry basis</th><th>Duration</th><th>Format</th></tr></thead><tbody><tr><td><strong>Computer Science</strong></td><td>Grades 9 / 11</td><td>2 y. 10 mo.</td><td><span class="status">Full-time</span></td></tr><tr><td><strong>Entrepreneurship and Trade</strong></td><td>Grades 9 / 11</td><td>2 y. 10 mo.</td><td><span class="status">Full-time</span></td></tr><tr><td><strong>Accounting and Taxation</strong></td><td>Grades 9 / 11</td><td>2 y. 10 mo.</td><td><span class="status">Full-time</span></td></tr><tr><td><strong>Graphic Design</strong></td><td>Grade 9</td><td>3 y. 10 mo.</td><td><span class="status status--gold">Full-time</span></td></tr><tr><td><strong>Law</strong></td><td>Grade 11</td><td>1 y. 10 mo.</td><td><span class="status">Full-time</span></td></tr></tbody></table></div></section>
-  <section class="content-block" id="documents"><span class="eyebrow">Documents</span><h2>What to prepare</h2><div class="two-col"><article class="info-card"><h3>For the e-cabinet</h3><ul class="check-list"><li>Identity document</li><li>Education document and supplement</li><li>Digital photo</li><li>Benefit documents, if applicable</li></ul></article><article class="info-card"><h3>After recommendation</h3><ul class="check-list"><li>Originals or qualified e-signature copies of documents</li><li>Enrollment application</li><li>Study agreement</li><li>Medical certificate for selected programs</li></ul></article></div><div class="document-list" style="margin-top:24px"><div class="document-item"><div><strong>Admission Rules 2026</strong><small>PDF · 1.8 MB</small></div><a href="#" aria-label="Download admission rules">${download}</a></div><div class="document-item"><div><strong>List of competitive subjects</strong><small>PDF · 640 KB</small></div><a href="#" aria-label="Download subject list">${download}</a></div></div></section>
-  <section class="content-block" id="tuition"><span class="eyebrow">Financial Terms</span><h2>Tuition fees</h2><div class="three-col"><article class="info-card"><span class="tag">from</span><h3 style="font-size:2rem;margin-top:18px">UAH 27,900</h3><p>per academic year for economics programs.</p></article><article class="info-card"><span class="tag">from</span><h3 style="font-size:2rem;margin-top:18px">UAH 31,500</h3><p>per academic year for IT and digital programs.</p></article><article class="info-card info-card--gold"><span class="tag tag--gold">Support</span><h3 style="margin-top:18px">Installment payments</h3><p>Option to agree on an individual payment schedule.</p></article></div></section>
-  <section class="content-block" id="faq"><span class="eyebrow">FAQ</span><h2>Answers for applicants</h2><details class="faq"><summary>Can I apply after grade 9?</summary><p>Yes. Most programs allow admission based on basic secondary education. Specific conditions are listed in the program table.</p></details><details class="faq"><summary>Are there state-funded places?</summary><p>Yes. The number of state or regional order places is published before the application period begins.</p></details><details class="faq"><summary>Is a dormitory available?</summary><p>A limited number of places is available for nonresident applicants. Indicate this need when submitting documents.</p></details><details class="faq"><summary>How can I get an individual consultation?</summary><p>Call or email the admissions office during working hours.</p></details></section>
-  <section class="content-block" id="contacts"><span class="eyebrow">Admissions Office</span><h2>Ask a question</h2><div class="contact-grid"><div class="contact-card"><h3>Applicant contacts</h3><p>Mon-Fri, 09:00-17:00</p><ul><li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6.6 3.8 9 8.2 6.9 10c1.3 3 3.1 4.8 6.1 6.1L14.8 14l4.4 2.4-1 4.1c-.2.8-.9 1.3-1.7 1.3C8.7 21.3 2.7 15.3 2.2 7.5c0-.8.5-1.5 1.3-1.7l3.1-2Z"/></svg><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li><li><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>room 101, main building</span></li></ul></div><article class="info-card"><h3>How to get an answer</h3><p>Contact the admissions office by phone or email during working hours.</p><ul class="check-list"><li><a href="tel:+380442582029">+38 (044) 258-20-29</a></li><li><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li><li>room 101, main building</li></ul></article></div></section>
-</div></div></section>
-</main>`,
-  'students.html': `<main id="main"><section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>Students</span></nav><div class="page-hero-grid"><div><span class="eyebrow eyebrow--light">Students</span><h1>Learning, opportunities and support</h1><p>Fast access to the schedule, learning services, student life and career resources.</p></div><div class="page-hero-card"><strong>18</strong><span>student communities and clubs</span></div></div></div></section>
-<section class="section"><div class="container content-layout">
-<aside class="anchor-nav"><nav class="anchor-card" aria-label="Page navigation"><h2>On this page</h2><a href="#learning"><span>Learning</span><span>→</span></a><a href="#schedule"><span>Schedule</span><span>→</span></a><a href="#electives"><span>Electives</span><span>→</span></a><a href="#community"><span>Leisure</span><span>→</span></a><a href="#opportunities"><span>Opportunities</span><span>→</span></a><a href="#support"><span>Support</span><span>→</span></a><a href="#career"><span>Career</span><span>→</span></a></nav></aside>
-<div>
-  <section class="content-block" id="learning"><span class="eyebrow">Learning Process</span><h2>Learning services</h2><div class="three-col"><article class="feature-card"><div class="feature-icon">S</div><h3>Class schedule</h3><p>Current weekly schedule, substitutions and classrooms.</p><a class="text-link" href="#schedule">View ${arrow}</a></article><article class="feature-card"><div class="feature-icon">E</div><h3>E-learning</h3><p>Course materials, assignments and communication with lecturers.</p><a class="text-link" href="#">Log in ${external}</a></article><article class="feature-card"><div class="feature-icon">C</div><h3>Course catalog</h3><p>Description of elective components and rules for building an individual path.</p><a class="text-link" href="#electives">Open ${arrow}</a></article></div></section>
-  <section class="content-block" id="schedule"><span class="eyebrow">Today</span><h2>Class schedule</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>Time</th><th>Group</th><th>Discipline</th><th>Lecturer</th><th>Room</th></tr></thead><tbody><tr><td>08:30-09:50</td><td>CS-21</td><td><strong>Algorithms and Data Structures</strong></td><td>O. Bondar</td><td>312</td></tr><tr><td>10:05-11:25</td><td>ET-22</td><td><strong>Marketing Communications</strong></td><td>N. Sydorenko</td><td>205</td></tr><tr><td>11:40-13:00</td><td>GD-11</td><td><strong>Composition Basics</strong></td><td>A. Hnatiuk</td><td>Media Lab</td></tr><tr><td>13:30-14:50</td><td>AT-31</td><td><strong>Financial Accounting</strong></td><td>L. Petrenko</td><td>118</td></tr></tbody></table></div><p style="margin-top:14px;font-size:.85rem">Temporary schedule data. On the live site this table can be connected to an API or Google Sheets.</p></section>
-  <section class="content-block" id="electives"><span class="eyebrow">Individual Path</span><h2>Elective disciplines</h2><div class="two-col"><article class="info-card"><span class="tag">Digital Skills</span><h3 style="margin-top:16px">Web Design Basics</h3><p>Prototyping, UI components, responsive layouts and accessibility.</p><p><strong>3 credits · 30 places</strong></p></article><article class="info-card"><span class="tag tag--gold">Communications</span><h3 style="margin-top:16px">Public Speaking</h3><p>Speech structure, audience work and visual support.</p><p><strong>3 credits · 24 places</strong></p></article><article class="info-card"><span class="tag">Business</span><h3 style="margin-top:16px">Finance for Life</h3><p>Personal budget, taxes, loans, savings and risks.</p><p><strong>3 credits · 30 places</strong></p></article><article class="info-card"><span class="tag tag--gold">Language</span><h3 style="margin-top:16px">English for Careers</h3><p>CVs, interviews, professional vocabulary and workplace correspondence.</p><p><strong>4 credits · 20 places</strong></p></article></div></section>
-  <section class="content-block" id="community"><span class="eyebrow">Leisure</span><h2>Student community</h2><div class="three-col"><article class="info-card info-card--teal"><div class="icon-badge">SG</div><h3>Self-government</h3><p>Representation of student interests, events and initiatives.</p></article><article class="info-card info-card--gold"><div class="icon-badge">V</div><h3>Volunteering</h3><p>Volunteer projects for community support and mutual aid.</p></article><article class="info-card info-card--soft"><div class="icon-badge">M</div><h3>History museum</h3><p>Archive, oral histories and student research projects.</p></article></div></section>
-  <section class="content-block" id="opportunities"><span class="eyebrow">Opportunities</span><h2>Develop your talents</h2><div class="two-col"><article class="info-card"><h3>Art studios</h3><ul class="check-list"><li>Vocal studio</li><li>Theater workshop</li><li>Photo and video club</li><li>Design laboratory</li></ul></article><article class="info-card"><h3>Sports and languages</h3><ul class="check-list"><li>Volleyball and basketball</li><li>Table tennis</li><li>English speaking club</li><li>Polish for beginners</li></ul></article></div></section>
-  <section class="content-block" id="support"><span class="eyebrow">Social and Legal Support</span><h2>You are not alone</h2><div class="three-col"><article class="info-card"><div class="icon-badge">P</div><h3>Psychological service</h3><p>Confidential consultations, trainings and adaptation support.</p><a class="text-link" href="mailto:rector@kkibp.edu.ua">Write ${arrow}</a></article><article class="info-card"><div class="icon-badge">L</div><h3>Legal clinic</h3><p>Basic consultations on educational, labor and social rights.</p><a class="text-link" href="mailto:rector@kkibp.edu.ua">Write ${arrow}</a></article><article class="info-card"><div class="icon-badge">O</div><h3>Student ombudsperson</h3><p>An independent channel for appeals about rights and a safe environment.</p><a class="text-link" href="mailto:rector@kkibp.edu.ua">Write ${arrow}</a></article></div></section>
-  <section class="content-block" id="career"><span class="eyebrow">Career Center</span><h2>From the first CV to the first job</h2><div class="cta-panel"><div><h2 style="font-size:2.2rem">Career consultation</h2><p>CV, portfolio, interview, internship and search for partner employers.</p></div><div class="cta-actions"><a class="button button--accent" href="mailto:rector@kkibp.edu.ua">Write</a><a class="button button--ghost-light" href="college.html#documents">Vacancies</a></div></div></section>
-</div></div></section>
-</main>`,
-  'alumni.html': `<main id="main"><section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>Alumni</span></nav><div class="page-hero-grid"><div><span class="eyebrow eyebrow--light">Alumni</span><h1>A community that stays close</h1><p>Stay connected with the college, share experience and support the next generation of students.</p></div><div class="page-hero-card"><strong>8,600+</strong><span>alumni in the professional community</span></div></div></div></section>
-<section class="section"><div class="container content-layout">
-<aside class="anchor-nav"><nav class="anchor-card" aria-label="Page navigation"><h2>On this page</h2><a href="#association"><span>Association</span><span>→</span></a><a href="#stories"><span>Stories</span><span>→</span></a><a href="#mentoring"><span>Mentoring</span><span>→</span></a><a href="#events"><span>Meetings</span><span>→</span></a></nav></aside>
-<div>
-<section class="content-block" id="association"><span class="eyebrow">Alumni Association</span><h2>Connections that work for years</h2><p class="lead">The association brings together alumni of different years, creates professional contacts, supports student initiatives and contributes to college development.</p><div class="three-col"><article class="info-card info-card--teal"><div class="icon-badge">01</div><h3>Networking</h3><p>Professional meetings, thematic clubs and opportunity exchange.</p></article><article class="info-card info-card--gold"><div class="icon-badge">02</div><h3>Mentoring</h3><p>Advice for students, portfolio reviews and career consultations.</p></article><article class="info-card info-card--soft"><div class="icon-badge">03</div><h3>Support</h3><p>Scholarships, equipment and participation in developing educational spaces.</p></article></div></section>
-<section class="content-block" id="stories"><span class="eyebrow">Successful Alumni</span><h2>Stories that inspire</h2><div class="profile-grid"><article class="profile-card"><div class="profile-photo"></div><h3>Maria Levchenko</h3><p>Product designer, class of 2019</p><a href="#">Read the story</a></article><article class="profile-card"><div class="profile-photo"></div><h3>Dmytro Romaniuk</h3><p>Entrepreneur, class of 2016</p><a href="#">Read the story</a></article><article class="profile-card"><div class="profile-photo"></div><h3>Sofia Kravets</h3><p>Data analyst, class of 2021</p><a href="#">Read the story</a></article></div></section>
-<section class="content-block" id="mentoring"><span class="eyebrow">Mentoring Program</span><h2>Pass the experience forward</h2><div class="two-col"><article class="info-card"><h3>Become a mentor</h3><p>Help a student define goals, prepare a portfolio and better understand the profession.</p><ul class="check-list"><li>1 meeting per month</li><li>Program duration is 4 months</li><li>Methodical support from the coordinator</li></ul><a class="button button--primary" href="mailto:rector@kkibp.edu.ua" style="margin-top:20px">Apply</a></article><article class="info-card info-card--gold"><h3>Invite an intern</h3><p>Offer practice or a short project for senior students.</p><ul class="check-list"><li>Preselection of candidates</li><li>Support from the Career Center</li><li>Flexible cooperation format</li></ul><a class="button button--outline" href="mailto:rector@kkibp.edu.ua" style="margin-top:20px">Contact us</a></article></div></section>
-<section class="content-block" id="events"><span class="eyebrow">Meetings</span><h2>Events for alumni</h2><div class="event-list"><article class="event-item"><div class="event-date">24<small>May</small></div><div><h3>Annual alumni meeting</h3><p>15:00 · college campus</p></div><a href="#">${arrow}</a></article><article class="event-item"><div class="event-date">13<small>Jun</small></div><div><h3>Career club: moving into management</h3><p>18:30 · online</p></div><a href="#">${arrow}</a></article></div></section>
-</div></div></section>
-</main>`,
-  'science.html': `<main id="main"><section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>Research</span></nav><div class="page-hero-grid"><div><span class="eyebrow eyebrow--light">Research</span><h1>Research that turns into practice</h1><p>We support faculty and student projects, open science and international cooperation.</p></div><div class="page-hero-card"><strong>34</strong><span>active research and applied projects</span></div></div></div></section>
-<section class="section"><div class="container content-layout">
-<aside class="anchor-nav"><nav class="anchor-card" aria-label="Page navigation"><h2>On this page</h2><a href="#directions"><span>Areas</span><span>→</span></a><a href="#projects"><span>Projects</span><span>→</span></a><a href="#grants"><span>Grants</span><span>→</span></a><a href="#publications"><span>Publications</span><span>→</span></a><a href="#student-science"><span>Student research</span><span>→</span></a><a href="#events"><span>Events</span><span>→</span></a></nav></aside>
-<div>
-<section class="content-block" id="directions"><span class="eyebrow">Research Activity</span><h2>Priority areas</h2><div class="three-col"><article class="info-card"><div class="icon-badge">DX</div><h3>Digital transformation</h3><p>Educational technologies, data, automation and digital services for communities.</p></article><article class="info-card"><div class="icon-badge">SE</div><h3>Social economy</h3><p>Entrepreneurship, cooperation, local development and financial inclusion.</p></article><article class="info-card"><div class="icon-badge">ED</div><h3>Innovation in education</h3><p>Competency-based learning, assessment and personalized paths.</p></article></div></section>
-<section class="content-block" id="projects"><span class="eyebrow">International Cooperation</span><h2>Current projects</h2><div class="two-col"><article class="info-card info-card--teal"><span class="tag">2025-2027</span><h3 style="margin-top:18px">Digital Skills Bridge</h3><p>Micro-courses in digital competencies for students and lecturers.</p><p><strong>Partners:</strong> Ukraine, Poland, Lithuania</p></article><article class="info-card info-card--gold"><span class="tag tag--gold">2026</span><h3 style="margin-top:18px">Green Campus Lab</h3><p>Student research on energy efficiency and sustainable solutions for the campus.</p><p><strong>Format:</strong> applied laboratory</p></article></div></section>
-<section class="content-block" id="grants"><span class="eyebrow">Opportunities</span><h2>Grants, awards and scholarships</h2><div class="document-list"><div class="document-item"><div><strong>Mini-grants for student research</strong><small>Up to UAH 20,000 · deadline April 30</small></div><a href="#">${external}</a></div><div class="document-item"><div><strong>Young researchers competition</strong><small>Individual and team projects</small></div><a href="#">${external}</a></div><div class="document-item"><div><strong>Academic mobility scholarship</strong><small>Summer school at a partner college</small></div><a href="#">${external}</a></div></div></section>
-<section class="content-block" id="publications"><span class="eyebrow">Scientific Publications</span><h2>Publications and repository</h2><div class="three-col"><article class="info-card"><div class="icon-badge">J</div><h3>Professional journal</h3><p>Applied research in education, economics and digital technologies.</p><a class="text-link" href="library.html#catalog">Open ${arrow}</a></article><article class="info-card"><div class="icon-badge">R</div><h3>Repository</h3><p>Articles, conference abstracts, learning materials and student works.</p><a class="text-link" href="library.html#catalog">Go ${arrow}</a></article><article class="info-card"><div class="icon-badge">P</div><h3>Researcher profiles</h3><p>ORCID, Google Scholar, bibliometric data and areas of expertise.</p><a class="text-link" href="#">View ${arrow}</a></article></div></section>
-<section class="content-block" id="student-science"><span class="eyebrow">Student Research</span><h2>Clubs and research teams</h2><div class="two-col"><article class="info-card"><h3>DataLab</h3><p>Data analytics, visualization and applied research for city services.</p><span class="status">Wednesdays · 16:00</span></article><article class="info-card"><h3>StartUp Studio</h3><p>Business idea validation, user research and prototyping.</p><span class="status status--gold">Thursdays · 15:30</span></article><article class="info-card"><h3>Media Research</h3><p>Digital communications, audience behavior and media literacy.</p><span class="status">Tuesdays · 16:20</span></article><article class="info-card"><h3>EcoTrack</h3><p>Campus resource monitoring and sustainable development solutions.</p><span class="status status--gold">Fridays · 14:30</span></article></div></section>
-<section class="content-block" id="events"><span class="eyebrow">Calendar</span><h2>Research events</h2><div class="event-list"><article class="event-item"><div class="event-date">17<small>Apr</small></div><div><h3>Student research conference</h3><p>10:00 · building B</p></div><a href="#">${arrow}</a></article><article class="event-item"><div class="event-date">06<small>May</small></div><div><h3>Grant proposal workshop</h3><p>15:00 · online</p></div><a href="#">${arrow}</a></article></div></section>
-</div></div></section>
-</main>`,
-  'library.html': `<main id="main"><section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>Library</span></nav><div class="page-hero-grid"><div><span class="eyebrow eyebrow--light">Library</span><h1>Knowledge in a convenient format</h1><p>Learning literature, electronic resources, research support and space for collaboration.</p></div><div class="page-hero-card"><strong>48,000+</strong><span>printed and electronic publications</span></div></div></div></section>
-<section class="section"><div class="container content-layout">
-<aside class="anchor-nav"><nav class="anchor-card" aria-label="Page navigation"><h2>On this page</h2><a href="#about"><span>About library</span><span>→</span></a><a href="#catalog"><span>Catalog</span><span>→</span></a><a href="#new-books"><span>New arrivals</span><span>→</span></a><a href="#space"><span>Space</span><span>→</span></a><a href="#researchers"><span>For researchers</span><span>→</span></a><a href="#integrity"><span>Integrity</span><span>→</span></a></nav></aside>
-<div>
-<section class="content-block" id="about"><span class="eyebrow">About the Library</span><h2>More than books</h2><p class="lead">The library supports learning, research and reading culture. It helps find sources, format references, check work and organize events.</p><div class="three-col"><article class="info-card info-card--teal"><div class="icon-badge">48K</div><h3>Collection</h3><p>Textbooks, professional editions, fiction and digital collections.</p></article><article class="info-card info-card--gold"><div class="icon-badge">62</div><h3>Workplaces</h3><p>Quiet area, coworking space, computers and rooms for team meetings.</p></article><article class="info-card info-card--soft"><div class="icon-badge">24/7</div><h3>E-resources</h3><p>Access to the catalog, repository and selected learning materials.</p></article></div></section>
-<section class="content-block" id="catalog"><span class="eyebrow">Book Collection</span><h2>Electronic catalog</h2><div class="cta-panel"><div><h2 style="font-size:2.2rem">Find the publication you need</h2><p>Search by author, title, topic or academic discipline.</p></div><div class="cta-actions"><a class="button button--accent" href="#">Open catalog ${external}</a></div></div><div class="two-col" style="margin-top:24px"><article class="info-card"><h3>Repository</h3><p>Educational-methodical materials, articles, abstracts and qualification papers.</p><a class="text-link" href="#">Go ${arrow}</a></article><article class="info-card"><h3>Electronic library</h3><p>Selections of open textbooks, periodicals and learning platforms.</p><a class="text-link" href="#">Go ${arrow}</a></article></div></section>
-<section class="content-block" id="new-books"><span class="eyebrow">New Acquisitions</span><h2>Recommended reading</h2><div class="three-col"><article class="info-card"><span class="tag">IT</span><h3 style="margin-top:16px">Clean Code: Practice Book</h3><p>Updated learning edition for programming beginners.</p><small class="muted">Code: 004.4 / C-68</small></article><article class="info-card"><span class="tag tag--gold">Business</span><h3 style="margin-top:16px">Entrepreneurial Thinking</h3><p>From problem discovery to business model validation.</p><small class="muted">Code: 658 / E-32</small></article><article class="info-card"><span class="tag">Design</span><h3 style="margin-top:16px">Visual Communication Systems</h3><p>Grids, typography and digital product design.</p><small class="muted">Code: 766 / V-40</small></article></div></section>
-<section class="content-block" id="space"><span class="eyebrow">Library Space</span><h2>Work the way that suits you</h2><div class="two-col"><article class="info-card info-card--teal"><h3>Quiet reading room</h3><p>40 seats, individual lighting, power outlets and Wi-Fi.</p><span class="status">Mon-Fri · 08:30-18:00</span></article><article class="info-card info-card--gold"><h3>Coworking</h3><p>Team tables, presentation screen and room booking.</p><span class="status status--gold">Mon-Fri · 09:00-20:00</span></article></div></section>
-<section class="content-block" id="researchers"><span class="eyebrow">For Researchers</span><h2>Information support for research</h2><div class="document-list"><div class="document-item"><div><strong>Scientometric indicators</strong><small>Overview of Scopus, Web of Science, Google Scholar</small></div><a href="#">${external}</a></div><div class="document-item"><div><strong>Open research resources</strong><small>Catalog of verified databases and journals</small></div><a href="#">${external}</a></div><div class="document-item"><div><strong>Creating an ORCID profile</strong><small>Step-by-step guide</small></div><a href="#">${download}</a></div></div></section>
-<section class="content-block" id="integrity"><span class="eyebrow">Academic Integrity</span><h2>Writing and researching responsibly</h2><div class="two-col"><article class="info-card"><h3>Useful materials</h3><ul class="check-list"><li>Citation and source formatting rules</li><li>How to avoid unintentional plagiarism</li><li>Recommendations for using AI</li><li>Academic integrity policy</li></ul></article><article class="info-card info-card--gold"><h3>Work checking</h3><p>Students can submit work for a preliminary check through a lecturer or library consultant.</p><a class="button button--primary" href="mailto:rector@kkibp.edu.ua">Ask a librarian</a></article></div></section>
-</div></div></section>
-</main>`,
-  'news.html': `<main id="main"><section class="page-hero"><div class="container"><nav class="breadcrumbs" aria-label="Breadcrumbs"><a href="index.html">Home</a><span>News</span></nav><div class="page-hero-grid"><div><span class="eyebrow eyebrow--light">News</span><h1>Events, people and achievements</h1><p>Follow learning projects, partnerships, student initiatives and announcements.</p></div><div class="page-hero-card"><strong>4</strong><span>current materials in the updated feed</span></div></div></div></section>
-<section class="section"><div class="container"><div class="section-heading"><div><span class="eyebrow">News Feed</span><h2>Latest materials</h2><p>A selection of current materials about learning, research, student life and support for Ukraine's defenders.</p></div></div><div class="filter-bar" role="group" aria-label="News filter"><button class="filter-button is-active" data-filter="all">All</button><button class="filter-button" data-filter="education">Learning</button><button class="filter-button" data-filter="events">Events</button><button class="filter-button" data-filter="science">Research</button><button class="filter-button" data-filter="community">Community</button></div>${newsCardsPage}</div></section>
-</main>`
+const translateFromUkrainian = async (file) => {
+  let html = await readFile(file, 'utf8');
+  html = patchHead(html, file);
+  html = prefixRootPaths(html);
+  html = patchLanguageSwitches(html, file);
+  html = html.replace(/&hl=uk/g, '&hl=en');
+  html = replaceText(html);
+  return html;
 };
 
-const htmlPage = (file) => `${head(file)}
-${header(file)}
+const updateNewsArchiveUi = (html) => html.replace(
+  '<div class="news-grid" data-news-list data-news-excerpt-length="185"></div>',
+  '<div class="news-grid" data-news-list data-news-excerpt-length="185" data-news-page-size="9"></div><nav class="news-pagination" data-news-pagination aria-label="News pages" hidden></nav>'
+);
 
-${mains[file]}
-
-${footer()}`;
-
-const updateUkrainianPage = async (file) => {
-  let source = await readFile(file, 'utf8');
-  source = source
-    .replace(/css\/styles\.css\?v=[^"]+/g, `css/styles.css?v=${cssVersion}`)
-    .replace(/js\/main\.js\?v=[^"]+/g, `js/main.js?v=${scriptVersion}`);
-
-  source = source.replace(/\n  <div class="topbar">[\s\S]*?\n  <div class="header-main">/, '\n  <div class="header-main">');
-
-  const headerActionsStart = source.indexOf('      <div class="header-actions">');
-  const searchButtonMarker = '        <button class="icon-button search-open';
-  let searchButtonStart = source.indexOf(searchButtonMarker, headerActionsStart);
-  if (headerActionsStart !== -1) {
-    source = source.replace(/\n        <div class="header-contact"[\s\S]*?\n        <\/div>/, '');
-    source = source.replace(/\n        <div class="language-switch header-language"[\s\S]*?\n        <\/div>/, '');
-    source = source.replace(/\n        <a class="icon-button header-social[\s\S]*?header-social--facebook[\s\S]*?<\/a>/, '');
-    searchButtonStart = source.indexOf(searchButtonMarker, headerActionsStart);
-  }
-  if (headerActionsStart !== -1 && searchButtonStart !== -1) {
-    source = source.replace('class="icon-button search-open"', 'class="icon-button search-open header-search"');
-    source = `${source.slice(0, searchButtonStart)}        ${ukrainianHeaderContact()}\n        ${ukrainianHeaderSocialLinks()}\n${source.slice(searchButtonStart)}`;
-    const searchButtonEnd = source.indexOf('</button>', searchButtonStart);
-    if (searchButtonEnd !== -1) {
-      const insertionPoint = searchButtonEnd + '</button>'.length;
-      source = `${source.slice(0, insertionPoint)}\n        ${ukrainianHeaderLanguage(file)}${source.slice(insertionPoint)}`;
-    }
-  }
-
-  const navInnerStart = source.indexOf('      <div class="container nav-inner">');
-  const primaryNavMarker = '        <nav class="primary-nav"';
-  const primaryNavStart = source.indexOf(primaryNavMarker, navInnerStart);
-  const mobileToolsStart = source.indexOf('        <div class="mobile-nav-tools"', navInnerStart);
-  if (navInnerStart !== -1 && primaryNavStart !== -1) {
-    if (mobileToolsStart !== -1 && mobileToolsStart < primaryNavStart) {
-      source = `${source.slice(0, mobileToolsStart)}        ${ukrainianMobileNavTools(file)}\n${source.slice(primaryNavStart)}`;
-    } else {
-      source = `${source.slice(0, primaryNavStart)}        ${ukrainianMobileNavTools(file)}\n${source.slice(primaryNavStart)}`;
-    }
-  }
-
-  source = source.replace(/<li class="nav-item nav-item--brand">[\s\S]*?<\/li>/, '');
-  source = source.replace('<ul class="nav-list">', `<ul class="nav-list">${ukrainianNavBrand()}`);
-
-  source = source.replace(/<li class="nav-item nav-item--cta"><a class="nav-link nav-link--cta" href="admissions\.html">Вступ<\/a><\/li>/g, '');
-
-  const newsItem = '<li class="nav-item"><a class="nav-link" href="news.html">Новини</a></li>';
-  const activeNewsItem = '<li class="nav-item is-active"><a class="nav-link" href="news.html">Новини</a></li>';
-  const newsStart = source.indexOf(newsItem);
-  const activeNewsStart = source.indexOf(activeNewsItem);
-  const navListEnd = newsStart !== -1 ? source.indexOf('</ul>', newsStart) : -1;
-  const activeNavListEnd = activeNewsStart !== -1 ? source.indexOf('</ul>', activeNewsStart) : -1;
-  if (newsStart !== -1 && navListEnd !== -1) {
-    source = `${source.slice(0, newsStart)}${newsItem}${ukrainianAdmissionsCta}${ukrainianNavTools(file)}${source.slice(navListEnd)}`;
-  } else if (activeNewsStart !== -1 && activeNavListEnd !== -1) {
-    source = `${source.slice(0, activeNewsStart)}${activeNewsItem}${ukrainianAdmissionsCta}${ukrainianNavTools(file)}${source.slice(activeNavListEnd)}`;
-  }
-
-  source = source.replace(/\n        <div class="mobile-nav-footer">[\s\S]*?\n        <\/div>(?=\n      <\/div>\n    <\/div>\n  <\/div>\n<\/header>)/, '');
-
-  if (!source.includes('rel="alternate" hreflang="en"')) {
-    source = source.replace(
-      '  <link rel="icon" href="assets/logo_small.gif" type="image/gif">',
-      `  <link rel="alternate" hreflang="uk" href="${file}">\n  <link rel="alternate" hreflang="en" href="en/${file}">\n  <link rel="icon" href="assets/logo_small.gif" type="image/gif">`
-    );
-  }
-
-  source = source.replace(/\n<footer class="site-footer"[\s\S]*?<\/html>\s*$/, ukrainianFooter());
-
-  await writeFile(file, source);
-};
+const updateHomeLinks = (html) => html
+  .replace(/href="admissions\.html#apply"/g, 'href="admissions.html"')
+  .replace(/href="admissions\.html#programs"/g, 'href="admissions.html#educational-programs"')
+  .replace(/href="admissions\.html#documents"/g, 'href="admissions.html#admission-info"');
 
 await mkdir('en', { recursive: true });
-await Promise.all(files.map((file) => writeFile(`en/${file}`, htmlPage(file))));
-await Promise.all(files.map(updateUkrainianPage));
+
+for (const file of sectionFiles) {
+  const html = await translateFromUkrainian(file);
+  await writeFile(`en/${file}`, html);
+}
+
+for (const file of shellOnlyFiles) {
+  const translatedShell = await translateFromUkrainian(file);
+  const existing = await readFile(`en/${file}`, 'utf8');
+  let main = extractMain(existing);
+  if (file === 'index.html') main = updateHomeLinks(main);
+  if (file === 'news.html') main = updateNewsArchiveUi(main);
+  const html = translatedShell.replace(/<main[\s\S]*?<\/main>/, main);
+  await writeFile(`en/${file}`, html);
+}
+
+console.log(`Updated English pages: ${allFiles.map((file) => `en/${file}`).join(', ')}`);
