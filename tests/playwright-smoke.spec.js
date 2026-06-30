@@ -28,7 +28,7 @@ test('home about-college carousel renders and can be controlled', async ({ page 
   await section.scrollIntoViewIfNeeded();
   await expect(slides).toHaveCount(4);
   await expect(dots).toHaveCount(4);
-  await expect(section.locator('.college-combo-more')).toHaveAttribute('href', 'college.html#about');
+  await expect(section.locator('.college-combo-more')).toHaveAttribute('href', 'college/general-info/about-college.html');
 
   const imageSources = await slides.evaluateAll((images) => images.map((image) => new URL(image.getAttribute('src'), window.location.href).href));
   for (const src of imageSources) {
@@ -57,7 +57,7 @@ test('home main sections expose accepted navigation structure', async ({ page })
   await expect(section.locator('.main-sections-heading p')).toHaveText('Для вступників, студентів, випускників і гостей сайту: основні розділи, з яких починається знайомство з коледжем.');
 
   const contact = section.getByRole('link', { name: /Контакти/ });
-  await expect(contact).toHaveAttribute('href', 'college.html#contacts');
+  await expect(contact).toHaveAttribute('href', 'college/general-info/contacts.html');
 
   const cards = section.locator('.main-section-card');
   await expect(cards).toHaveCount(6);
@@ -115,36 +115,57 @@ test('home latest news renders exactly three newest shared cards', async ({ page
 
   await expect(cards).toHaveCount(3);
   await expect(cards.locator('h3')).toHaveText([
-    'К.і.н., доцент Юлія Руденко взяла участь в освітньому тренінгу «ЗНОвУ відновлюємось 2026»',
-    '«Першокурсники: рік по тому»: творчий звіт студентів',
-    'Захист виробничої практики студентів спеціальності «Облік і оподаткування»: підсумки професійного становлення'
+    'К.І.Н., ДОЦЕНТ ЮЛІЯ РУДЕНКО ВЗЯЛА УЧАСТЬ У ВЕБІНАРІ ДО ДНЯ КОНСТИТУЦІЇ УКРАЇНИ',
+    'ДЕНЬ ВІДКРИТИХ ДВЕРЕЙ – КРОК ДО МАЙБУТНЬОЇ ПРОФЕСІЇ',
+    'Розвиток цифрових компетентностей: викладачі та здобувачі освіти магістерської ОПП «Комерція та торгівля» успішно завершили підвищення кваліфікації у межах проєкту «Prof2IT»'
   ]);
   await expect(section.locator('.news-media img')).toHaveCount(3);
+  await expect(section.locator('.news-meta')).toHaveCount(3);
   await expect(section.locator('.text-link')).toHaveCount(3);
-  await expect(section.locator('.news-media-label, .news-meta')).toHaveCount(0);
+  await expect(section.locator('.news-media-label')).toHaveCount(0);
 
   const allNews = page.getByRole('link', { name: /Усі новини/ });
   await expect(allNews).toHaveAttribute('href', 'news.html');
 });
 
-test('news page uses the same news card structure for the full feed', async ({ page }) => {
+test('news page paginates the latest twelve materials as nine plus three', async ({ page }) => {
   await page.goto('/news.html');
 
   const grid = page.locator('[data-news-list]');
   const cards = grid.locator('.news-card');
 
-  await expect(page.locator('[data-news-count]')).toHaveText('4');
   await expect(page.locator('.filter-bar')).toHaveCount(0);
-  await expect(cards).toHaveCount(4);
+  await expect(cards).toHaveCount(9);
   await expect(cards.locator('h3')).toHaveText([
-    'К.і.н., доцент Юлія Руденко взяла участь в освітньому тренінгу «ЗНОвУ відновлюємось 2026»',
-    '«Першокурсники: рік по тому»: творчий звіт студентів',
-    'Захист виробничої практики студентів спеціальності «Облік і оподаткування»: підсумки професійного становлення',
-    'Сила в єдності: інститут відзначено нагородою від Повітряного командування «Центр»'
+    'К.І.Н., ДОЦЕНТ ЮЛІЯ РУДЕНКО ВЗЯЛА УЧАСТЬ У ВЕБІНАРІ ДО ДНЯ КОНСТИТУЦІЇ УКРАЇНИ',
+    'ДЕНЬ ВІДКРИТИХ ДВЕРЕЙ – КРОК ДО МАЙБУТНЬОЇ ПРОФЕСІЇ',
+    'Розвиток цифрових компетентностей: викладачі та здобувачі освіти магістерської ОПП «Комерція та торгівля» успішно завершили підвищення кваліфікації у межах проєкту «Prof2IT»',
+    'Представники Інституту взяли участь у Міжнародній науково-практичній конференції з питань європейської зеленої політики та сталих фінансів',
+    'Академічна доброчесність і ШІ: проректорка з навчально-методичної та наукової роботи Інна Райковська долучилися до онлайн-курсу щодо нових вимог законодавства',
+    'Проректорка Інна Райковська взяла участь у науково-практичному семінарі з питань цифрової трансформації сфери НТІ',
+    'КРУГЛИЙ СТІЛ «30 РОКІВ КОНСТИТУЦІЇ УКРАЇНИ: ІСТОРИЧНІ ВИТОКИ, СУЧАСНІСТЬ І МАЙБУТНЄ»',
+    '«Скринька довіри»: забезпечення зворотного зв’язку та захист прав студентів',
+    'Від теорії до майстерності: старт навчальної практики харчовиків-технологів'
   ]);
-  await expect(grid.locator('.news-media img')).toHaveCount(4);
-  await expect(grid.locator('.text-link')).toHaveCount(4);
-  await expect(grid.locator('.news-media-label, .news-meta')).toHaveCount(0);
+  await expect(grid.locator('.news-media img')).toHaveCount(9);
+  await expect(grid.locator('.news-meta')).toHaveCount(9);
+  await expect(grid.locator('.text-link')).toHaveCount(9);
+  await expect(grid.locator('.news-media-label')).toHaveCount(0);
+  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2']);
+  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('1');
+
+  const firstLink = grid.locator('.text-link').first();
+  await expect(firstLink).toHaveAttribute('href', /news-4875-.*\.html$/);
+
+  await page.goto('/news.html?page=2');
+  const secondPageCards = page.locator('[data-news-list] .news-card');
+  await expect(secondPageCards).toHaveCount(3);
+  await expect(secondPageCards.locator('h3')).toHaveText([
+    'Здобувачі освіти спеціальності «Готельно-ресторанна справа» проходять навчальну практику',
+    'К.І.Н., ДОЦЕНТ ЮЛІЯ РУДЕНКО ВЗЯЛА УЧАСТЬ В ОСВІТНЬОМУ ТРЕНІНГУ «ЗНОВУ ВІДНОВЛЮЄМОСЬ 2026»',
+    '«Першокурсники: рік по тому»: творчий звіт студентів'
+  ]);
+  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('2');
 });
 
 test('english home mirrors the accepted home structure', async ({ page }) => {
@@ -168,7 +189,8 @@ test('english home mirrors the accepted home structure', async ({ page }) => {
 
   const news = page.locator('[data-news-list]').first();
   await expect(news.locator('.news-card')).toHaveCount(3);
-  await expect(news.locator('.news-media-label, .news-meta')).toHaveCount(0);
+  await expect(news.locator('.news-media-label')).toHaveCount(0);
+  await expect(news.locator('.news-meta')).toHaveCount(3);
   await expect(page.getByRole('link', { name: /All news/ })).toHaveClass(/main-sections-contact--filled/);
 });
 
@@ -176,12 +198,14 @@ test('english news page uses the shared card feed without legacy filters', async
   await page.goto('/en/news.html');
 
   const grid = page.locator('[data-news-list]');
-  await expect(page.locator('[data-news-count]')).toHaveText('4');
+  await expect(page.locator('[data-news-count]')).toHaveText('12');
   await expect(page.locator('.filter-bar')).toHaveCount(0);
-  await expect(grid.locator('.news-card')).toHaveCount(4);
-  await expect(grid.locator('.news-media img')).toHaveCount(4);
-  await expect(grid.locator('.news-media-label, .news-meta')).toHaveCount(0);
+  await expect(grid.locator('.news-card')).toHaveCount(12);
+  await expect(grid.locator('.news-media img')).toHaveCount(12);
+  await expect(grid.locator('.news-media-label')).toHaveCount(0);
+  await expect(grid.locator('.news-meta')).toHaveCount(12);
   await expect(grid.locator('.text-link').first()).toContainText('Read in full');
+  await expect(grid.locator('.text-link').first()).toHaveAttribute('href', /\.\.\/news-4875-.*\.html$/);
 });
 
 test('primary menu toggles submenus without navigating', async ({ page }) => {
@@ -200,6 +224,10 @@ test('primary menu toggles submenus without navigating', async ({ page }) => {
   await expect(page).toHaveURL(startUrl);
   await expect(collegeToggle).toHaveAttribute('aria-expanded', 'true');
   await expect(collegeMenu).toBeVisible();
+  await expect(collegeMenu.locator('a[href*="college/"]')).toHaveCount(24);
+  await expect(collegeMenu.getByRole('link', { name: 'Про коледж' })).toHaveAttribute('href', 'college/general-info/about-college.html');
+  await expect(collegeMenu.getByRole('link', { name: 'Статут коледжу' })).toHaveAttribute('href', 'college/main-info/statute.html');
+  await expect(collegeMenu.getByRole('link', { name: 'Центр кар’єри' })).toHaveAttribute('href', 'college/activity/career-center.html');
 
   await applicantsToggle.click();
   await expect(collegeToggle).toHaveAttribute('aria-expanded', 'false');

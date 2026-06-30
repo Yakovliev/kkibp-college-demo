@@ -1,0 +1,50 @@
+{
+  "generatedBy": "college-design-variants",
+  "date": "2026-06-30",
+  "target": "index.html",
+  "scope": "full homepage redesign",
+  "status": "testing",
+  "notes": "Standalone HTML variants with inline CSS only. No existing site CSS or JavaScript files are linked. All variants include the approved main navigation sections, groups, and menu items from the current index.html.",
+  "assets": [
+    {
+      "file": "media/applicant-journey.png",
+      "source": "generated locally for this design-lab run",
+      "usedBy": "variant-a.html"
+    },
+    {
+      "file": "media/public-desk.png",
+      "source": "generated locally for this design-lab run",
+      "usedBy": "variant-b.html"
+    },
+    {
+      "file": "media/student-community.png",
+      "source": "generated locally for this design-lab run",
+      "usedBy": "variant-c.html"
+    }
+  ],
+  "variants": [
+    {
+      "id": "a",
+      "name": "Applicant Route",
+      "file": "variant-a.html",
+      "direction": "Admissions-first route map with a full-bleed hero and step-by-step decision flow."
+    },
+    {
+      "id": "b",
+      "name": "Public Desk",
+      "file": "variant-b.html",
+      "direction": "Official information desk with side navigation, document board, and dense public-service structure."
+    },
+    {
+      "id": "c",
+      "name": "Student Community",
+      "file": "variant-c.html",
+      "direction": "Community-centered homepage with practical learning signals, news, and always-relevant user paths instead of schedule-style content."
+    }
+  ],
+  "previews": {
+    "desktop": "preview.html",
+    "mobile": "mobile.html",
+    "mobileViewport": "390x844"
+  }
+}

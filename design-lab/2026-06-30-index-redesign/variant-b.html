@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Дизайн-варіант головної сторінки: офіційний навігатор інформації коледжу.">
+  <meta name="theme-color" content="#22312f">
+  <title>Варіант B - офіційний навігатор</title>
+  <style>
+    :root {
+      --ink: #1d272b;
+      --muted: #657176;
+      --graphite: #22312f;
+      --teal: #255f59;
+      --burgundy: #742c3c;
+      --brass: #bd8a3b;
+      --porcelain: #f7f5ef;
+      --paper: #ffffff;
+      --line: #d9d4c8;
+      --soft: #ece8dc;
+      --container: min(1220px, calc(100% - 34px));
+      --shadow: 0 22px 62px rgba(29,39,43,.14);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--porcelain);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.56;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    h1, h2, h3, p { margin: 0; }
+    p { color: var(--muted); }
+    .skip-link {
+      position: fixed;
+      left: 16px;
+      top: 12px;
+      z-index: 20;
+      padding: 10px 14px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      transform: translateY(-140%);
+    }
+    .skip-link:focus { transform: translateY(0); }
+    .container { width: var(--container); margin-inline: auto; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 278px minmax(0, 1fr);
+      min-height: 100svh;
+    }
+    .rail {
+      position: sticky;
+      top: 0;
+      align-self: start;
+      min-height: 100svh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 24px 22px;
+      color: rgba(255,255,255,.78);
+      background: var(--graphite);
+    }
+    .brand {
+      display: grid;
+      gap: 14px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255,255,255,.14);
+    }
+    .brand-mark {
+      width: 54px;
+      height: 54px;
+      display: block;
+      border: 1px solid rgba(255,255,255,.42);
+      background: #fff;
+      object-fit: contain;
+    }
+    .brand strong {
+      display: block;
+      color: #fff;
+      line-height: 1.14;
+    }
+    .brand span {
+      display: block;
+      margin-top: 5px;
+      color: rgba(255,255,255,.58);
+      font-size: .78rem;
+      font-weight: 700;
+    }
+    .rail-nav {
+      display: grid;
+      align-content: start;
+      gap: 7px;
+      padding: 28px 0;
+    }
+    .rail-nav a {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      color: rgba(255,255,255,.82);
+      font-size: .95rem;
+      font-weight: 760;
+    }
+    .rail-nav a:hover, .rail-nav a:focus-visible { color: #fff; outline: 0; }
+    .rail .approved-nav {
+      display: grid;
+      align-content: start;
+      gap: 6px;
+      padding: 24px 0;
+    }
+    .rail .approved-nav details {
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .rail .approved-nav summary {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: rgba(255,255,255,.84);
+      cursor: pointer;
+      font-size: .95rem;
+      font-weight: 760;
+      list-style: none;
+    }
+    .rail .approved-nav summary::-webkit-details-marker { display: none; }
+    .rail .approved-nav summary::after { content: "▾"; color: rgba(255,255,255,.5); font-size: .68rem; }
+    .rail .approved-nav details[open] summary,
+    .rail .approved-nav summary:hover,
+    .rail .approved-nav summary:focus-visible {
+      color: #fff;
+      outline: 0;
+    }
+    .rail .approved-nav details[open] summary::after { transform: rotate(180deg); }
+    .rail .approved-direct,
+    .rail .approved-cta {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.84);
+      font-size: .95rem;
+      font-weight: 760;
+    }
+    .rail .approved-cta {
+      justify-content: center;
+      margin-top: 8px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: var(--brass);
+      color: #211600;
+      font-weight: 900;
+    }
+    .rail .approved-mega {
+      display: block;
+      padding: 0 0 16px;
+      color: rgba(255,255,255,.72);
+    }
+    .rail .approved-mega-intro { display: none; }
+    .rail .approved-groups {
+      display: grid;
+      gap: 16px;
+      min-width: 0;
+    }
+    .rail .approved-group h3 {
+      margin: 12px 0 7px;
+      color: #dcb36e;
+      font-size: .68rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    .rail .approved-group ul {
+      display: grid;
+      gap: 5px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .rail .approved-group a {
+      display: block;
+      color: rgba(255,255,255,.68);
+      font-size: .81rem;
+      line-height: 1.28;
+    }
+    .rail .approved-group a:hover,
+    .rail .approved-group a:focus-visible {
+      color: #fff;
+      outline: 0;
+    }
+    .rail .approved-subcolumns { display: grid; gap: 5px; }
+    .rail-contact {
+      display: grid;
+      gap: 8px;
+      color: rgba(255,255,255,.62);
+      font-size: .86rem;
+    }
+    .rail-contact a { color: #fff; font-weight: 760; }
+
+    .site-main {
+      min-width: 0;
+      border-left: 1px solid var(--line);
+    }
+    .utility {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 12px max(22px, calc((100vw - 278px - 1220px) / 2 + 17px));
+      border-bottom: 1px solid var(--line);
+      background: rgba(247,245,239,.92);
+      color: var(--muted);
+      font-size: .88rem;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(430px, .95fr) minmax(380px, 1.05fr);
+      min-height: 610px;
+      border-bottom: 1px solid var(--line);
+      background: var(--paper);
+      overflow: hidden;
+    }
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      display: grid;
+      align-content: center;
+      gap: 26px;
+      padding: clamp(42px, 6vw, 78px) max(24px, calc((100vw - 278px - 1220px) / 2 + 17px));
+    }
+    .kicker {
+      color: var(--burgundy);
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 650px;
+      color: var(--graphite);
+      font-size: clamp(2.4rem, 4.9vw, 5.25rem);
+      line-height: .94;
+      letter-spacing: 0;
+      overflow-wrap: break-word;
+    }
+    .hero-copy p {
+      max-width: 560px;
+      font-size: clamp(1.02rem, 1.7vw, 1.2rem);
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .button {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      font-weight: 850;
+    }
+    .button-primary { background: var(--graphite); border-color: var(--graphite); color: #fff; }
+    .button-secondary { background: var(--porcelain); color: var(--graphite); }
+    .hero-media {
+      position: relative;
+      min-width: 0;
+      min-height: 100%;
+      background: url("media/public-desk.png") center / cover no-repeat;
+    }
+    .hero-media::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,.1), transparent 32%), linear-gradient(0deg, rgba(34,49,47,.42), transparent 46%);
+    }
+    .notice-board {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      bottom: 28px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      background: rgba(255,255,255,.52);
+      border: 1px solid rgba(255,255,255,.42);
+      box-shadow: var(--shadow);
+    }
+    .notice-board a {
+      display: grid;
+      align-content: center;
+      gap: 4px;
+      min-height: 92px;
+      padding: 14px;
+      background: rgba(255,255,255,.88);
+    }
+    .notice-board span { color: var(--burgundy); font-size: .74rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+    .notice-board strong { color: var(--graphite); line-height: 1.16; }
+
+    section { padding: clamp(52px, 7vw, 86px) max(24px, calc((100vw - 278px - 1220px) / 2 + 17px)); }
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+    .eyebrow {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--teal);
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h2 {
+      max-width: 760px;
+      color: var(--graphite);
+      font-size: clamp(2rem, 4.3vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+    .text-link {
+      color: var(--burgundy);
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .directory {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+    .directory article {
+      min-height: 245px;
+      display: grid;
+      align-content: space-between;
+      padding: 24px;
+      background: var(--paper);
+    }
+    .directory h3 {
+      color: var(--graphite);
+      font-size: 1.35rem;
+      line-height: 1.12;
+    }
+    .directory p { margin-top: 10px; font-size: .95rem; }
+    .directory a { color: var(--teal); font-weight: 850; }
+
+    .document-zone {
+      background: var(--soft);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .docs {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 24px;
+    }
+    .doc-list {
+      display: grid;
+      border-top: 2px solid var(--graphite);
+      background: var(--paper);
+      box-shadow: 0 12px 36px rgba(29,39,43,.08);
+    }
+    .doc-row {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      min-height: 78px;
+      padding: 15px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .doc-row:last-child { border-bottom: 0; }
+    .doc-row time {
+      color: var(--burgundy);
+      font-size: .8rem;
+      font-weight: 900;
+    }
+    .doc-row strong { color: var(--graphite); }
+    .doc-row a { color: var(--teal); font-weight: 850; }
+    .contact-panel {
+      display: grid;
+      align-content: space-between;
+      min-height: 100%;
+      padding: 26px;
+      background: var(--graphite);
+      color: #fff;
+    }
+    .contact-panel h3 {
+      font-size: 2rem;
+      line-height: 1.05;
+    }
+    .contact-panel p, .contact-panel li { color: rgba(255,255,255,.68); }
+    .contact-panel ul { margin: 24px 0 0; padding: 0; list-style: none; }
+    .contact-panel li + li { margin-top: 9px; }
+    .contact-panel a { color: #fff; font-weight: 800; }
+
+    .program-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .program {
+      min-height: 260px;
+      display: grid;
+      align-content: space-between;
+      padding: 24px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff, #fbfaf5);
+    }
+    .program small { color: var(--burgundy); font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
+    .program h3 { margin-top: 18px; color: var(--graphite); font-size: 1.5rem; line-height: 1.08; }
+    .program a { color: var(--teal); font-weight: 850; }
+
+    .site-footer {
+      padding: 30px max(24px, calc((100vw - 278px - 1220px) / 2 + 17px));
+      border-top: 1px solid var(--line);
+      background: var(--paper);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 26px;
+    }
+    .site-footer ul { margin: 10px 0 0; padding: 0; list-style: none; }
+    .site-footer li + li { margin-top: 6px; }
+    .site-footer a { color: var(--teal); font-weight: 750; }
+
+    @media (max-width: 1020px) {
+      .layout { grid-template-columns: 1fr; }
+      .rail {
+        position: static;
+        min-height: auto;
+        grid-template-columns: 1fr;
+      }
+      .rail-nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 18px;
+        padding-bottom: 16px;
+      }
+      .rail-nav a { min-width: max-content; border-bottom: 0; }
+      .rail .approved-nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px 14px;
+        padding-bottom: 16px;
+      }
+      .rail .approved-nav details,
+      .rail .approved-direct,
+      .rail .approved-cta {
+        border-bottom: 0;
+      }
+      .rail .approved-nav summary,
+      .rail .approved-direct,
+      .rail .approved-cta {
+        min-height: 40px;
+        padding: 0 10px;
+        border: 1px solid rgba(255,255,255,.16);
+      }
+      .site-main { border-left: 0; }
+      .utility, section, .site-footer, .hero-copy { padding-left: 22px; padding-right: 22px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-media { min-height: 420px; }
+    }
+    @media (max-width: 760px) {
+      .utility { display: grid; }
+      .notice-board, .directory, .program-strip, .footer-grid { grid-template-columns: 1fr; }
+      .rail .approved-nav { grid-template-columns: 1fr; }
+      .notice-board { position: static; margin: 0; border: 0; }
+      .hero-media { min-height: 300px; display: grid; align-items: end; }
+      .docs { grid-template-columns: 1fr; }
+      .doc-row { grid-template-columns: 1fr; gap: 6px; }
+      .section-head { grid-template-columns: 1fr; }
+      .hero-actions { display: grid; }
+      .button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти до основного вмісту</a>
+  <div class="layout">
+    <aside class="rail" aria-label="Навігаційна панель">
+      <a class="brand" href="variant-b.html" aria-label="Головна сторінка варіанта B">
+        <img class="brand-mark" src="../../assets/logo_small.gif" alt="" width="54" height="54">
+        <span><strong>Економіко-правовий фаховий коледж</strong><span>ККІБП, Київ</span></span>
+      </a>
+      <nav class="approved-nav" aria-label="Затверджена основна навігація">
+        <details>
+          <summary>Коледж</summary>
+          <div class="approved-mega">
+            <div class="approved-mega-intro"><span>Розділ</span><a href="../../college.html">Коледж</a><p>Корисні матеріали, документи та сервіси розділу.</p></div>
+            <div class="approved-groups">
+              <section class="approved-group"><h3>Загальна інформація</h3><ul><li><a href="../../college.html#about">Про коледж</a></li><li><a href="../../college.html#leadership">Керівництво</a></li><li><a href="../../college.html#departments">Відділення</a></li><li><a href="../../college.html#departments">Циклові комісії</a></li><li><a href="../../college.html#governance">Органи управління та органи самоврядування</a></li><li><a href="../../college.html#contacts">Контакти</a></li></ul></section>
+              <section class="approved-group"><h3>Основна інформація</h3><div class="approved-subcolumns"><ul><li><a href="../../college.html#documents">Статут коледжу</a></li><li><a href="../../college.html#documents">Концепція діяльності</a></li><li><a href="../../college.html#documents">Колективний договір</a></li><li><a href="../../college.html#documents">Документи локального нормотворення</a></li><li><a href="../../college.html#documents">Доступ до публічної інформації</a></li><li><a href="../../college.html#documents">Ліцензії на провадження освітньої діяльності</a></li></ul><ul><li><a href="../../college.html#documents">Сертифікати про акредитацію спеціальностей та освітніх програм</a></li><li><a href="../../college.html#documents">План роботи</a></li><li><a href="../../college.html#documents">Звіт</a></li><li><a href="../../college.html#documents">Громадське обговорення</a></li><li><a href="../../college.html#documents">Вакансії</a></li></ul></div></section>
+              <section class="approved-group"><h3>Діяльність</h3><ul><li><a href="../../college.html#about">Цілі сталого розвитку</a></li><li><a href="../../college.html#about">Інклюзивне освітнє середовище</a></li><li><a href="../../college.html#documents">Антикорупційна діяльність</a></li><li><a href="../../students.html#support">Психологічна служба</a></li><li><a href="../../science.html#projects">Міжнародна діяльність</a></li><li><a href="../../college.html#campus">Практична підготовка</a></li><li><a href="../../students.html#career">Центр кар'єри</a></li></ul></section>
+            </div>
+          </div>
+        </details>
+        <details>
+          <summary>Абітурієнту</summary>
+          <div class="approved-mega">
+            <div class="approved-mega-intro"><span>Розділ</span><a href="../../admissions.html">Абітурієнту</a><p>Корисні матеріали, документи та сервіси розділу.</p></div>
+            <div class="approved-groups">
+              <section class="approved-group"><h3>Вступна інформація</h3><ul><li><a href="../../admissions.html#documents">Офіційні документи</a></li><li><a href="../../admissions.html#documents">Правила прийому</a></li><li><a href="../../admissions.html#timeline">Рейтингові списки</a></li><li><a href="../../admissions.html#timeline">Накази про зарахування</a></li><li><a href="../../admissions.html#tuition">Вартість навчання</a></li><li><a href="../../admissions.html#timeline">Важливі дати</a></li><li><a href="../../admissions.html#documents">Документи для вступу</a></li><li><a href="../../admissions.html#contacts">Приймальна комісія</a></li><li><a href="../../admissions.html#contacts">Контактна інформація</a></li></ul></section>
+              <section class="approved-group"><h3>Освітні програми</h3><ul><li><a href="../../admissions.html#programs">Освітні програми</a></li></ul></section>
+            </div>
+          </div>
+        </details>
+        <details>
+          <summary>Студенту</summary>
+          <div class="approved-mega">
+            <div class="approved-mega-intro"><span>Розділ</span><a href="../../students.html">Студенту</a><p>Корисні матеріали, документи та сервіси розділу.</p></div>
+            <div class="approved-groups">
+              <section class="approved-group"><h3>Загальна інформація</h3><ul><li><a href="../../students.html#learning">Освітні програми</a></li><li><a href="../../students.html#schedule">Графік навчального процесу</a></li><li><a href="../../students.html#schedule">Розклад занять</a></li><li><a href="../../students.html#learning">Контакти викладачів</a></li><li><a href="../../students.html#electives">Каталог вибіркових освітніх компонентів</a></li><li><a href="../../students.html#learning">Правила внутрішнього розпорядку</a></li><li><a href="../../admissions.html#faq">Гуртожиток</a></li></ul></section>
+              <section class="approved-group"><h3>Дозвілля</h3><ul><li><a href="../../students.html#community">Студентське самоврядування</a></li><li><a href="../../students.html#community">Волонтерська діяльність</a></li><li><a href="../../students.html#community">Музей історії споживчої кооперації Київщини</a></li></ul></section>
+              <section class="approved-group"><h3>Можливості</h3><ul><li><a href="../../students.html#opportunities">Мистецькі студії</a></li><li><a href="../../students.html#opportunities">Спортивні секції</a></li><li><a href="../../students.html#opportunities">Курси вивчення іноземних мов</a></li></ul></section>
+              <section class="approved-group"><h3>Соціально-правова підтримка</h3><ul><li><a href="../../students.html#support">Психологічна служба</a></li><li><a href="../../students.html#support">Юридична клініка</a></li><li><a href="../../students.html#support">Антикорупційна діяльність</a></li><li><a href="../../students.html#support">Студентський омбудсмен</a></li></ul></section>
+            </div>
+          </div>
+        </details>
+        <details>
+          <summary>Випускнику</summary>
+          <div class="approved-mega">
+            <div class="approved-mega-intro"><span>Розділ</span><a href="../../alumni.html">Випускнику</a><p>Корисні матеріали, документи та сервіси розділу.</p></div>
+            <div class="approved-groups"><section class="approved-group"><h3>Спільнота</h3><ul><li><a href="../../alumni.html#association">Асоціація випускників</a></li><li><a href="../../alumni.html#stories">Успішні випускники</a></li><li><a href="../../alumni.html#events">Зустрічі випускників</a></li></ul></section></div>
+          </div>
+        </details>
+        <details>
+          <summary>Наука</summary>
+          <div class="approved-mega">
+            <div class="approved-mega-intro"><span>Розділ</span><a href="../../science.html">Наука</a><p>Корисні матеріали, документи та сервіси розділу.</p></div>
+            <div class="approved-groups">
+              <section class="approved-group"><h3>Загальна інформація</h3><ul><li><a href="../../science.html#directions">Напрями наукової діяльності</a></li><li><a href="../../science.html#publications">Наукові профілі працівників</a></li><li><a href="../../science.html#publications">План роботи</a></li><li><a href="../../science.html#publications">Звіт</a></li></ul></section>
+              <section class="approved-group"><h3>Можливості для науковців</h3><ul><li><a href="../../science.html#publications">Наукові видання</a></li><li><a href="../../science.html#grants">Державні премії та нагороди, стипендії</a></li><li><a href="../../science.html#projects">Міжнародні наукові проєкти та гранти</a></li><li><a href="../../science.html#grants">Конкурси на отримання фінансування</a></li></ul></section>
+              <section class="approved-group"><h3>Студентська наука</h3><ul><li><a href="../../science.html#student-science">Наукові гуртки</a></li><li><a href="../../science.html#events">Всеукраїнські та міжнародні конкурси студентських наукових робіт</a></li></ul></section>
+              <section class="approved-group"><h3>Академічна доброчесність</h3><ul><li><a href="../../library.html#integrity">Офіційні документи та рекомендації з питань академічної доброчесності</a></li><li><a href="../../library.html#integrity">Документи коледжу з питань академічної доброчесності</a></li><li><a href="../../library.html#integrity">План роботи</a></li><li><a href="../../library.html#integrity">Звіт</a></li><li><a href="../../library.html#integrity">Розвиток культури академічної доброчесності</a></li><li><a href="../../library.html#integrity">Анкетування</a></li><li><a href="../../library.html#integrity">Перевірка на плагіат</a></li></ul></section>
+            </div>
+          </div>
+        </details>
+        <details>
+          <summary>Бібліотека</summary>
+          <div class="approved-mega">
+            <div class="approved-mega-intro"><span>Розділ</span><a href="../../library.html">Бібліотека</a><p>Корисні матеріали, документи та сервіси розділу.</p></div>
+            <div class="approved-groups approved-groups--library">
+              <section class="approved-group"><h3>Про бібліотеку</h3><ul><li><a href="../../library.html#about">Склад</a></li><li><a href="../../library.html#about">Загальна інформація</a></li><li><a href="../../library.html#about">Презентація бібліотеки</a></li><li><a href="../../library.html#about">План роботи</a></li><li><a href="../../library.html#about">Звіт</a></li><li><a href="../../library.html#about">Соціальні мережі</a></li></ul></section>
+              <section class="approved-group"><h3>Інформація для користувачів</h3><ul><li><a href="../../library.html#about">Правила користування</a></li><li><a href="../../library.html#about">Читачам</a></li><li><a href="../../library.html#about">Анкета читача</a></li></ul></section>
+              <section class="approved-group"><h3>Книжковий фонд</h3><ul><li><a href="../../library.html#catalog">Репозитарій</a></li><li><a href="../../library.html#new-books">Нові надходження</a></li><li><a href="../../library.html#new-books">Книжкові виставки</a></li><li><a href="../../library.html#catalog">Електронна бібліотека навчальної літератури</a></li></ul></section>
+              <section class="approved-group"><h3>Бібліотечний простір</h3><ul><li><a href="../../library.html#space">Настільні ігри</a></li><li><a href="../../library.html#space">Бібліотечний кіноклуб</a></li><li><a href="../../library.html#space">Волонтерство «Здорова бібліотека»</a></li></ul></section>
+              <section class="approved-group"><h3>Науковцям</h3><ul><li><a href="../../library.html#researchers">Авторам наукових публікацій</a></li><li><a href="../../library.html#researchers">Наукометричні показники</a></li><li><a href="../../library.html#researchers">Наукові ресурси відкритого доступу</a></li><li><a href="../../library.html#researchers">Наукові фахові видання України</a></li><li><a href="../../library.html#researchers">Визначення індексів УДК/ББК</a></li><li><a href="../../library.html#researchers">Наукові профілі працівників</a></li></ul></section>
+            </div>
+          </div>
+        </details>
+        <a class="approved-direct" href="../../news.html">Новини</a>
+        <a class="approved-cta" href="../../admissions.html">Вступ</a>
+      </nav>
+      <div class="rail-contact">
+        <span>Пн-Пт, 08:00-17:00</span>
+        <a href="tel:+380442582029">+38 (044) 258-20-29</a>
+        <a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a>
+      </div>
+    </aside>
+
+    <div class="site-main">
+      <div class="utility">
+        <span>Офіційна інформація, вступ, навчання, документи</span>
+        <span>вул. Юлії Здановської, 18, м. Київ</span>
+      </div>
+
+      <main id="main">
+        <section class="hero" aria-labelledby="home-title">
+          <div class="hero-copy">
+            <span class="kicker">Дизайн-варіант B / офіційний навігатор</span>
+            <h1 id="home-title">Навігатор коледжу для швидких рішень</h1>
+            <p>Цей підхід робить головну сторінку схожою на зрозумілий інформаційний простір: документи, розділи, контакти і ключові сценарії розміщені щільно, але спокійно.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="../../admissions.html#documents">Документи вступника</a>
+              <a class="button button-secondary" href="../../college.html#documents">Публічна інформація</a>
+            </div>
+          </div>
+          <div class="hero-media" role="img" aria-label="Офіційний інформаційний простір коледжу">
+            <nav class="notice-board" aria-label="Ключові дії">
+              <a href="../../admissions.html"><span>Вступ</span><strong>Правила, дати, документи</strong></a>
+              <a href="../../students.html#schedule"><span>Студенту</span><strong>Розклад і навчання</strong></a>
+              <a href="../../college.html#contacts"><span>Контакти</span><strong>Адреса і контакти</strong></a>
+            </nav>
+          </div>
+        </section>
+
+        <section aria-labelledby="directory-title">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Основні розділи</span>
+              <h2 id="directory-title">Інституційна структура замість рекламного герою</h2>
+            </div>
+            <a class="text-link" href="../../college.html">Про коледж</a>
+          </div>
+          <div class="directory">
+            <article>
+              <div>
+                <h3>Коледж</h3>
+                <p>Структура, керівництво, відділення, документи та контакти.</p>
+              </div>
+              <a href="../../college.html">Відкрити розділ</a>
+            </article>
+            <article>
+              <div>
+                <h3>Абітурієнту</h3>
+                <p>Правила прийому, освітні програми, вартість навчання та календар.</p>
+              </div>
+              <a href="../../admissions.html">Відкрити розділ</a>
+            </article>
+            <article>
+              <div>
+                <h3>Студенту</h3>
+                <p>Розклад, дисципліни, підтримка, дозвілля і кар'єрні можливості.</p>
+              </div>
+              <a href="../../students.html">Відкрити розділ</a>
+            </article>
+            <article>
+              <div>
+                <h3>Наука</h3>
+                <p>Гуртки, конференції, академічна доброчесність, гранти та публікації.</p>
+              </div>
+              <a href="../../science.html">Відкрити розділ</a>
+            </article>
+            <article>
+              <div>
+                <h3>Бібліотека</h3>
+                <p>Електронний каталог, репозитарій, нові надходження і ресурси.</p>
+              </div>
+              <a href="../../library.html">Відкрити розділ</a>
+            </article>
+            <article>
+              <div>
+                <h3>Новини</h3>
+                <p>Події, навчальні практики, студентська активність і оголошення.</p>
+              </div>
+              <a href="../../news.html">Відкрити розділ</a>
+            </article>
+          </div>
+        </section>
+
+        <section class="document-zone" aria-labelledby="docs-title">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Документи і дії</span>
+              <h2 id="docs-title">Найважливіше подано як офіційна дошка</h2>
+            </div>
+            <a class="text-link" href="../../admissions.html#contacts">Приймальна комісія</a>
+          </div>
+          <div class="docs">
+            <div class="doc-list">
+              <div class="doc-row">
+                <time>Вступ</time>
+                <strong>Правила прийому та перелік документів</strong>
+                <a href="../../admissions.html#documents">Перейти</a>
+              </div>
+              <div class="doc-row">
+                <time>Навчання</time>
+                <strong>Графік навчального процесу і розклад занять</strong>
+                <a href="../../students.html#schedule">Перейти</a>
+              </div>
+              <div class="doc-row">
+                <time>Коледж</time>
+                <strong>Ліцензії, акредитація, статут і публічна інформація</strong>
+                <a href="../../college.html#documents">Перейти</a>
+              </div>
+              <div class="doc-row">
+                <time>Бібліотека</time>
+                <strong>Електронний каталог і академічна доброчесність</strong>
+                <a href="../../library.html#catalog">Перейти</a>
+              </div>
+            </div>
+            <aside class="contact-panel">
+              <div>
+                <span class="eyebrow" style="color:#dcb36e">Контактний блок</span>
+                <h3>Не знаєте, з чого почати?</h3>
+                <p>У цьому варіанті контакт з приймальною комісією повторюється як службова дія, а не як декоративна кнопка.</p>
+              </div>
+              <ul>
+                <li><a href="tel:+380442582029">+38 (044) 258-20-29</a></li>
+                <li><a href="mailto:rector@kkibp.edu.ua">rector@kkibp.edu.ua</a></li>
+                <li>Київ, вул. Юлії Здановської, 18</li>
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <section id="programs" aria-labelledby="program-title">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Освітні програми</span>
+              <h2 id="program-title">Програми як частина довідкової системи</h2>
+            </div>
+            <a class="text-link" href="../../admissions.html#programs">Усі спеціальності</a>
+          </div>
+          <div class="program-strip">
+            <article class="program">
+              <div>
+                <small>Бізнес і комунікації</small>
+                <h3>Маркетинг</h3>
+                <p>Ринок, продажі, комунікації, клієнтський досвід.</p>
+              </div>
+              <a href="../../admissions.html#programs">Детальніше</a>
+            </article>
+            <article class="program">
+              <div>
+                <small>Фінанси та облік</small>
+                <h3>Облік і оподаткування</h3>
+                <p>Звітність, фінансова аналітика, податкові процеси.</p>
+              </div>
+              <a href="../../admissions.html#programs">Детальніше</a>
+            </article>
+            <article class="program">
+              <div>
+                <small>Ресторанні технології</small>
+                <h3>Харчові технології</h3>
+                <p>Організація виробництва, якість і сучасна ресторанна справа.</p>
+              </div>
+              <a href="../../admissions.html#programs">Детальніше</a>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-grid">
+          <div>
+            <strong>Дизайн-варіант B</strong>
+            <p>Самодостатній HTML-макет у design-lab, без підключення існуючих CSS і JavaScript.</p>
+          </div>
+          <div>
+            <strong>Швидкі переходи</strong>
+            <ul>
+              <li><a href="../../admissions.html">Вступ</a></li>
+              <li><a href="../../students.html#schedule">Розклад</a></li>
+              <li><a href="../../college.html#documents">Документи</a></li>
+            </ul>
+          </div>
+          <div>
+            <strong>Контакти</strong>
+            <ul>
+              <li>+38 (044) 258-20-29</li>
+              <li>rector@kkibp.edu.ua</li>
+              <li>вул. Юлії Здановської, 18</li>
+            </ul>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

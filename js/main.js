@@ -15,6 +15,7 @@
   const languageSwitches = [...document.querySelectorAll('[data-language-switch]')];
   const isEnglish = document.documentElement.lang.startsWith('en');
   const locale = isEnglish ? 'en' : 'uk';
+  const siteRoot = root.dataset.siteRoot || (isEnglish ? '../' : '');
   let lockedNavScrollY = 0;
   let restoringNavScroll = false;
   const ui = isEnglish
@@ -35,6 +36,10 @@
   let navTouchY = 0;
   const mobileAccordionQuery = window.matchMedia('(max-width: 719px)');
   const accordionTimers = new WeakMap();
+  const resolveSiteHref = (href = '') => {
+    if (!href || /^(https?:|mailto:|tel:|#|\/|\.\/|\.\.\/)/.test(href)) return href;
+    return `${siteRoot}${href}`;
+  };
 
   const isMobileAccordion = () => mobileAccordionQuery.matches;
   const getMenuPanel = (item) => item?.querySelector('.mega-menu');
@@ -246,32 +251,32 @@
 
   const searchIndex = isEnglish
     ? [
-        ['Admission Rules 2026', 'Applicants', 'admissions.html#documents'],
-        ['Applicant Calendar', 'Applicants', 'admissions.html#timeline'],
-        ['Educational Programs', 'Learning', 'admissions.html#programs'],
-        ['Class Schedule', 'Students', 'students.html#schedule'],
-        ['Elective Disciplines Catalog', 'Students', 'students.html#electives'],
-        ['Psychological Service', 'Support', 'students.html#support'],
-        ['Career Center', 'Opportunities', 'students.html#career'],
-        ['Electronic Library Catalog', 'Library', 'library.html#catalog'],
-        ['Academic Integrity', 'Library', 'library.html#integrity'],
-        ['Research Clubs', 'Research', 'science.html#student-science'],
-        ['College Contacts', 'College', 'college.html#contacts'],
-        ['Public Information', 'College', 'college.html#documents']
+        ['Admission Rules 2026', 'Applicants', 'admissions/admission-info/admission-rules.html'],
+        ['Applicant Calendar', 'Applicants', 'admissions/admission-info/important-dates.html'],
+        ['Educational Programs', 'Learning', 'admissions/educational-programs/educational-programs.html'],
+        ['Class Schedule', 'Students', 'students/general-info/class-schedule.html'],
+        ['Elective Disciplines Catalog', 'Students', 'students/general-info/elective-components-catalog.html'],
+        ['Psychological Service', 'Support', 'students/social-support/psychological-service.html'],
+        ['Career Center', 'Opportunities', 'college/activity/career-center.html'],
+        ['Electronic Library Catalog', 'Library', 'library/book-fund/electronic-library.html'],
+        ['Academic Integrity', 'Research', 'science/academic-integrity/official-documents-recommendations.html'],
+        ['Research Clubs', 'Research', 'science/student-science/research-clubs.html'],
+        ['College Contacts', 'College', 'college/general-info/contacts.html'],
+        ['Public Information', 'College', 'college/main-info/public-information.html']
       ]
     : [
-        ['Правила прийому 2026', 'Абітурієнту', 'admissions.html#documents'],
-        ['Календар вступника', 'Абітурієнту', 'admissions.html#timeline'],
-        ['Освітні програми', 'Навчання', 'admissions.html#programs'],
-        ['Розклад занять', 'Студенту', 'students.html#schedule'],
-        ['Каталог вибіркових дисциплін', 'Студенту', 'students.html#electives'],
-        ['Психологічна служба', 'Підтримка', 'students.html#support'],
-        ['Центр кар’єри', 'Можливості', 'students.html#career'],
-        ['Електронний каталог бібліотеки', 'Бібліотека', 'library.html#catalog'],
-        ['Академічна доброчесність', 'Бібліотека', 'library.html#integrity'],
-        ['Наукові гуртки', 'Наука', 'science.html#student-science'],
-        ['Контакти коледжу', 'Коледж', 'college.html#contacts'],
-        ['Публічна інформація', 'Коледж', 'college.html#documents']
+        ['Правила прийому 2026', 'Абітурієнту', 'admissions/admission-info/admission-rules.html'],
+        ['Календар вступника', 'Абітурієнту', 'admissions/admission-info/important-dates.html'],
+        ['Освітні програми', 'Навчання', 'admissions/educational-programs/educational-programs.html'],
+        ['Розклад занять', 'Студенту', 'students/general-info/class-schedule.html'],
+        ['Каталог вибіркових дисциплін', 'Студенту', 'students/general-info/elective-components-catalog.html'],
+        ['Психологічна служба', 'Підтримка', 'students/social-support/psychological-service.html'],
+        ['Центр кар’єри', 'Можливості', 'college/activity/career-center.html'],
+        ['Електронний каталог бібліотеки', 'Бібліотека', 'library/book-fund/electronic-library.html'],
+        ['Академічна доброчесність', 'Наука', 'science/academic-integrity/official-documents-recommendations.html'],
+        ['Наукові гуртки', 'Наука', 'science/student-science/research-clubs.html'],
+        ['Контакти коледжу', 'Коледж', 'college/general-info/contacts.html'],
+        ['Публічна інформація', 'Коледж', 'college/main-info/public-information.html']
       ];
 
   const openSearch = () => {
@@ -292,7 +297,7 @@
     const q = searchInput.value.trim().toLocaleLowerCase(locale);
     if (!q) { resultsBox.innerHTML = ''; return; }
     const matches = searchIndex.filter(item => item[0].toLocaleLowerCase(locale).includes(q) || item[1].toLocaleLowerCase(locale).includes(q)).slice(0, 6);
-    resultsBox.innerHTML = matches.length ? matches.map(([title, section, href]) => `<a class="search-result" href="${href}"><span>${title}</span><small>${section}</small></a>`).join('') : `<p>${ui.noResults}</p>`;
+    resultsBox.innerHTML = matches.length ? matches.map(([title, section, href]) => `<a class="search-result" href="${resolveSiteHref(href)}"><span>${title}</span><small>${section}</small></a>`).join('') : `<p>${ui.noResults}</p>`;
   });
 
   document.addEventListener('keydown', (event) => {
@@ -335,7 +340,7 @@
   const normalizeNewsDate = (item) => Date.parse(item.loadedAt || item.publishedAt || '') || 0;
   const resolveNewsAsset = (path) => {
     if (!path || /^(https?:|\/|\.\/|\.\.\/)/.test(path)) return path;
-    return isEnglish ? `../${path}` : path;
+    return `${siteRoot}${path}`;
   };
   const truncateNewsText = (value, maxLength) => {
     const text = String(value || '').replace(/\s+/g, ' ').trim();
@@ -346,15 +351,32 @@
     return `${text.slice(0, end).replace(/[.,;:!?…]+$/, '')}...`;
   };
   const renderNewsCard = (item, excerptLength) => {
-    const href = item.url || '#';
+    const href = resolveSiteHref(item.url || '#');
     const linkAttrs = /^https?:\/\//.test(href) ? ' target="_blank" rel="noopener noreferrer"' : '';
     const idAttr = item.id ? ` id="${escapeHtml(item.id)}"` : '';
     const image = item.image
       ? `<div class="news-media news-media--image"><img src="${escapeHtml(resolveNewsAsset(item.image))}" alt="${escapeHtml(item.alt || item.title)}" loading="lazy"></div>`
       : '<div class="news-media" aria-hidden="true"></div>';
     const excerpt = item.excerpt || item.content || item.body || '';
+    const meta = item.publishedLabel ? `<div class="news-meta"><span>${escapeHtml(item.publishedLabel)}</span></div>` : '';
 
-    return `<article class="news-card"${idAttr}>${image}<div class="news-content"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(truncateNewsText(excerpt, excerptLength))}</p><a class="text-link" href="${escapeHtml(href)}"${linkAttrs}>${ui.readFull} <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6"/></svg></a></div></article>`;
+    return `<article class="news-card"${idAttr}>${image}<div class="news-content">${meta}<h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(truncateNewsText(excerpt, excerptLength))}</p><a class="text-link" href="${escapeHtml(href)}"${linkAttrs}>${ui.readFull} <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6"/></svg></a></div></article>`;
+  };
+  const renderNewsPagination = (container, currentPage, totalPages) => {
+    if (!container) return;
+    if (totalPages <= 1) {
+      container.hidden = true;
+      container.innerHTML = '';
+      return;
+    }
+
+    container.hidden = false;
+    container.innerHTML = Array.from({ length: totalPages }, (_, index) => {
+      const page = index + 1;
+      const href = page === 1 ? 'news.html' : `news.html?page=${page}`;
+      const active = page === currentPage ? ' class="is-active" aria-current="page"' : '';
+      return `<a href="${href}"${active}>${page}</a>`;
+    }).join('');
   };
 
   if (newsItems.length) {
@@ -362,7 +384,17 @@
     document.querySelectorAll('[data-news-list]').forEach(grid => {
       const limit = Number(grid.dataset.newsLimit) || orderedNews.length;
       const excerptLength = Number(grid.dataset.newsExcerptLength) || 185;
-      grid.innerHTML = orderedNews.slice(0, limit).map(item => renderNewsCard(item, excerptLength)).join('');
+      const pageSize = Number(grid.dataset.newsPageSize) || 0;
+      const items = orderedNews.slice(0, limit);
+      const totalPages = pageSize ? Math.ceil(items.length / pageSize) : 1;
+      const requestedPage = Number(new URLSearchParams(window.location.search).get('page')) || 1;
+      const currentPage = Math.min(Math.max(requestedPage, 1), totalPages);
+      const visibleItems = pageSize
+        ? items.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        : items;
+
+      grid.innerHTML = visibleItems.map(item => renderNewsCard(item, excerptLength)).join('');
+      renderNewsPagination(grid.parentElement?.querySelector('[data-news-pagination]'), currentPage, totalPages);
     });
     document.querySelectorAll('[data-news-count]').forEach(element => {
       element.textContent = orderedNews.length;
