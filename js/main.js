@@ -350,6 +350,36 @@
     const end = lastSpace > maxLength * 0.65 ? lastSpace : maxLength;
     return `${text.slice(0, end).replace(/[.,;:!?…]+$/, '')}...`;
   };
+  // Sustainable Development Goals catalogue (official palette + short titles).
+  const SDG = {
+    1:  { c: '#E5243B', uk: 'Подолання бідності', en: 'No Poverty' },
+    2:  { c: '#DDA63A', uk: 'Подолання голоду', en: 'Zero Hunger' },
+    3:  { c: '#4C9F38', uk: "Міцне здоров'я", en: 'Good Health' },
+    4:  { c: '#C5192D', uk: 'Якісна освіта', en: 'Quality Education' },
+    5:  { c: '#FF3A21', uk: 'Гендерна рівність', en: 'Gender Equality' },
+    6:  { c: '#26BDE2', uk: 'Чиста вода та належні санітарні умови', en: 'Clean Water and Sanitation' },
+    7:  { c: '#FCC30B', uk: 'Відновлювана енергія', en: 'Renewable Energy' },
+    8:  { c: '#A21942', uk: 'Гідна праця та економічне зростання', en: 'Decent Work and Economic Growth' },
+    9:  { c: '#FD6925', uk: 'Інновації та інфраструктура', en: 'Innovation and Infrastructure' },
+    10: { c: '#DD1367', uk: 'Зменшення нерівності', en: 'Reduced Inequalities' },
+    11: { c: '#FD9D24', uk: 'Сталий розвиток міст і спільнот', en: 'Sustainable Cities and Communities' },
+    12: { c: '#BF8B2E', uk: 'Відповідальне споживання', en: 'Responsible Consumption' },
+    13: { c: '#3F7E44', uk: 'Боротьба зі зміною клімату', en: 'Climate Action' },
+    14: { c: '#0A97D9', uk: 'Збереження морських екосистем', en: 'Life Below Water' },
+    15: { c: '#56C02B', uk: 'Збереження екосистем суші', en: 'Life on Land' },
+    16: { c: '#00689D', uk: 'Мир та справедливість', en: 'Peace and Justice' },
+    17: { c: '#19486A', uk: 'Партнерство заради сталого розвитку', en: 'Partnerships for the Goals' }
+  };
+  const renderSdgIcon = (sdg) => {
+    const goal = SDG[sdg];
+    if (!goal) return '';
+    const name = isEnglish ? goal.en : goal.uk;
+    const aria = isEnglish
+      ? `Sustainable Development Goal ${sdg}: ${name}`
+      : `Ціль сталого розвитку ${sdg}: ${name}`;
+    const src = resolveNewsAsset(`assets/sdg/sdg-${String(sdg).padStart(2, '0')}.png`);
+    return `<img class="sdg-icon" src="${escapeHtml(src)}" alt="${escapeHtml(aria)}" title="${escapeHtml(aria)}" width="88" height="88" loading="lazy">`;
+  };
   const renderNewsCard = (item, excerptLength) => {
     const href = resolveSiteHref(item.url || '#');
     const linkAttrs = /^https?:\/\//.test(href) ? ' target="_blank" rel="noopener noreferrer"' : '';
@@ -399,6 +429,18 @@
     document.querySelectorAll('[data-news-count]').forEach(element => {
       element.textContent = orderedNews.length;
     });
+    // Full news article: list the related SDG icon(s) under the article body.
+    const articleBody = document.querySelector('.news-article-body');
+    if (articleBody && !articleBody.parentElement.querySelector('.news-article-sdg')) {
+      const currentFile = window.location.pathname.split('/').pop();
+      const current = newsItems.find(item => (item.url || '').split('/').pop() === currentFile);
+      const goals = current ? (Array.isArray(current.sdgs) ? current.sdgs : current.sdg ? [current.sdg] : []) : [];
+      const icons = goals.map(goal => renderSdgIcon(goal)).join('');
+      if (icons) {
+        const title = isEnglish ? 'Sustainable Development Goals' : 'Цілі сталого розвитку';
+        articleBody.insertAdjacentHTML('afterend', `<div class="news-article-sdg"><span class="news-article-sdg__title">${title}</span><div class="sdg-badges" role="group" aria-label="${title}">${icons}</div></div>`);
+      }
+    }
   }
 
   document.querySelectorAll('[data-college-carousel]').forEach(carousel => {
@@ -531,6 +573,20 @@
     const apply = (id) => { if (id) root.dataset.theme = id; else delete root.dataset.theme; };
     apply(stored);
 
+    // Header day/night toggle — quick switch between the main (day) and night themes.
+    const headerActions = document.querySelector('.header-actions');
+    let headerToggle = null;
+    if (headerActions) {
+      headerToggle = document.createElement('button');
+      headerToggle.type = 'button';
+      headerToggle.className = 'icon-button header-theme';
+      headerToggle.innerHTML = `
+        <svg class="icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        <svg class="icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.4 12h2.2M19.4 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>`;
+      const searchBtn = headerActions.querySelector('.header-search');
+      headerActions.insertBefore(headerToggle, searchBtn || headerActions.firstChild);
+    }
+
     const label = isEnglish ? 'Theme' : 'Тема';
     const wrap = document.createElement('div');
     wrap.className = 'theme-demo';
@@ -546,24 +602,41 @@
 
     const toggle = wrap.querySelector('.theme-demo__toggle');
     const options = [...wrap.querySelectorAll('.theme-demo__opt')];
-    const setActive = (id) => options.forEach(b => {
-      const on = b.dataset.themeId === id;
-      b.classList.toggle('is-active', on);
-      b.setAttribute('aria-checked', String(on));
-    });
-    setActive(stored);
+    const syncControls = (id) => {
+      options.forEach(b => {
+        const on = b.dataset.themeId === id;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-checked', String(on));
+      });
+      if (headerToggle) {
+        const night = id === 'night';
+        const text = night
+          ? (isEnglish ? 'Switch to day theme' : 'Увімкнути денну тему')
+          : (isEnglish ? 'Switch to night theme' : 'Увімкнути нічну тему');
+        headerToggle.setAttribute('aria-pressed', String(night));
+        headerToggle.setAttribute('aria-label', text);
+        headerToggle.title = text;
+      }
+    };
+    const setTheme = (id) => {
+      apply(id);
+      localStorage.setItem('demo-theme', id);
+      syncControls(id);
+    };
+    syncControls(stored);
+
+    if (headerToggle) {
+      headerToggle.addEventListener('click', () => {
+        setTheme(root.dataset.theme === 'night' ? '' : 'night');
+      });
+    }
 
     toggle.addEventListener('click', () => {
       const open = !wrap.classList.contains('is-open');
       wrap.classList.toggle('is-open', open);
       toggle.setAttribute('aria-expanded', String(open));
     });
-    options.forEach(btn => btn.addEventListener('click', () => {
-      const id = btn.dataset.themeId;
-      apply(id);
-      localStorage.setItem('demo-theme', id);
-      setActive(id);
-    }));
+    options.forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.themeId)));
     document.addEventListener('click', (event) => {
       if (!event.target.closest('.theme-demo')) {
         wrap.classList.remove('is-open');
