@@ -350,6 +350,70 @@
     const end = lastSpace > maxLength * 0.65 ? lastSpace : maxLength;
     return `${text.slice(0, end).replace(/[.,;:!?…]+$/, '')}...`;
   };
+  // Department (циклова комісія) tags — the "Циклова комісія" prefix is intentionally dropped.
+  const NEWS_TAGS = [
+    { id: 'oblik-finance', uk: 'Обліково-фінансові дисципліни', en: 'Accounting and Finance' },
+    { id: 'economics-trade', uk: 'Економіка, торгівля та маркетинг', en: 'Economics, Trade and Marketing' },
+    { id: 'social-law', uk: 'Соціально-гуманітарні та правознавчі дисципліни', en: 'Social, Humanities and Law' },
+    { id: 'it-science', uk: 'Інформаційно-технічні та природничі дисципліни', en: 'IT and Natural Sciences' },
+    { id: 'food-hospitality', uk: 'Харчові технології, організація готельно-ресторанного бізнесу', en: 'Food Technology and Hospitality' }
+  ];
+  const NEWS_TAG_MAP = Object.fromEntries(NEWS_TAGS.map(t => [t.id, t]));
+  const newsTagLabel = (id) => {
+    const tag = NEWS_TAG_MAP[id];
+    return tag ? (isEnglish ? tag.en : tag.uk) : '';
+  };
+  const renderNewsTagLink = (id) => {
+    const label = newsTagLabel(id);
+    if (!label) return '';
+    const href = resolveSiteHref(`news.html?tag=${encodeURIComponent(id)}`);
+    return `<a class="news-tag" href="${escapeHtml(href)}" title="${escapeHtml(label)}">${escapeHtml(label)}</a>`;
+  };
+  // Card view: keep tags on a single line — first tag (truncated if needed) plus a "+N" chip.
+  const renderNewsTagsCompact = (tags) => {
+    const list = (Array.isArray(tags) ? tags : []).filter(id => NEWS_TAG_MAP[id]);
+    if (!list.length) return '';
+    const rest = list.slice(1).map(newsTagLabel);
+    const moreChip = rest.length
+      ? `<span class="news-tag news-tag--more" title="${escapeHtml(rest.join(', '))}">+${rest.length}</span>`
+      : '';
+    return `<div class="news-tags">${renderNewsTagLink(list[0])}${moreChip}</div>`;
+  };
+  // Article view: show every tag.
+  const renderNewsTagsAll = (tags) => (Array.isArray(tags) ? tags : [])
+    .map(renderNewsTagLink)
+    .join('');
+
+  // Sustainable Development Goals catalogue (official palette + short titles).
+  const SDG = {
+    1:  { c: '#E5243B', uk: 'Подолання бідності', en: 'No Poverty' },
+    2:  { c: '#DDA63A', uk: 'Подолання голоду', en: 'Zero Hunger' },
+    3:  { c: '#4C9F38', uk: "Міцне здоров'я", en: 'Good Health' },
+    4:  { c: '#C5192D', uk: 'Якісна освіта', en: 'Quality Education' },
+    5:  { c: '#FF3A21', uk: 'Гендерна рівність', en: 'Gender Equality' },
+    6:  { c: '#26BDE2', uk: 'Чиста вода та належні санітарні умови', en: 'Clean Water and Sanitation' },
+    7:  { c: '#FCC30B', uk: 'Відновлювана енергія', en: 'Renewable Energy' },
+    8:  { c: '#A21942', uk: 'Гідна праця та економічне зростання', en: 'Decent Work and Economic Growth' },
+    9:  { c: '#FD6925', uk: 'Інновації та інфраструктура', en: 'Innovation and Infrastructure' },
+    10: { c: '#DD1367', uk: 'Зменшення нерівності', en: 'Reduced Inequalities' },
+    11: { c: '#FD9D24', uk: 'Сталий розвиток міст і спільнот', en: 'Sustainable Cities and Communities' },
+    12: { c: '#BF8B2E', uk: 'Відповідальне споживання', en: 'Responsible Consumption' },
+    13: { c: '#3F7E44', uk: 'Боротьба зі зміною клімату', en: 'Climate Action' },
+    14: { c: '#0A97D9', uk: 'Збереження морських екосистем', en: 'Life Below Water' },
+    15: { c: '#56C02B', uk: 'Збереження екосистем суші', en: 'Life on Land' },
+    16: { c: '#00689D', uk: 'Мир та справедливість', en: 'Peace and Justice' },
+    17: { c: '#19486A', uk: 'Партнерство заради сталого розвитку', en: 'Partnerships for the Goals' }
+  };
+  const renderSdgIcon = (sdg) => {
+    const goal = SDG[sdg];
+    if (!goal) return '';
+    const name = isEnglish ? goal.en : goal.uk;
+    const aria = isEnglish
+      ? `Sustainable Development Goal ${sdg}: ${name}`
+      : `Ціль сталого розвитку ${sdg}: ${name}`;
+    const src = resolveNewsAsset(`assets/sdg/sdg-${String(sdg).padStart(2, '0')}.png`);
+    return `<img class="sdg-icon" src="${escapeHtml(src)}" alt="${escapeHtml(aria)}" title="${escapeHtml(aria)}" width="88" height="88" loading="lazy">`;
+  };
   const renderNewsCard = (item, excerptLength) => {
     const href = resolveSiteHref(item.url || '#');
     const linkAttrs = /^https?:\/\//.test(href) ? ' target="_blank" rel="noopener noreferrer"' : '';
@@ -358,11 +422,14 @@
       ? `<div class="news-media news-media--image"><img src="${escapeHtml(resolveNewsAsset(item.image))}" alt="${escapeHtml(item.alt || item.title)}" loading="lazy"></div>`
       : '<div class="news-media" aria-hidden="true"></div>';
     const excerpt = item.excerpt || item.content || item.body || '';
-    const meta = item.publishedLabel ? `<div class="news-meta"><span>${escapeHtml(item.publishedLabel)}</span></div>` : '';
+    const tags = renderNewsTagsCompact(item.tags);
+    const meta = (item.publishedLabel || tags)
+      ? `<div class="news-meta">${item.publishedLabel ? `<span>${escapeHtml(item.publishedLabel)}</span>` : ''}${tags}</div>`
+      : '';
 
     return `<article class="news-card"${idAttr}>${image}<div class="news-content">${meta}<h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(truncateNewsText(excerpt, excerptLength))}</p><a class="text-link" href="${escapeHtml(href)}"${linkAttrs}>${ui.readFull} <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6"/></svg></a></div></article>`;
   };
-  const renderNewsPagination = (container, currentPage, totalPages) => {
+  const renderNewsPagination = (container, currentPage, totalPages, activeTag = '') => {
     if (!container) return;
     if (totalPages <= 1) {
       container.hidden = true;
@@ -370,10 +437,12 @@
       return;
     }
 
+    const tagQuery = activeTag ? `tag=${encodeURIComponent(activeTag)}` : '';
     container.hidden = false;
     container.innerHTML = Array.from({ length: totalPages }, (_, index) => {
       const page = index + 1;
-      const href = page === 1 ? 'news.html' : `news.html?page=${page}`;
+      const params = [tagQuery, page === 1 ? '' : `page=${page}`].filter(Boolean).join('&');
+      const href = params ? `news.html?${params}` : 'news.html';
       const active = page === currentPage ? ' class="is-active" aria-current="page"' : '';
       return `<a href="${href}"${active}>${page}</a>`;
     }).join('');
@@ -381,24 +450,92 @@
 
   if (newsItems.length) {
     const orderedNews = [...newsItems].sort((a, b) => normalizeNewsDate(b) - normalizeNewsDate(a));
-    document.querySelectorAll('[data-news-list]').forEach(grid => {
-      const limit = Number(grid.dataset.newsLimit) || orderedNews.length;
-      const excerptLength = Number(grid.dataset.newsExcerptLength) || 185;
-      const pageSize = Number(grid.dataset.newsPageSize) || 0;
-      const items = orderedNews.slice(0, limit);
-      const totalPages = pageSize ? Math.ceil(items.length / pageSize) : 1;
-      const requestedPage = Number(new URLSearchParams(window.location.search).get('page')) || 1;
-      const currentPage = Math.min(Math.max(requestedPage, 1), totalPages);
-      const visibleItems = pageSize
-        ? items.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-        : items;
+    let activeTag = '';
+    const syncTagFromUrl = () => {
+      const tag = new URLSearchParams(window.location.search).get('tag');
+      activeTag = NEWS_TAG_MAP[tag] ? tag : '';
+    };
+    syncTagFromUrl();
+    const hasTag = (item) => Array.isArray(item.tags) && item.tags.includes(activeTag);
+    const filterBars = [...document.querySelectorAll('[data-news-filter]')];
+    const newsGrids = [...document.querySelectorAll('[data-news-list]')];
 
-      grid.innerHTML = visibleItems.map(item => renderNewsCard(item, excerptLength)).join('');
-      renderNewsPagination(grid.parentElement?.querySelector('[data-news-pagination]'), currentPage, totalPages);
-    });
-    document.querySelectorAll('[data-news-count]').forEach(element => {
-      element.textContent = orderedNews.length;
-    });
+    // Department filter bar (rendered only where a container opts in, e.g. the news page).
+    const renderFilterBars = () => {
+      const button = (id, label, isActive) => {
+        const href = resolveSiteHref(id ? `news.html?tag=${encodeURIComponent(id)}` : 'news.html');
+        const cls = `news-filter__btn${isActive ? ' is-active' : ''}`;
+        const current = isActive ? ' aria-current="true"' : '';
+        return `<a class="${cls}" href="${escapeHtml(href)}"${current}>${escapeHtml(label)}</a>`;
+      };
+      filterBars.forEach(bar => {
+        bar.innerHTML = button('', isEnglish ? 'All' : 'Усі', !activeTag)
+          + NEWS_TAGS.map(tag => button(tag.id, isEnglish ? tag.en : tag.uk, activeTag === tag.id)).join('');
+      });
+    };
+
+    const renderGrids = () => {
+      newsGrids.forEach(grid => {
+        const filtered = activeTag ? orderedNews.filter(hasTag) : orderedNews;
+        const limit = Number(grid.dataset.newsLimit) || filtered.length;
+        const excerptLength = Number(grid.dataset.newsExcerptLength) || 185;
+        const pageSize = Number(grid.dataset.newsPageSize) || 0;
+        const items = filtered.slice(0, limit);
+        const totalPages = pageSize ? Math.max(1, Math.ceil(items.length / pageSize)) : 1;
+        const requestedPage = Number(new URLSearchParams(window.location.search).get('page')) || 1;
+        const currentPage = Math.min(Math.max(requestedPage, 1), totalPages);
+        const visibleItems = pageSize
+          ? items.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+          : items;
+
+        grid.innerHTML = visibleItems.length
+          ? visibleItems.map(item => renderNewsCard(item, excerptLength)).join('')
+          : `<p class="news-empty">${isEnglish ? 'No news for this department yet.' : 'Поки немає новин за цією цикловою комісією.'}</p>`;
+        renderNewsPagination(grid.parentElement?.querySelector('[data-news-pagination]'), currentPage, totalPages, activeTag);
+      });
+      document.querySelectorAll('[data-news-count]').forEach(element => {
+        element.textContent = (activeTag ? orderedNews.filter(hasTag) : orderedNews).length;
+      });
+    };
+
+    const renderFeed = () => { renderFilterBars(); renderGrids(); };
+    renderFeed();
+
+    // On the news page, filter/paginate in place (no reload, no jump to top).
+    if (filterBars.length) {
+      const scrollToFeed = () => {
+        const y = filterBars[0].getBoundingClientRect().top + window.scrollY - 110;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      };
+      document.addEventListener('click', (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.button) return;
+        const link = event.target.closest('.news-filter__btn, .news-tag, [data-news-pagination] a');
+        if (!link) return;
+        event.preventDefault();
+        window.history.pushState({}, '', link.href);
+        syncTagFromUrl();
+        renderFeed();
+        if (!link.classList.contains('news-filter__btn')) scrollToFeed();
+      });
+      window.addEventListener('popstate', () => { syncTagFromUrl(); renderFeed(); });
+    }
+
+    // Full news article: tag + related SDG icon(s).
+    const current = newsItems.find(item => (item.url || '').split('/').pop() === window.location.pathname.split('/').pop());
+    const articleMeta = document.querySelector('.news-article-meta');
+    if (current && articleMeta && !articleMeta.querySelector('.news-tag')) {
+      const tags = renderNewsTagsAll(current.tags);
+      if (tags) articleMeta.insertAdjacentHTML('beforeend', tags);
+    }
+    const articleBody = document.querySelector('.news-article-body');
+    if (current && articleBody && !articleBody.parentElement.querySelector('.news-article-sdg')) {
+      const goals = Array.isArray(current.sdgs) ? current.sdgs : current.sdg ? [current.sdg] : [];
+      const icons = goals.map(goal => renderSdgIcon(goal)).join('');
+      if (icons) {
+        const title = isEnglish ? 'Sustainable Development Goals' : 'Цілі сталого розвитку';
+        articleBody.insertAdjacentHTML('afterend', `<div class="news-article-sdg"><span class="news-article-sdg__title">${title}</span><div class="sdg-badges" role="group" aria-label="${title}">${icons}</div></div>`);
+      }
+    }
   }
 
   document.querySelectorAll('[data-college-carousel]').forEach(carousel => {
@@ -517,58 +654,42 @@
     onScroll();
   });
 
-  // Demo theme switcher — lets reviewers preview color directions live.
-  // Self-contained UI tool: remove this block (and the matching CSS) for production.
+  // Day / night theme — toggled from the header sun/moon button.
   (() => {
-    const themes = [
-      { id: '', uk: 'Основна', en: 'Primary', swatch: 'linear-gradient(135deg,#0b2345,#4ca0d8)' },
-      { id: 'night', uk: 'Нічний режим', en: 'Night mode', swatch: 'linear-gradient(135deg,#071420,#38aee5)' },
-      { id: 'purple', uk: 'Фіолетова', en: 'Royal Purple', swatch: 'linear-gradient(135deg,#2a0f49,#9a6ee6)' },
-      { id: 'burgundy', uk: 'Бордова', en: 'Burgundy', swatch: 'linear-gradient(135deg,#3d0d1c,#d6a23f)' }
-    ];
     const root = document.documentElement;
-    const stored = localStorage.getItem('demo-theme') || '';
+    // Only 'night' (or empty = day) is supported; ignore any legacy stored theme.
+    const stored = localStorage.getItem('site-theme') === 'night' ? 'night' : '';
     const apply = (id) => { if (id) root.dataset.theme = id; else delete root.dataset.theme; };
     apply(stored);
 
-    const label = isEnglish ? 'Theme' : 'Тема';
-    const wrap = document.createElement('div');
-    wrap.className = 'theme-demo';
-    wrap.innerHTML = `
-      <div class="theme-demo__panel" role="menu">
-        <span class="theme-demo__title">${label}</span>
-        ${themes.map(t => `<button class="theme-demo__opt" type="button" role="menuitemradio" data-theme-id="${t.id}"><span class="theme-demo__sw" style="background:${t.swatch}"></span>${isEnglish ? t.en : t.uk}</button>`).join('')}
-      </div>
-      <button class="theme-demo__toggle" type="button" aria-haspopup="true" aria-expanded="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18 4.5 4.5 0 0 1 0-9 4.5 4.5 0 0 0 0-9Z"/></svg>${label}
-      </button>`;
-    document.body.appendChild(wrap);
+    const headerActions = document.querySelector('.header-actions');
+    if (!headerActions) return;
 
-    const toggle = wrap.querySelector('.theme-demo__toggle');
-    const options = [...wrap.querySelectorAll('.theme-demo__opt')];
-    const setActive = (id) => options.forEach(b => {
-      const on = b.dataset.themeId === id;
-      b.classList.toggle('is-active', on);
-      b.setAttribute('aria-checked', String(on));
-    });
-    setActive(stored);
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'icon-button header-theme';
+    toggle.innerHTML = `
+      <svg class="icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.4 12h2.2M19.4 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>`;
+    const searchBtn = headerActions.querySelector('.header-search');
+    headerActions.insertBefore(toggle, searchBtn || headerActions.firstChild);
+
+    const sync = (id) => {
+      const night = id === 'night';
+      const text = night
+        ? (isEnglish ? 'Switch to day theme' : 'Увімкнути денну тему')
+        : (isEnglish ? 'Switch to night theme' : 'Увімкнути нічну тему');
+      toggle.setAttribute('aria-pressed', String(night));
+      toggle.setAttribute('aria-label', text);
+      toggle.title = text;
+    };
+    sync(stored);
 
     toggle.addEventListener('click', () => {
-      const open = !wrap.classList.contains('is-open');
-      wrap.classList.toggle('is-open', open);
-      toggle.setAttribute('aria-expanded', String(open));
-    });
-    options.forEach(btn => btn.addEventListener('click', () => {
-      const id = btn.dataset.themeId;
+      const id = root.dataset.theme === 'night' ? '' : 'night';
       apply(id);
-      localStorage.setItem('demo-theme', id);
-      setActive(id);
-    }));
-    document.addEventListener('click', (event) => {
-      if (!event.target.closest('.theme-demo')) {
-        wrap.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-      }
+      localStorage.setItem('site-theme', id);
+      sync(id);
     });
   })();
 })();
