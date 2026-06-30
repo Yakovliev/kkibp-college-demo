@@ -559,89 +559,42 @@
     onScroll();
   });
 
-  // Demo theme switcher — lets reviewers preview color directions live.
-  // Self-contained UI tool: remove this block (and the matching CSS) for production.
+  // Day / night theme — toggled from the header sun/moon button.
   (() => {
-    const themes = [
-      { id: '', uk: 'Основна', en: 'Primary', swatch: 'linear-gradient(135deg,#0b2345,#4ca0d8)' },
-      { id: 'night', uk: 'Нічний режим', en: 'Night mode', swatch: 'linear-gradient(135deg,#071420,#38aee5)' },
-      { id: 'purple', uk: 'Фіолетова', en: 'Royal Purple', swatch: 'linear-gradient(135deg,#2a0f49,#9a6ee6)' },
-      { id: 'burgundy', uk: 'Бордова', en: 'Burgundy', swatch: 'linear-gradient(135deg,#3d0d1c,#d6a23f)' }
-    ];
     const root = document.documentElement;
-    const stored = localStorage.getItem('demo-theme') || '';
+    // Only 'night' (or empty = day) is supported; ignore any legacy stored theme.
+    const stored = localStorage.getItem('site-theme') === 'night' ? 'night' : '';
     const apply = (id) => { if (id) root.dataset.theme = id; else delete root.dataset.theme; };
     apply(stored);
 
-    // Header day/night toggle — quick switch between the main (day) and night themes.
     const headerActions = document.querySelector('.header-actions');
-    let headerToggle = null;
-    if (headerActions) {
-      headerToggle = document.createElement('button');
-      headerToggle.type = 'button';
-      headerToggle.className = 'icon-button header-theme';
-      headerToggle.innerHTML = `
-        <svg class="icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
-        <svg class="icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.4 12h2.2M19.4 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>`;
-      const searchBtn = headerActions.querySelector('.header-search');
-      headerActions.insertBefore(headerToggle, searchBtn || headerActions.firstChild);
-    }
+    if (!headerActions) return;
 
-    const label = isEnglish ? 'Theme' : 'Тема';
-    const wrap = document.createElement('div');
-    wrap.className = 'theme-demo';
-    wrap.innerHTML = `
-      <div class="theme-demo__panel" role="menu">
-        <span class="theme-demo__title">${label}</span>
-        ${themes.map(t => `<button class="theme-demo__opt" type="button" role="menuitemradio" data-theme-id="${t.id}"><span class="theme-demo__sw" style="background:${t.swatch}"></span>${isEnglish ? t.en : t.uk}</button>`).join('')}
-      </div>
-      <button class="theme-demo__toggle" type="button" aria-haspopup="true" aria-expanded="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18 4.5 4.5 0 0 1 0-9 4.5 4.5 0 0 0 0-9Z"/></svg>${label}
-      </button>`;
-    document.body.appendChild(wrap);
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'icon-button header-theme';
+    toggle.innerHTML = `
+      <svg class="icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.4 12h2.2M19.4 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>`;
+    const searchBtn = headerActions.querySelector('.header-search');
+    headerActions.insertBefore(toggle, searchBtn || headerActions.firstChild);
 
-    const toggle = wrap.querySelector('.theme-demo__toggle');
-    const options = [...wrap.querySelectorAll('.theme-demo__opt')];
-    const syncControls = (id) => {
-      options.forEach(b => {
-        const on = b.dataset.themeId === id;
-        b.classList.toggle('is-active', on);
-        b.setAttribute('aria-checked', String(on));
-      });
-      if (headerToggle) {
-        const night = id === 'night';
-        const text = night
-          ? (isEnglish ? 'Switch to day theme' : 'Увімкнути денну тему')
-          : (isEnglish ? 'Switch to night theme' : 'Увімкнути нічну тему');
-        headerToggle.setAttribute('aria-pressed', String(night));
-        headerToggle.setAttribute('aria-label', text);
-        headerToggle.title = text;
-      }
+    const sync = (id) => {
+      const night = id === 'night';
+      const text = night
+        ? (isEnglish ? 'Switch to day theme' : 'Увімкнути денну тему')
+        : (isEnglish ? 'Switch to night theme' : 'Увімкнути нічну тему');
+      toggle.setAttribute('aria-pressed', String(night));
+      toggle.setAttribute('aria-label', text);
+      toggle.title = text;
     };
-    const setTheme = (id) => {
-      apply(id);
-      localStorage.setItem('demo-theme', id);
-      syncControls(id);
-    };
-    syncControls(stored);
-
-    if (headerToggle) {
-      headerToggle.addEventListener('click', () => {
-        setTheme(root.dataset.theme === 'night' ? '' : 'night');
-      });
-    }
+    sync(stored);
 
     toggle.addEventListener('click', () => {
-      const open = !wrap.classList.contains('is-open');
-      wrap.classList.toggle('is-open', open);
-      toggle.setAttribute('aria-expanded', String(open));
-    });
-    options.forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.themeId)));
-    document.addEventListener('click', (event) => {
-      if (!event.target.closest('.theme-demo')) {
-        wrap.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-      }
+      const id = root.dataset.theme === 'night' ? '' : 'night';
+      apply(id);
+      localStorage.setItem('site-theme', id);
+      sync(id);
     });
   })();
 })();

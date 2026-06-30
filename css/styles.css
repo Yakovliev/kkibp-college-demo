@@ -19,30 +19,6 @@
   --portrait-1:#e0ebf4; --portrait-2:#b5cde0;
 }
 
-[data-theme="burgundy"]{
-  --navy-950:#2a0712; --navy-900:#3d0d1c; --navy-800:#591026; --navy-700:#73182f;
-  --teal-700:#9c6b1f; --teal-600:#b8822c; --teal-500:#d6a23f; --teal-100:#f6ecd6;
-  --gold-500:#b8822c; --gold-100:#f3e3c5;
-  --surface-blue:#f5e6ea;
-  --accent-bright:#f0c878;
-  --hero-1:#fbf4f5; --hero-2:#f7edef; --hero-3:#f3e6e9;
-  --hero-blob-1:rgba(214,162,63,.16); --hero-blob-2:rgba(115,24,47,.12);
-  --prog-1b:#7a1f38; --prog-2a:#591026; --prog-2b:#9e3450; --prog-3a:#480f20; --prog-3b:#7d3a2f;
-  --media-light:#f0dadf; --media-deep:#9e5563;
-  --portrait-1:#f0dee2; --portrait-2:#d2a9b3;
-}
-[data-theme="purple"]{
-  --navy-950:#1d0a33; --navy-900:#2a0f49; --navy-800:#3c1a66; --navy-700:#4a2480;
-  --teal-700:#6d3bbf; --teal-600:#7e4fd0; --teal-500:#9a6ee6; --teal-100:#efe8fb;
-  --gold-500:#7e4fd0; --gold-100:#ece2fb;
-  --surface-blue:#e7ddf6;
-  --accent-bright:#c9b3ff;
-  --hero-1:#f7f4fd; --hero-2:#f1ebfb; --hero-3:#ede6fa;
-  --hero-blob-1:rgba(154,110,230,.18); --hero-blob-2:rgba(74,36,128,.13);
-  --prog-1b:#4a2480; --prog-2a:#3c1a66; --prog-2b:#7e4fd0; --prog-3a:#2f1455; --prog-3b:#6a4bc0;
-  --media-light:#e3d8f6; --media-deep:#7e63b8;
-  --portrait-1:#e7ddf6; --portrait-2:#bda7e3;
-}
 [data-theme="night"]{
   color-scheme:dark;
   --navy-950:#06101b; --navy-900:#0b1d2f; --navy-800:#11334f; --navy-700:#18577c;
@@ -75,8 +51,7 @@
 [data-theme="night"] .profile-card,
 [data-theme="night"] .filter-button,
 [data-theme="night"] .icon-button,
-[data-theme="night"] .mobile-language-option,
-[data-theme="night"] .theme-demo__panel{background:var(--surface);color:var(--ink)}
+[data-theme="night"] .mobile-language-option{background:var(--surface);color:var(--ink)}
 [data-theme="night"] .college-about-section{background:linear-gradient(180deg,var(--surface) 0%,var(--surface-soft) 100%)}
 [data-theme="night"] .hero-trust{background:rgba(13,29,43,.78)}
 [data-theme="night"] .brand-text strong,
@@ -106,9 +81,7 @@
 [data-theme="night"] .button--outline:hover,
 [data-theme="night"] .quick-link:hover,
 [data-theme="night"] .anchor-card a:hover,
-[data-theme="night"] .program-doc-link:hover,
-[data-theme="night"] .theme-demo__opt:hover,
-[data-theme="night"] .theme-demo__opt.is-active{background:var(--teal-100)}
+[data-theme="night"] .program-doc-link:hover{background:var(--teal-100)}
 [data-theme="night"] .skip-link{background:var(--surface);color:var(--ink)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:145px;overflow-x:clip}
@@ -307,19 +280,6 @@ details.faq{border-bottom:1px solid var(--line)}details.faq:first-of-type{border
 @media (max-width:420px){.subpage-link-card{padding-left:20px;padding-right:20px}.subpage-link-card .text-link{left:20px}}
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
 
-
-/* Demo theme switcher (UI tool — safe to remove for production) */
-.theme-demo{position:fixed;z-index:600;right:22px;bottom:80px;display:grid;justify-items:end;gap:10px}
-.theme-demo__panel{display:none;flex-direction:column;gap:6px;padding:10px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:var(--shadow-md);min-width:190px}
-.theme-demo.is-open .theme-demo__panel{display:flex}
-.theme-demo__title{padding:2px 4px;font-size:.62rem;font-weight:850;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.theme-demo__opt{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid transparent;border-radius:10px;background:var(--surface-soft);color:var(--ink);font-size:.82rem;font-weight:700;text-align:left;cursor:pointer}
-.theme-demo__opt:hover{background:var(--teal-100)}
-.theme-demo__opt.is-active{border-color:var(--teal-500);background:var(--teal-100);color:var(--teal-700)}
-.theme-demo__sw{flex:none;width:34px;height:18px;border-radius:5px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
-.theme-demo__toggle{display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border:0;border-radius:999px;background:var(--navy-900);color:#fff;font-size:.82rem;font-weight:800;box-shadow:var(--shadow-md);cursor:pointer}
-.theme-demo__toggle svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8}
-@media (max-width:719px){.theme-demo{right:14px;bottom:74px}}
 
 [data-theme="night"] .button--outline,
 [data-theme="night"] .button--outline:hover,
