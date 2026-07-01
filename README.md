@@ -12,7 +12,7 @@
 - `assets/sdg/` — іконки 17 Цілей сталого розвитку для сторінок новин.
 - `assets/fonts/inter/` — локальні файли шрифту Inter і ліцензія OFL.
 - `previews/laptop.html`, `previews/tablet.html`, `previews/mobile.html` — сторінки для перегляду у фіксованих розмірах пристроїв.
-- `docs/technical-spec.md` — прийняті вимоги для майбутньої WordPress або production-реалізації.
+- `docs/technical-spec.md` — прийняті вимоги для майбутньої CMS або production-реалізації; WordPress у ТЗ згадується як робоча гіпотеза, а не фінально затверджена платформа.
 - `docs/decisions/` — зафіксовані дизайн-рішення демоверсії.
 
 ## Запуск
