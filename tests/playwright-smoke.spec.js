@@ -16,6 +16,39 @@ test('home page renders without horizontal overflow', async ({ page }) => {
   expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth);
 });
 
+test('inner pages use the full content container without the duplicate sidebar', async ({ page }) => {
+  const pages = [
+    { path: '/college.html', hasHeroGuide: true },
+    { path: '/college/activity/sustainable-development.html', hasHeroGuide: false },
+    { path: '/students/general-info/class-schedule.html', hasHeroGuide: false },
+    { path: '/en/college.html', hasHeroGuide: true }
+  ];
+
+  for (const item of pages) {
+    await page.goto(item.path);
+
+    await expect(page.locator('.anchor-nav, .anchor-card')).toHaveCount(0);
+    await expect(page.locator('.page-hero-guide')).toHaveCount(item.hasHeroGuide ? 1 : 0);
+
+    const layout = await page.locator('.content-layout').evaluate((element) => {
+      const content = element.firstElementChild;
+      const elementRect = element.getBoundingClientRect();
+      const contentRect = content.getBoundingClientRect();
+
+      return {
+        display: getComputedStyle(element).display,
+        elementWidth: Math.round(elementRect.width),
+        contentWidth: Math.round(contentRect.width),
+        overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth
+      };
+    });
+
+    expect(layout.display).toBe('block');
+    expect(layout.contentWidth).toBeGreaterThanOrEqual(layout.elementWidth - 1);
+    expect(layout.overflow).toBe(false);
+  }
+});
+
 test('home about-college carousel renders and can be controlled', async ({ page }) => {
   await page.goto('/index.html');
 
