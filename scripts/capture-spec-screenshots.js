@@ -52,7 +52,8 @@ const scenarios = [
       await page.locator('.search-dialog').waitFor({ state: 'visible' });
     }
   },
-  { file: 'theme-night-laptop.png', viewport: 'laptop', url: '/index.html', screenshot: 'viewport', theme: 'night' },
+  // Night-theme scenario disabled by the approved single-theme decision of 2026-07-24.
+  // { file: 'theme-night-laptop.png', viewport: 'laptop', url: '/index.html', screenshot: 'viewport', theme: 'night' },
   { file: 'home-about-laptop.png', viewport: 'laptop', url: '/index.html', selector: '#college-about' },
   { file: 'home-main-sections-mobile.png', viewport: 'mobile', url: '/index.html', selector: '.main-sections#about' },
   { file: 'home-programs-laptop.png', viewport: 'laptop', url: '/index.html', selector: '#programs' },
@@ -144,10 +145,12 @@ async function settlePage(page) {
 
 async function captureScenario(browser, scenario) {
   const context = await browser.newContext(viewports[scenario.viewport]);
+  /* Night-theme setup retained for history; the current site always uses the standard theme.
   await context.addInitScript((theme) => {
     if (theme === 'night') localStorage.setItem('site-theme', 'night');
     else localStorage.removeItem('site-theme');
   }, scenario.theme || '');
+  */
 
   const page = await context.newPage();
   await page.goto(`${baseUrl}${scenario.url}`, { waitUntil: 'domcontentloaded' });

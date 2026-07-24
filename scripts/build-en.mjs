@@ -77,6 +77,7 @@ const translations = {
   'Електронна пошта та телефон': 'Email and phone',
   'Instagram коледжу': 'College Instagram',
   'Facebook коледжу': 'College Facebook',
+  'TikTok коледжу': 'College TikTok',
   'Пошук по сайту': 'Search the site',
   'Змінити мову': 'Change language',
   'Зміна мови': 'Change language',

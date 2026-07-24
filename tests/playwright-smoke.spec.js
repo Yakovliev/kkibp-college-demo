@@ -168,9 +168,14 @@ test('news page paginates the latest twelve materials as nine plus three', async
   await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('2');
 });
 
-test('header actions and news article metadata keep the updated layout', async ({ page }) => {
+test('TikTok replaces the theme toggle on desktop and stays hidden with other header socials below desktop', async ({ page }) => {
   await page.goto('/news-4873-rozvytok-tsyfrovykh-kompetentnostei-vykladachi-ta-zdobuvachi-osvity-mahisterskoi-opp-komertsiia-ta-torhivlia-uspishno-zavershyly-pidvyshchennia-kvalifikatsii-u-mezhakh-proiektu-prof2it.html');
-  await page.locator('.header-theme').waitFor();
+  await page.locator('.header-tiktok').waitFor({ state: 'attached' });
+  await expect(page.locator('.header-theme')).toHaveCount(0);
+  await expect(page.locator('.header-tiktok')).toHaveAttribute('href', 'https://www.tiktok.com/@studparliament_kkibp');
+  await expect(page.locator('.header-tiktok path')).toHaveAttribute('d', 'M16.5 3c.2 1.9 1.4 3.5 3.5 4.1v3.2a8.3 8.3 0 0 1-3.5-1v5.3a5.9 5.9 0 1 1-5.1-5.8V12a2.7 2.7 0 1 0 1.9 2.6V3h3.2Z');
+  await expect(page.locator('.footer-social .social-link--tiktok')).toHaveAttribute('href', 'https://www.tiktok.com/@studparliament_kkibp');
+  await expect(page.locator('.footer-social .social-links a')).toHaveCount(3);
 
   const boxes = await page.evaluate(() => {
     const rect = (selector) => {
@@ -186,16 +191,27 @@ test('header actions and news article metadata keep the updated layout', async (
 
     return {
       search: rect('.header-search'),
-      theme: rect('.header-theme'),
+      tiktok: rect('.header-tiktok'),
       language: rect('.header-language .language'),
       time: rect('.news-article-meta time'),
       tags: rect('.news-article-tags'),
+      viewportWidth: window.innerWidth,
+      tiktokDisplay: getComputedStyle(document.querySelector('.header-tiktok')).display,
+      headerSocialsHidden: Array.from(document.querySelectorAll('.header-actions .header-social'))
+        .every((element) => getComputedStyle(element).display === 'none'),
       languageVisible: getComputedStyle(document.querySelector('.header-language')).display !== 'none',
       overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth
     };
   });
 
-  expect(boxes.theme).toEqual(boxes.search);
+  if (boxes.viewportWidth >= 1100) {
+    expect(boxes.tiktok).toEqual(boxes.search);
+  } else {
+    expect(boxes.tiktokDisplay).toBe('none');
+    expect(boxes.tiktok.width).toBe(0);
+    expect(boxes.tiktok.height).toBe(0);
+    expect(boxes.headerSocialsHidden).toBe(true);
+  }
   if (boxes.languageVisible) expect(boxes.language).toEqual(boxes.search);
   await expect(page.locator('.news-article-tags .news-tag')).toHaveCount(3);
   expect(boxes.tags.top).toBeGreaterThan(boxes.time.top);

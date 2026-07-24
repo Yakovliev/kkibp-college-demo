@@ -657,7 +657,9 @@
     onScroll();
   });
 
-  // Day / night theme — toggled from the header sun/moon button.
+  /*
+  // Day / night theme — disabled by the approved administration decision of 2026-07-24.
+  // The implementation is kept as a comment for project history.
   (() => {
     const root = document.documentElement;
     // Only 'night' (or empty = day) is supported; ignore any legacy stored theme.
@@ -695,4 +697,5 @@
       sync(id);
     });
   })();
+  */
 })();
