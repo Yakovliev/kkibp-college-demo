@@ -351,23 +351,48 @@
     return `${text.slice(0, end).replace(/[.,;:!?…]+$/, '')}...`;
   };
   // Department (циклова комісія) tags — the "Циклова комісія" prefix is intentionally dropped.
-  const NEWS_TAGS = [
-    { id: 'oblik-finance', uk: 'Обліково-фінансові дисципліни', en: 'Accounting and Finance' },
-    { id: 'economics-trade', uk: 'Економіка, торгівля та маркетинг', en: 'Economics, Trade and Marketing' },
-    { id: 'social-law', uk: 'Соціально-гуманітарні та правознавчі дисципліни', en: 'Social, Humanities and Law' },
-    { id: 'it-science', uk: 'Інформаційно-технічні та природничі дисципліни', en: 'IT and Natural Sciences' },
-    { id: 'food-hospitality', uk: 'Харчові технології, організація готельно-ресторанного бізнесу', en: 'Food Technology and Hospitality' }
+  const DEPARTMENT_NEWS_TAGS = [
+    { id: 'oblik-finance', kind: 'department', uk: 'Обліково-фінансові дисципліни', en: 'Accounting and Finance' },
+    { id: 'economics-trade', kind: 'department', uk: 'Економіка, торгівля та маркетинг', en: 'Economics, Trade and Marketing' },
+    { id: 'social-law', kind: 'department', uk: 'Соціально-гуманітарні та правознавчі дисципліни', en: 'Social, Humanities and Law' },
+    { id: 'it-science', kind: 'department', uk: 'Інформаційно-технічні та природничі дисципліни', en: 'IT and Natural Sciences' },
+    { id: 'food-hospitality', kind: 'department', uk: 'Харчові технології, організація готельно-ресторанного бізнесу', en: 'Food Technology and Hospitality' }
   ];
+  const SDG_NEWS_TAGS = [
+    { id: 'sdg-01', kind: 'sdg', uk: 'ЦСР 1 - Подолання бідності', en: 'SDG 1 - No Poverty' },
+    { id: 'sdg-02', kind: 'sdg', uk: 'ЦСР 2 - Подолання голоду', en: 'SDG 2 - Zero Hunger' },
+    { id: 'sdg-03', kind: 'sdg', uk: 'ЦСР 3 - Міцне здоров’я і благополуччя', en: 'SDG 3 - Good Health and Well-being' },
+    { id: 'sdg-04', kind: 'sdg', uk: 'ЦСР 4 - Якісна освіта', en: 'SDG 4 - Quality Education' },
+    { id: 'sdg-05', kind: 'sdg', uk: 'ЦСР 5 - Гендерна рівність', en: 'SDG 5 - Gender Equality' },
+    { id: 'sdg-06', kind: 'sdg', uk: 'ЦСР 6 - Чиста вода та належні санітарні умови', en: 'SDG 6 - Clean Water and Sanitation' },
+    { id: 'sdg-07', kind: 'sdg', uk: 'ЦСР 7 - Доступна та чиста енергія', en: 'SDG 7 - Affordable and Clean Energy' },
+    { id: 'sdg-08', kind: 'sdg', uk: 'ЦСР 8 - Гідна праця та економічне зростання', en: 'SDG 8 - Decent Work and Economic Growth' },
+    { id: 'sdg-09', kind: 'sdg', uk: 'ЦСР 9 - Промисловість, інновації та інфраструктура', en: 'SDG 9 - Industry, Innovation and Infrastructure' },
+    { id: 'sdg-10', kind: 'sdg', uk: 'ЦСР 10 - Скорочення нерівності', en: 'SDG 10 - Reduced Inequalities' },
+    { id: 'sdg-11', kind: 'sdg', uk: 'ЦСР 11 - Сталий розвиток міст і громад', en: 'SDG 11 - Sustainable Cities and Communities' },
+    { id: 'sdg-12', kind: 'sdg', uk: 'ЦСР 12 - Відповідальне споживання та виробництво', en: 'SDG 12 - Responsible Consumption and Production' },
+    { id: 'sdg-13', kind: 'sdg', uk: 'ЦСР 13 - Пом’якшення наслідків зміни клімату', en: 'SDG 13 - Climate Action' },
+    { id: 'sdg-14', kind: 'sdg', uk: 'ЦСР 14 - Збереження морських ресурсів', en: 'SDG 14 - Life Below Water' },
+    { id: 'sdg-15', kind: 'sdg', uk: 'ЦСР 15 - Захист екосистем суші', en: 'SDG 15 - Life on Land' },
+    { id: 'sdg-16', kind: 'sdg', uk: 'ЦСР 16 - Мир, справедливість та сильні інститути', en: 'SDG 16 - Peace, Justice and Strong Institutions' },
+    { id: 'sdg-17', kind: 'sdg', uk: 'ЦСР 17 - Партнерство заради сталого розвитку', en: 'SDG 17 - Partnerships for the Goals' }
+  ];
+  const NEWS_TAG_GROUPS = [
+    { id: 'departments', uk: 'Циклові комісії', en: 'Departments', tags: DEPARTMENT_NEWS_TAGS },
+    { id: 'sdg', uk: 'Цілі сталого розвитку', en: 'Sustainable Development Goals', tags: SDG_NEWS_TAGS }
+  ];
+  const NEWS_TAGS = [...DEPARTMENT_NEWS_TAGS, ...SDG_NEWS_TAGS];
   const NEWS_TAG_MAP = Object.fromEntries(NEWS_TAGS.map(t => [t.id, t]));
   const newsTagLabel = (id) => {
     const tag = NEWS_TAG_MAP[id];
     return tag ? (isEnglish ? tag.en : tag.uk) : '';
   };
   const renderNewsTagLink = (id) => {
+    const tag = NEWS_TAG_MAP[id];
     const label = newsTagLabel(id);
-    if (!label) return '';
+    if (!tag || !label) return '';
     const href = resolveSiteHref(`news.html?tag=${encodeURIComponent(id)}`);
-    return `<a class="news-tag" href="${escapeHtml(href)}" title="${escapeHtml(label)}">${escapeHtml(label)}</a>`;
+    return `<a class="news-tag news-tag--${tag.kind}" href="${escapeHtml(href)}" title="${escapeHtml(label)}">${escapeHtml(label)}</a>`;
   };
   // Card view: keep tags on a single line — first tag (truncated if needed) plus a "+N" chip.
   const renderNewsTagsCompact = (tags) => {
@@ -387,36 +412,6 @@
     return links ? `<div class="news-article-tags">${links}</div>` : '';
   };
 
-  // Sustainable Development Goals catalogue (official palette + short titles).
-  const SDG = {
-    1:  { c: '#E5243B', uk: 'Подолання бідності', en: 'No Poverty' },
-    2:  { c: '#DDA63A', uk: 'Подолання голоду', en: 'Zero Hunger' },
-    3:  { c: '#4C9F38', uk: "Міцне здоров'я", en: 'Good Health' },
-    4:  { c: '#C5192D', uk: 'Якісна освіта', en: 'Quality Education' },
-    5:  { c: '#FF3A21', uk: 'Гендерна рівність', en: 'Gender Equality' },
-    6:  { c: '#26BDE2', uk: 'Чиста вода та належні санітарні умови', en: 'Clean Water and Sanitation' },
-    7:  { c: '#FCC30B', uk: 'Відновлювана енергія', en: 'Renewable Energy' },
-    8:  { c: '#A21942', uk: 'Гідна праця та економічне зростання', en: 'Decent Work and Economic Growth' },
-    9:  { c: '#FD6925', uk: 'Інновації та інфраструктура', en: 'Innovation and Infrastructure' },
-    10: { c: '#DD1367', uk: 'Зменшення нерівності', en: 'Reduced Inequalities' },
-    11: { c: '#FD9D24', uk: 'Сталий розвиток міст і спільнот', en: 'Sustainable Cities and Communities' },
-    12: { c: '#BF8B2E', uk: 'Відповідальне споживання', en: 'Responsible Consumption' },
-    13: { c: '#3F7E44', uk: 'Боротьба зі зміною клімату', en: 'Climate Action' },
-    14: { c: '#0A97D9', uk: 'Збереження морських екосистем', en: 'Life Below Water' },
-    15: { c: '#56C02B', uk: 'Збереження екосистем суші', en: 'Life on Land' },
-    16: { c: '#00689D', uk: 'Мир та справедливість', en: 'Peace and Justice' },
-    17: { c: '#19486A', uk: 'Партнерство заради сталого розвитку', en: 'Partnerships for the Goals' }
-  };
-  const renderSdgIcon = (sdg) => {
-    const goal = SDG[sdg];
-    if (!goal) return '';
-    const name = isEnglish ? goal.en : goal.uk;
-    const aria = isEnglish
-      ? `Sustainable Development Goal ${sdg}: ${name}`
-      : `Ціль сталого розвитку ${sdg}: ${name}`;
-    const src = resolveNewsAsset(`assets/sdg/sdg-${String(sdg).padStart(2, '0')}.svg`);
-    return `<img class="sdg-icon" src="${escapeHtml(src)}" alt="${escapeHtml(aria)}" title="${escapeHtml(aria)}" width="88" height="88" loading="lazy">`;
-  };
   const renderNewsCard = (item, excerptLength) => {
     const href = resolveSiteHref(item.url || '#');
     const linkAttrs = /^https?:\/\//.test(href) ? ' target="_blank" rel="noopener noreferrer"' : '';
@@ -463,17 +458,26 @@
     const filterBars = [...document.querySelectorAll('[data-news-filter]')];
     const newsGrids = [...document.querySelectorAll('[data-news-list]')];
 
-    // Department filter bar (rendered only where a container opts in, e.g. the news page).
+    // Tag filter bar (rendered only where a container opts in, e.g. the news page).
     const renderFilterBars = () => {
       const button = (id, label, isActive) => {
         const href = resolveSiteHref(id ? `news.html?tag=${encodeURIComponent(id)}` : 'news.html');
-        const cls = `news-filter__btn${isActive ? ' is-active' : ''}`;
+        const kind = id ? NEWS_TAG_MAP[id]?.kind : 'all';
+        const cls = `news-filter__btn news-filter__btn--${kind}${isActive ? ' is-active' : ''}`;
         const current = isActive ? ' aria-current="true"' : '';
         return `<a class="${cls}" href="${escapeHtml(href)}"${current}>${escapeHtml(label)}</a>`;
       };
       filterBars.forEach(bar => {
-        bar.innerHTML = button('', isEnglish ? 'All' : 'Усі', !activeTag)
-          + NEWS_TAGS.map(tag => button(tag.id, isEnglish ? tag.en : tag.uk, activeTag === tag.id)).join('');
+        const heading = isEnglish ? 'Filter news by tag' : 'Фільтрувати новини за тегом';
+        const allLabel = isEnglish ? 'All news' : 'Усі новини';
+        const groups = NEWS_TAG_GROUPS.map(group => {
+          const label = isEnglish ? group.en : group.uk;
+          const buttons = group.tags
+            .map(tag => button(tag.id, isEnglish ? tag.en : tag.uk, activeTag === tag.id))
+            .join('');
+          return `<div class="news-filter__group" role="group" aria-label="${escapeHtml(label)}"><span class="news-filter__group-title">${escapeHtml(label)}</span><div class="news-filter__options">${buttons}</div></div>`;
+        }).join('');
+        bar.innerHTML = `<div class="news-filter__toolbar"><span class="news-filter__heading">${heading}</span>${button('', allLabel, !activeTag)}</div>${groups}`;
       });
     };
 
@@ -493,7 +497,7 @@
 
         grid.innerHTML = visibleItems.length
           ? visibleItems.map(item => renderNewsCard(item, excerptLength)).join('')
-          : `<p class="news-empty">${isEnglish ? 'No news for this department yet.' : 'Поки немає новин за цією цикловою комісією.'}</p>`;
+          : `<p class="news-empty">${isEnglish ? 'No news with this tag yet.' : 'Поки немає новин із цим тегом.'}</p>`;
         renderNewsPagination(grid.parentElement?.querySelector('[data-news-pagination]'), currentPage, totalPages, activeTag);
       });
       document.querySelectorAll('[data-news-count]').forEach(element => {
@@ -523,21 +527,12 @@
       window.addEventListener('popstate', () => { syncTagFromUrl(); renderFeed(); });
     }
 
-    // Full news article: tag + related SDG icon(s).
+    // Full news article: show all assigned taxonomy tags in the standard metadata area.
     const current = newsItems.find(item => (item.url || '').split('/').pop() === window.location.pathname.split('/').pop());
     const articleMeta = document.querySelector('.news-article-meta');
     if (current && articleMeta && !articleMeta.querySelector('.news-tag')) {
       const tags = renderNewsTagsAll(current.tags);
       if (tags) articleMeta.insertAdjacentHTML('beforeend', tags);
-    }
-    const articleBody = document.querySelector('.news-article-body');
-    if (current && articleBody && !articleBody.parentElement.querySelector('.news-article-sdg')) {
-      const goals = Array.isArray(current.sdgs) ? current.sdgs : current.sdg ? [current.sdg] : [];
-      const icons = goals.map(goal => renderSdgIcon(goal)).join('');
-      if (icons) {
-        const title = isEnglish ? 'Sustainable Development Goals' : 'Цілі сталого розвитку';
-        articleBody.insertAdjacentHTML('afterend', `<div class="news-article-sdg"><span class="news-article-sdg__title">${title}</span><div class="sdg-badges" role="group" aria-label="${title}">${icons}</div></div>`);
-      }
     }
   }
 

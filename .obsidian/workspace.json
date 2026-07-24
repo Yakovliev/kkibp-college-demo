@@ -1,0 +1,218 @@
+{
+  "main": {
+    "id": "50caa9061483953f",
+    "type": "split",
+    "children": [
+      {
+        "id": "58659ee534d56325",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "027271151198e0bf",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/old-site-news-inventory-pages-1-30.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "old-site-news-inventory-pages-1-30"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "e4770847a526e0e6",
+    "type": "split",
+    "children": [
+      {
+        "id": "300dc5ccc540d9c2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "31db820145fa6fe9",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "7ab3042c591d6544",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "ee8ada3e66f89b49",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "7acc69c40575c290",
+    "type": "split",
+    "children": [
+      {
+        "id": "1617adc81e93813f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b4e5e10191869a43",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "docs/old-site-news-inventory-pages-1-30.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for old-site-news-inventory-pages-1-30"
+            }
+          },
+          {
+            "id": "dd237a5908cce5b6",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "docs/old-site-news-inventory-pages-1-30.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from old-site-news-inventory-pages-1-30"
+            }
+          },
+          {
+            "id": "a586d523173fcccc",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "2189a2f1b45a2778",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "ec0f82cf2d13d919",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "docs/old-site-news-inventory-pages-1-30.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of old-site-news-inventory-pages-1-30"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "31db820145fa6fe9",
+  "lastOpenFiles": [
+    "docs/Аналіз та класифікація новин.docx",
+    "docs/~$d-site-news-inventory-pages-1-30.docx",
+    "docs/old-site-news-inventory-pages-1-30.docx",
+    "test-results/playwright",
+    "assets/news/latest/4876-zakhyst-vyrobnychoi-praktyky-studentiv-3-kursu-spetsialnosti-076-pidpryiemnytstvo-ta-torhivlia-05.jpg",
+    "assets/news/latest/4876-zakhyst-vyrobnychoi-praktyky-studentiv-3-kursu-spetsialnosti-076-pidpryiemnytstvo-ta-torhivlia-04.jpg",
+    "assets/news/latest/4876-zakhyst-vyrobnychoi-praktyky-studentiv-3-kursu-spetsialnosti-076-pidpryiemnytstvo-ta-torhivlia-02.jpg",
+    "assets/news/latest/4876-zakhyst-vyrobnychoi-praktyky-studentiv-3-kursu-spetsialnosti-076-pidpryiemnytstvo-ta-torhivlia-03.jpg",
+    "assets/news/latest/4877-vid-osvity-do-stiikosti-hromad-mizhnarodnyi-dosvid-dlia-ukrainskykh-zakladiv-osvity-01.jpg",
+    "assets/news/latest/4876-zakhyst-vyrobnychoi-praktyky-studentiv-3-kursu-spetsialnosti-076-pidpryiemnytstvo-ta-torhivlia-01.jpg",
+    "assets/news/latest/4880-akademichna-dobrochesnist-ta-shtuchnyy-intelekt-novi-vyklyky-optymalni-rishennya-02.jpg",
+    "assets/news/latest/4880-akademichna-dobrochesnist-ta-shtuchnyy-intelekt-novi-vyklyky-optymalni-rishennya-01.jpg",
+    "assets/news/latest/4878-studentskyi-triumf-2026-vyznannia-dosiahnen-ta-novi-perspektyvy-02.jpg",
+    "assets/news/latest/4878-studentskyi-triumf-2026-vyznannia-dosiahnen-ta-novi-perspektyvy-04.jpg",
+    "news-4876-zakhyst-vyrobnychoi-praktyky-studentiv-3-kursu-spetsialnosti-076-pidpryiemnytstvo-ta-torhivlia.html",
+    "news-4877-vid-osvity-do-stiikosti-hromad-mizhnarodnyi-dosvid-dlia-ukrainskykh-zakladiv-osvity.html",
+    "news-4878-studentskyi-triumf-2026-vyznannia-dosiahnen-ta-novi-perspektyvy.html",
+    "news-4879-k-i-n-dotsent-yuliya-rudenko-vzyala-uchast-u-litniy-shkoli-osvitnoyi-prohramy-koreni-ta-kryla-istoriya-yaka-ob-yednuye.html",
+    "news-4880-akademichna-dobrochesnist-ta-shtuchnyy-intelekt-novi-vyklyky-optymalni-rishennya.html",
+    "news-4882-vidbulysia-urochystosti-z-nahody-vypusku-studentiv.html",
+    "news-4883-pidsumky-roku-ta-vektory-transformatsii-zasidannia-pedahohichnoi-rady.html",
+    "playwright-report/data/c3774a308bf016aac13981589a9ac469668cf8f0.md",
+    "playwright-report/data/aca9530dd7a6939c22e4b10c8d96af86757560de.md",
+    "playwright-report/data/9748cc5a7a2f9ce6efb9f16691259df8e7a9f091.md",
+    "test-results/playwright/playwright-smoke-sustainab-f6e5a-oals-and-external-documents-chromium-tablet/error-context.md",
+    "test-results/playwright/playwright-smoke-sustainab-f6e5a-oals-and-external-documents-chromium-mobile/error-context.md",
+    "test-results/playwright/playwright-smoke-sustainab-f6e5a-oals-and-external-documents-chromium-wide/error-context.md",
+    "test-results/playwright/playwright-smoke-sustainab-f6e5a-oals-and-external-documents-chromium-laptop/error-context.md",
+    "docs/decisions/DDR-021-sdg-pages-and-current-icons.md"
+  ]
+}

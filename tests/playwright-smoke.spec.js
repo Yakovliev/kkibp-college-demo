@@ -253,9 +253,9 @@ test('home latest news renders exactly three newest shared cards', async ({ page
 
   await expect(cards).toHaveCount(3);
   await expect(cards.locator('h3')).toHaveText([
-    'К.І.Н., ДОЦЕНТ ЮЛІЯ РУДЕНКО ВЗЯЛА УЧАСТЬ У ВЕБІНАРІ ДО ДНЯ КОНСТИТУЦІЇ УКРАЇНИ',
-    'ДЕНЬ ВІДКРИТИХ ДВЕРЕЙ – КРОК ДО МАЙБУТНЬОЇ ПРОФЕСІЇ',
-    'Розвиток цифрових компетентностей: викладачі та здобувачі освіти магістерської ОПП «Комерція та торгівля» успішно завершили підвищення кваліфікації у межах проєкту «Prof2IT»'
+    '«КОРЕНІ ТА КРИЛА: ІСТОРІЯ, ЯКА ОБ’ЄДНУЄ»: УЧАСТЬ К.І.Н., ДОЦЕНТА ЮЛІЇ РУДЕНКО У РОБОТІ ДРУГОГО МОДУЛЯ ЛІТНЬОЇ ШКОЛИ',
+    'Бібліотека Приватного закладу «Київський кооперативний інститут бізнесу і права» поповнилася новими історичними виданнями',
+    'Введення в дію Закону України «Про академічну доброчесність» та наслідки для закладів вищої освіти'
   ]);
   await expect(section.locator('.news-media img')).toHaveCount(3);
   await expect(section.locator('.news-meta')).toHaveCount(3);
@@ -266,44 +266,124 @@ test('home latest news renders exactly three newest shared cards', async ({ page
   await expect(allNews).toHaveAttribute('href', 'news.html');
 });
 
-test('news page paginates the latest twelve materials as nine plus three', async ({ page }) => {
+test('news page paginates all 28 materials in the source inventory order', async ({ page }) => {
   await page.goto('/news.html');
 
   const grid = page.locator('[data-news-list]');
   const cards = grid.locator('.news-card');
+  const sdgFilterLabels = [
+    'ЦСР 1 - Подолання бідності',
+    'ЦСР 2 - Подолання голоду',
+    'ЦСР 3 - Міцне здоров’я і благополуччя',
+    'ЦСР 4 - Якісна освіта',
+    'ЦСР 5 - Гендерна рівність',
+    'ЦСР 6 - Чиста вода та належні санітарні умови',
+    'ЦСР 7 - Доступна та чиста енергія',
+    'ЦСР 8 - Гідна праця та економічне зростання',
+    'ЦСР 9 - Промисловість, інновації та інфраструктура',
+    'ЦСР 10 - Скорочення нерівності',
+    'ЦСР 11 - Сталий розвиток міст і громад',
+    'ЦСР 12 - Відповідальне споживання та виробництво',
+    'ЦСР 13 - Пом’якшення наслідків зміни клімату',
+    'ЦСР 14 - Збереження морських ресурсів',
+    'ЦСР 15 - Захист екосистем суші',
+    'ЦСР 16 - Мир, справедливість та сильні інститути',
+    'ЦСР 17 - Партнерство заради сталого розвитку'
+  ];
 
   await expect(page.locator('.filter-bar')).toHaveCount(0);
+  await expect(page.locator('.news-filter__group-title')).toHaveText(['Циклові комісії', 'Цілі сталого розвитку']);
+  await expect(page.locator('.news-filter__btn--sdg')).toHaveCount(17);
+  await expect(page.locator('.news-filter__btn--sdg')).toHaveText(sdgFilterLabels);
+  const departmentFilter = page.locator('.news-filter__btn--department').first();
+  const sdgFilter = page.locator('.news-filter__btn--sdg').first();
+  const filterColors = locator => locator.evaluate(element => {
+    const style = getComputedStyle(element);
+    return {
+      background: style.backgroundColor,
+      border: style.borderColor,
+      color: style.color
+    };
+  });
+  expect(await filterColors(sdgFilter)).toEqual(await filterColors(departmentFilter));
+  if ((page.viewportSize()?.width || 0) >= 1100) {
+    await departmentFilter.hover();
+    const departmentHoverColors = await filterColors(departmentFilter);
+    await sdgFilter.hover();
+    expect(await filterColors(sdgFilter)).toEqual(departmentHoverColors);
+  }
   await expect(cards).toHaveCount(9);
   await expect(cards.locator('h3')).toHaveText([
-    'К.І.Н., ДОЦЕНТ ЮЛІЯ РУДЕНКО ВЗЯЛА УЧАСТЬ У ВЕБІНАРІ ДО ДНЯ КОНСТИТУЦІЇ УКРАЇНИ',
-    'ДЕНЬ ВІДКРИТИХ ДВЕРЕЙ – КРОК ДО МАЙБУТНЬОЇ ПРОФЕСІЇ',
-    'Розвиток цифрових компетентностей: викладачі та здобувачі освіти магістерської ОПП «Комерція та торгівля» успішно завершили підвищення кваліфікації у межах проєкту «Prof2IT»',
-    'Представники Інституту взяли участь у Міжнародній науково-практичній конференції з питань європейської зеленої політики та сталих фінансів',
-    'Академічна доброчесність і ШІ: проректорка з навчально-методичної та наукової роботи Інна Райковська долучилися до онлайн-курсу щодо нових вимог законодавства',
-    'Проректорка Інна Райковська взяла участь у науково-практичному семінарі з питань цифрової трансформації сфери НТІ',
-    'КРУГЛИЙ СТІЛ «30 РОКІВ КОНСТИТУЦІЇ УКРАЇНИ: ІСТОРИЧНІ ВИТОКИ, СУЧАСНІСТЬ І МАЙБУТНЄ»',
-    '«Скринька довіри»: забезпечення зворотного зв’язку та захист прав студентів',
-    'Від теорії до майстерності: старт навчальної практики харчовиків-технологів'
+    '«КОРЕНІ ТА КРИЛА: ІСТОРІЯ, ЯКА ОБ’ЄДНУЄ»: УЧАСТЬ К.І.Н., ДОЦЕНТА ЮЛІЇ РУДЕНКО У РОБОТІ ДРУГОГО МОДУЛЯ ЛІТНЬОЇ ШКОЛИ',
+    'Бібліотека Приватного закладу «Київський кооперативний інститут бізнесу і права» поповнилася новими історичними виданнями',
+    'Введення в дію Закону України «Про академічну доброчесність» та наслідки для закладів вищої освіти',
+    'К.І.Н., ДОЦЕНТ ЮЛІЯ РУДЕНКО ЗАВЕРШИЛА КУРС «СИЛА У РІЗНОМАНІТТІ: ПРАВА КОРІННИХ НАРОДІВ ТА НАЦІОНАЛЬНИХ СПІЛЬНОТ»',
+    'Викладачі кафедри фінансів і обліку долучилися до Великого бухгалтерського семінару',
+    'Сучасні підходи до оцінювання вартості бізнесу: професійний розвиток к.е.н., доцентки, проректорки Інни Райковської',
+    'Soft skills як ресурс професійного розвитку: участь викладачів кафедри фінансів і обліку в освітньому семінарі',
+    'УЧАСНИКИ ОСВІТНЬОГО ПРОЦЕСУ ДОЛУЧИЛИСЯ ДО АКЦІЇ «ВОРОГАМ – КРИШКА»',
+    'К.І.Н., ДОЦЕНТ ЮЛІЯ РУДЕНКО ВЗЯЛА УЧАСТЬ У П’ЯТІЙ МІЖНАРОДНІЙ ЛІТНІЙ НАУКОВО-ПРОФІЛЬНІЙ ШКОЛІ З МУЗЕЙНОЇ ПЕДАГОГІКИ'
   ]);
   await expect(grid.locator('.news-media img')).toHaveCount(9);
   await expect(grid.locator('.news-meta')).toHaveCount(9);
   await expect(grid.locator('.text-link')).toHaveCount(9);
   await expect(grid.locator('.news-media-label')).toHaveCount(0);
-  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2']);
+  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2', '3', '4']);
   await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('1');
 
   const firstLink = grid.locator('.text-link').first();
-  await expect(firstLink).toHaveAttribute('href', /news-4875-.*\.html$/);
+  await expect(firstLink).toHaveAttribute('href', /news-4893-.*\.html$/);
 
-  await page.goto('/news.html?page=2');
-  const secondPageCards = page.locator('[data-news-list] .news-card');
-  await expect(secondPageCards).toHaveCount(3);
-  await expect(secondPageCards.locator('h3')).toHaveText([
-    'Здобувачі освіти спеціальності «Готельно-ресторанна справа» проходять навчальну практику',
-    'К.І.Н., ДОЦЕНТ ЮЛІЯ РУДЕНКО ВЗЯЛА УЧАСТЬ В ОСВІТНЬОМУ ТРЕНІНГУ «ЗНОВУ ВІДНОВЛЮЄМОСЬ 2026»',
-    '«Першокурсники: рік по тому»: творчий звіт студентів'
+  await page.getByRole('link', { name: 'ЦСР 16 - Мир, справедливість та сильні інститути', exact: true }).click();
+  await expect(page).toHaveURL(/news\.html\?tag=sdg-16$/);
+  await expect(cards).toHaveCount(9);
+  await expect(cards.locator('h3').first()).toHaveText('«КОРЕНІ ТА КРИЛА: ІСТОРІЯ, ЯКА ОБ’ЄДНУЄ»: УЧАСТЬ К.І.Н., ДОЦЕНТА ЮЛІЇ РУДЕНКО У РОБОТІ ДРУГОГО МОДУЛЯ ЛІТНЬОЇ ШКОЛИ');
+  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2']);
+
+  await page.goto('/news.html?page=4');
+  const lastPageCards = page.locator('[data-news-list] .news-card');
+  await expect(lastPageCards).toHaveCount(1);
+  await expect(lastPageCards.locator('h3')).toHaveText(['«Першокурсники: рік по тому»: творчий звіт студентів']);
+  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('4');
+});
+
+test('news articles use zero to three SDG tags without the legacy icon footer', async ({ page }) => {
+  await page.goto('/news.html');
+
+  const assignments = await page.evaluate(() => window.COLLEGE_NEWS.map(item => ({
+    url: item.url,
+    sdgTags: item.tags.filter(tag => tag.startsWith('sdg-')),
+    hasLegacySdgField: Object.hasOwn(item, 'sdgs') || Object.hasOwn(item, 'sdg')
+  })));
+
+  expect(assignments).toHaveLength(28);
+  expect(assignments.slice(0, 16).map(item => item.sdgTags)).toEqual([
+    ['sdg-04', 'sdg-11', 'sdg-16'],
+    ['sdg-04', 'sdg-11', 'sdg-17'],
+    ['sdg-04', 'sdg-16'],
+    ['sdg-04', 'sdg-10', 'sdg-16'],
+    ['sdg-04', 'sdg-08', 'sdg-16'],
+    ['sdg-04', 'sdg-08'],
+    ['sdg-03', 'sdg-04', 'sdg-08'],
+    ['sdg-12', 'sdg-16'],
+    ['sdg-04', 'sdg-11'],
+    ['sdg-04', 'sdg-16'],
+    ['sdg-04'],
+    ['sdg-04', 'sdg-09', 'sdg-16'],
+    ['sdg-04', 'sdg-11', 'sdg-16'],
+    ['sdg-03', 'sdg-04'],
+    ['sdg-04', 'sdg-11', 'sdg-17'],
+    ['sdg-04', 'sdg-08', 'sdg-09']
   ]);
-  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('2');
+  expect(assignments.every(item => item.sdgTags.length <= 3)).toBe(true);
+  expect(assignments.every(item => item.hasLegacySdgField === false)).toBe(true);
+
+  for (const item of assignments.slice(0, 16)) {
+    await page.goto(`/${item.url}`);
+    await expect(page.locator('.news-article-sdg, .sdg-icon, .sdg-badges')).toHaveCount(0);
+    await expect(page.locator('.news-article-tags .news-tag--sdg')).toHaveCount(item.sdgTags.length);
+    await expect(page.locator('.news-article-body img')).not.toHaveCount(0);
+  }
 });
 
 test('TikTok replaces the theme toggle on desktop and stays hidden with other header socials below desktop', async ({ page }) => {
@@ -314,7 +394,7 @@ test('TikTok replaces the theme toggle on desktop and stays hidden with other he
   await expect(page.locator('.header-tiktok path')).toHaveAttribute('d', 'M16.5 3c.2 1.9 1.4 3.5 3.5 4.1v3.2a8.3 8.3 0 0 1-3.5-1v5.3a5.9 5.9 0 1 1-5.1-5.8V12a2.7 2.7 0 1 0 1.9 2.6V3h3.2Z');
   await expect(page.locator('.footer-social .social-link--tiktok')).toHaveAttribute('href', 'https://www.tiktok.com/@studparliament_kkibp');
   await expect(page.locator('.footer-social .social-links a')).toHaveCount(3);
-  await expect(page.locator('.news-article-sdg .sdg-icon')).toHaveAttribute('src', /assets\/sdg\/sdg-\d{2}\.svg$/);
+  await expect(page.locator('.news-article-sdg, .sdg-icon, .sdg-badges')).toHaveCount(0);
 
   const boxes = await page.evaluate(() => {
     const rect = (selector) => {
@@ -352,7 +432,12 @@ test('TikTok replaces the theme toggle on desktop and stays hidden with other he
     expect(boxes.headerSocialsHidden).toBe(true);
   }
   if (boxes.languageVisible) expect(boxes.language).toEqual(boxes.search);
-  await expect(page.locator('.news-article-tags .news-tag')).toHaveCount(3);
+  await expect(page.locator('.news-article-tags .news-tag')).toHaveCount(6);
+  await expect(page.locator('.news-article-tags .news-tag--sdg')).toHaveText([
+    'ЦСР 4 - Якісна освіта',
+    'ЦСР 8 - Гідна праця та економічне зростання',
+    'ЦСР 9 - Промисловість, інновації та інфраструктура'
+  ]);
   expect(boxes.tags.top).toBeGreaterThan(boxes.time.top);
   expect(boxes.overflow).toBe(false);
   await expect(page.locator('.news-article-neighbors span')).toHaveText(['Наступна новина', 'Попередня новина']);
@@ -388,21 +473,21 @@ test('english news page uses the shared card feed without legacy filters', async
   await page.goto('/en/news.html');
 
   const grid = page.locator('[data-news-list]');
-  await expect(page.locator('[data-news-count]')).toHaveText('12');
+  await expect(page.locator('[data-news-count]')).toHaveText('28');
   await expect(page.locator('.filter-bar')).toHaveCount(0);
   await expect(grid.locator('.news-card')).toHaveCount(9);
   await expect(grid.locator('.news-media img')).toHaveCount(9);
   await expect(grid.locator('.news-media-label')).toHaveCount(0);
   await expect(grid.locator('.news-meta')).toHaveCount(9);
-  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2']);
+  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2', '3', '4']);
   await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('1');
   await expect(grid.locator('.text-link').first()).toContainText('Read in full');
-  await expect(grid.locator('.text-link').first()).toHaveAttribute('href', /\.\.\/news-4875-.*\.html$/);
+  await expect(grid.locator('.text-link').first()).toHaveAttribute('href', /\.\.\/news-4893-.*\.html$/);
 
-  await page.goto('/en/news.html?page=2');
-  const secondPageCards = page.locator('[data-news-list] .news-card');
-  await expect(secondPageCards).toHaveCount(3);
-  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('2');
+  await page.goto('/en/news.html?page=4');
+  const lastPageCards = page.locator('[data-news-list] .news-card');
+  await expect(lastPageCards).toHaveCount(1);
+  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('4');
 });
 
 test('english section pages use the current hub template', async ({ page }) => {
