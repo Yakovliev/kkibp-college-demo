@@ -414,7 +414,7 @@
     const aria = isEnglish
       ? `Sustainable Development Goal ${sdg}: ${name}`
       : `Ціль сталого розвитку ${sdg}: ${name}`;
-    const src = resolveNewsAsset(`assets/sdg/sdg-${String(sdg).padStart(2, '0')}.png`);
+    const src = resolveNewsAsset(`assets/sdg/sdg-${String(sdg).padStart(2, '0')}.svg`);
     return `<img class="sdg-icon" src="${escapeHtml(src)}" alt="${escapeHtml(aria)}" title="${escapeHtml(aria)}" width="88" height="88" loading="lazy">`;
   };
   const renderNewsCard = (item, excerptLength) => {

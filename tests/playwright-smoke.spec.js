@@ -49,6 +49,111 @@ test('inner pages use the full content container without the duplicate sidebar',
   }
 });
 
+test('sustainable development page links all goals and external documents', async ({ page }) => {
+  await page.goto('/college/activity/sustainable-development.html');
+
+  const goals = page.locator('.sdg-goal-card');
+  await expect(page.getByRole('heading', { name: '17 цілей сталого розвитку' })).toBeVisible();
+  await expect(goals).toHaveCount(17);
+  await expect(goals.locator('img')).toHaveCount(17);
+
+  const expectedGoals = [
+    ['sustainable-development/podolannia-bidnosti.html', 'Ціль 1 — Подолання бідності'],
+    ['sustainable-development/podolannia-holodu.html', 'Ціль 2 — Подолання голоду'],
+    ['sustainable-development/mitsne-zdorovia-i-blahopoluchchia.html', 'Ціль 3 — Міцне здоров’я і благополуччя'],
+    ['sustainable-development/yakisna-osvita.html', 'Ціль 4 — Якісна освіта'],
+    ['sustainable-development/henderna-rivnist.html', 'Ціль 5 — Гендерна рівність'],
+    ['sustainable-development/chysta-voda-ta-nalezhni-sanitarni-umovy.html', 'Ціль 6 — Чиста вода та належні санітарні умови'],
+    ['sustainable-development/dostupna-ta-chysta-enerhiia.html', 'Ціль 7 — Доступна та чиста енергія'],
+    ['sustainable-development/hidna-pratsia-ta-ekonomichne-zrostannia.html', 'Ціль 8 — Гідна праця та економічне зростання'],
+    ['sustainable-development/promyslovist-innovatsii-ta-infrastruktura.html', 'Ціль 9 — Промисловість, інновації та інфраструктура'],
+    ['sustainable-development/skorochennia-nerivnosti.html', 'Ціль 10 — Скорочення нерівності'],
+    ['sustainable-development/stalyi-rozvytok-mist-i-hromad.html', 'Ціль 11 — Сталий розвиток міст і громад'],
+    ['sustainable-development/vidpovidalne-spozhyvannia-ta-vyrobnytstvo.html', 'Ціль 12 — Відповідальне споживання та виробництво'],
+    ['sustainable-development/pomiakshennia-naslidkiv-zminy-klimatu.html', 'Ціль 13 — Пом’якшення наслідків зміни клімату'],
+    ['sustainable-development/zberezhennia-morskykh-resursiv.html', 'Ціль 14 — Збереження морських ресурсів'],
+    ['sustainable-development/zakhyst-ekosystem-sushi.html', 'Ціль 15 — Захист екосистем суші'],
+    ['sustainable-development/myr-spravedlyvist-ta-sylni-instytuty.html', 'Ціль 16 — Мир, справедливість та сильні інститути'],
+    ['sustainable-development/partnerstvo-zarady-staloho-rozvytku.html', 'Ціль 17 — Партнерство заради сталого розвитку']
+  ];
+  const goalHrefs = await goals.evaluateAll((links) => links.map((link) => link.getAttribute('href')));
+  const goalLabels = await goals.evaluateAll((links) => links.map((link) => link.getAttribute('aria-label')));
+  const goalImageSources = await goals.locator('img').evaluateAll((images) => images.map((image) => image.getAttribute('src')));
+  expect(goalHrefs).toEqual(expectedGoals.map(([href]) => href));
+  expect(goalLabels).toEqual(expectedGoals.map(([, label]) => label));
+  expect(goalImageSources).toEqual(expectedGoals.map((_, index) => `../../assets/sdg/sdg-${String(index + 1).padStart(2, '0')}.svg`));
+
+  for (const [index, href] of goalHrefs.entries()) {
+    const url = new URL(href, page.url()).href;
+    const response = await page.request.get(url);
+    expect(response.ok(), `${url} should be available`).toBe(true);
+    const html = await response.text();
+    expect(html).toContain('<article class="sdg-article"');
+    expect(html).not.toContain('sdg-placeholder-panel');
+    expect(html).not.toContain('sdg-article-intro');
+    expect(html).not.toContain('sdg-article-footer');
+    expect(html).not.toContain('Переглянути всі 17 цілей');
+    expect(html).not.toContain('Матеріали про діяльність коледжу в межах цієї цілі сталого розвитку.');
+    expect(html).not.toContain('Діяльність коледжу, пов’язана з досягненням цієї цілі сталого розвитку.');
+    expect(html).toContain(`<h1>${expectedGoals[index][1].replace(/^Ціль \d+ — /, '')}</h1>`);
+    expect(html).toContain(`../../../assets/sdg/sdg-${String(index + 1).padStart(2, '0')}.svg`);
+    expect(html).toContain(`../../../assets/sdg/content/goal-${String(index + 1).padStart(2, '0')}/`);
+
+    const articleBodyStart = html.indexOf('<div class="sdg-article-body">');
+    const articleBodyEnd = html.indexOf('</article>', articleBodyStart);
+    const articleBody = html.slice(articleBodyStart, articleBodyEnd);
+    expect(articleBodyStart).toBeGreaterThan(-1);
+    expect(articleBodyEnd).toBeGreaterThan(articleBodyStart);
+    expect(articleBody).not.toContain('ККІБП');
+  }
+
+  const documents = page.locator('.sdg-document-link');
+  await expect(documents).toHaveCount(3);
+  await expect(documents).toHaveText([
+    /Звіт зі сталого розвитку/,
+    /Таллуарська декларація/,
+    /План роботи на 2025–2026 навчальний рік/
+  ]);
+  expect(await documents.evaluateAll((links) => links.map((link) => link.getAttribute('target')))).toEqual(['_blank', '_blank', '_blank']);
+
+  const documentHrefs = await documents.evaluateAll((links) => links.map((link) => link.getAttribute('href')));
+  expect(documentHrefs).toEqual([
+    'https://kkibp.edu.ua/images/2026year/2/Звіт_про_виконання_плану_роботиe4r5hut4rdh5y.pdf',
+    'https://kkibp.edu.ua/images/2025_Year/Infa_Rector/Таллуарська_декларація.pdf',
+    'https://kkibp.edu.ua/images/2025_Year/Infa_Rector/план_роботи_цілі25-26.pdf'
+  ]);
+
+  await page.goto('/college/activity/sustainable-development/podolannia-bidnosti.html');
+  await expect(page.getByRole('heading', { level: 1, name: 'Подолання бідності' })).toBeVisible();
+  await expect(page.locator('.page-hero-copy > p')).toHaveCount(0);
+  await expect(page.locator('.sdg-article-intro')).toHaveCount(0);
+  await expect(page.locator('.sdg-article-footer')).toHaveCount(0);
+  await expect(page.locator('.sdg-article-goal-icon')).toHaveAttribute('src', '../../../assets/sdg/sdg-01.svg');
+  await expect(page.locator('.sdg-article-body img')).toHaveCount(15);
+
+  const layout = await page.evaluate(() => {
+    const article = document.querySelector('.sdg-article').getBoundingClientRect();
+    const icon = document.querySelector('.sdg-article-goal-icon').getBoundingClientRect();
+    const gallery = document.querySelector('.sdg-article-gallery').getBoundingClientRect();
+    const firstImage = document.querySelector('.sdg-article-media').getBoundingClientRect();
+    return {
+      iconRatio: icon.width / article.width,
+      galleryWidth: gallery.width,
+      firstImageWidth: firstImage.width,
+      overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth
+    };
+  });
+  expect(layout.iconRatio).toBeGreaterThan(0.49);
+  expect(layout.iconRatio).toBeLessThan(0.51);
+  expect(layout.firstImageWidth).toBeGreaterThanOrEqual(layout.galleryWidth - 1);
+  expect(layout.overflow).toBe(false);
+
+  await page.goto('/college/activity/sustainable-development/partnerstvo-zarady-staloho-rozvytku.html');
+  await expect(page.locator('.sdg-article-table-wrap')).toHaveCount(1);
+  await expect(page.locator('.sdg-article-table')).toBeVisible();
+  await expect(page.locator('.sdg-article-body img')).toHaveCount(25);
+});
+
 test('home about-college carousel renders and can be controlled', async ({ page }) => {
   await page.goto('/index.html');
 
@@ -209,6 +314,7 @@ test('TikTok replaces the theme toggle on desktop and stays hidden with other he
   await expect(page.locator('.header-tiktok path')).toHaveAttribute('d', 'M16.5 3c.2 1.9 1.4 3.5 3.5 4.1v3.2a8.3 8.3 0 0 1-3.5-1v5.3a5.9 5.9 0 1 1-5.1-5.8V12a2.7 2.7 0 1 0 1.9 2.6V3h3.2Z');
   await expect(page.locator('.footer-social .social-link--tiktok')).toHaveAttribute('href', 'https://www.tiktok.com/@studparliament_kkibp');
   await expect(page.locator('.footer-social .social-links a')).toHaveCount(3);
+  await expect(page.locator('.news-article-sdg .sdg-icon')).toHaveAttribute('src', /assets\/sdg\/sdg-\d{2}\.svg$/);
 
   const boxes = await page.evaluate(() => {
     const rect = (selector) => {
