@@ -436,5 +436,401 @@ window.COLLEGE_NEWS = [
       "food-hospitality",
       "sdg-04"
     ]
+  },
+  {
+    "id": "4849-temriava-u-liudskomu-sertsi-prem-iera-vystavy-studentskoho-teatru-palladium",
+    "loadedAt": "2026-06-19T12:00:00+03:00",
+    "publishedLabel": "19 червня 2026",
+    "title": "«Темрява у людському серці»: прем’єра вистави студентського театру «Palladium»",
+    "excerpt": "У студентському театрі «Palladium» відбулася прем’єра вистави «Пробуджена» («Темрява у людському серці») – містичної драми, створеної за мотивами українського фольклору...",
+    "image": "assets/news/latest/4849-temriava-u-liudskomu-sertsi-prem-iera-vystavy-studentskoho-teatru-palladium-01.jpg",
+    "alt": "IMG 9323",
+    "url": "news-4849-temriava-u-liudskomu-sertsi-prem-iera-vystavy-studentskoho-teatru-palladium.html",
+    "tags": [
+      "social-law",
+      "sdg-10",
+      "sdg-16"
+    ]
+  },
+  {
+    "id": "4844-pershi-kroky-do-profesii-vyrobnycha-praktyka-zdobuvachiv-spetsialnosti-181-kharchovi-tekhnolohii",
+    "loadedAt": "2026-06-17T12:00:00+03:00",
+    "publishedLabel": "17 червня 2026",
+    "title": "Перші кроки до професії: виробнича практика здобувачів спеціальності 181 «Харчові технології»",
+    "excerpt": "Здобувачі освіти спеціальності 181 «Харчові технології» Економіко-правового фахового коледжу Київського кооперативного інституту бізнесу і права проходять виробничу...",
+    "image": "assets/news/latest/4844-pershi-kroky-do-profesii-vyrobnycha-praktyka-zdobuvachiv-spetsialnosti-181-kharchovi-tekhnolohii-01.png",
+    "alt": "edrjhnrfgtImage 14 черв",
+    "url": "news-4844-pershi-kroky-do-profesii-vyrobnycha-praktyka-zdobuvachiv-spetsialnosti-181-kharchovi-tekhnolohii.html",
+    "tags": [
+      "food-hospitality",
+      "sdg-02",
+      "sdg-04",
+      "sdg-12"
+    ]
+  },
+  {
+    "id": "4830-tvorymo-dobro-razom-blahodiina-poizdka-do-udaitsivskoho-navchalno-reabilitatsiinoho-tsentru",
+    "loadedAt": "2026-06-09T12:00:00+03:00",
+    "publishedLabel": "9 червня 2026",
+    "title": "Творимо добро разом: благодійна поїздка до Удайцівського навчально-реабілітаційного центру",
+    "excerpt": "3 червня 2026 року в межах щорічної благодійної акції відбулася поїздка до вихованців Удайцівського навчально-реабілітаційного центру. У заході взяли участь студенти...",
+    "image": "assets/news/latest/4830-tvorymo-dobro-razom-blahodiina-poizdka-do-udaitsivskoho-navchalno-reabilitatsiinoho-tsentru-01.jpg",
+    "alt": "IMG 7562",
+    "url": "news-4830-tvorymo-dobro-razom-blahodiina-poizdka-do-udaitsivskoho-navchalno-reabilitatsiinoho-tsentru.html",
+    "tags": [
+      "sdg-01",
+      "sdg-10"
+    ]
+  },
+  {
+    "id": "4812-maister-klas-studentiv-v-kompanii-dinner-s",
+    "loadedAt": "2026-06-01T12:00:00+03:00",
+    "publishedLabel": "1 червня 2026",
+    "title": "Майстер-клас студентів в компанії Dinner’s",
+    "excerpt": "28 травня 2026 р. студенти циклової комісії харчових технологій та організації готельно-ресторанного бізнесу разом із викладачем циклової комісії Марією Олефіренко...",
+    "image": "assets/news/latest/4812-maister-klas-studentiv-v-kompanii-dinner-s-01.jpg",
+    "alt": "20260528 115612 1",
+    "url": "news-4812-maister-klas-studentiv-v-kompanii-dinner-s.html",
+    "tags": [
+      "food-hospitality",
+      "sdg-02",
+      "sdg-04",
+      "sdg-08"
+    ]
+  },
+  {
+    "id": "4762-doktora-tekhnichnykh-nauk-profesora-ihoria-stadnyka-vidznacheno-premiieiu-natsionalnoi-akademii-ahrarnykh-nauk-ukrainy",
+    "loadedAt": "2026-05-11T12:00:00+03:00",
+    "publishedLabel": "11 травня 2026",
+    "title": "Доктора технічних наук, професора Ігоря Стадника відзначено премією Національної академії аграрних наук України",
+    "excerpt": "Колектив Інституту щиро вітає доктора технічних наук, професора Ігоря Стадника з високою державною відзнакою – присвоєнням звання лауреата премії «За видатні досягнення в...",
+    "image": "assets/news/latest/4762-doktora-tekhnichnykh-nauk-profesora-ihoria-stadnyka-vidznacheno-premiieiu-natsionalnoi-akademii-ahrarnykh-nauk-ukrainy-01.jpg",
+    "alt": "IMG 20260511 134717 777 1",
+    "url": "news-4762-doktora-tekhnichnykh-nauk-profesora-ihoria-stadnyka-vidznacheno-premiieiu-natsionalnoi-akademii-ahrarnykh-nauk-ukrainy.html",
+    "tags": [
+      "food-hospitality",
+      "sdg-02",
+      "sdg-04",
+      "sdg-09"
+    ]
+  },
+  {
+    "id": "4864-prorektorka-inna-raikovska-vziala-uchast-u-naukovo-praktychnomu-seminari-z-pytan-tsyfrovoi-transformatsii-sfery-nti",
+    "loadedAt": "2026-06-24T13:00:00+03:00",
+    "publishedLabel": "24 червня 2026",
+    "title": "Проректорка Інна Райковська взяла участь у науково-практичному семінарі з питань цифрової трансформації сфери НТІ",
+    "excerpt": "23 червня 2026 року проректорка з навчально-методичної та наукової роботи ПРИВАТНОГО ЗАКЛАДУ «КИЇВСЬКИЙ КООПЕРАТИВНИЙ ІНСТИТУТ БІЗНЕСУ І ПРАВА» Інна Райковська взяла...",
+    "image": "assets/news/latest/4864-prorektorka-inna-raikovska-vziala-uchast-u-naukovo-praktychnomu-seminari-z-pytan-tsyfrovoi-transformatsii-sfery-nti-01.jpg",
+    "alt": "1tsjnrgfuhyjytjkityys",
+    "url": "news-4864-prorektorka-inna-raikovska-vziala-uchast-u-naukovo-praktychnomu-seminari-z-pytan-tsyfrovoi-transformatsii-sfery-nti.html",
+    "tags": [
+      "it-science",
+      "sdg-04",
+      "sdg-09",
+      "sdg-17"
+    ]
+  },
+  {
+    "id": "4851-syla-v-iednosti-instytut-vidznacheno-nahorodoiu-vid-povitrianoho-komanduvannia-tsentr",
+    "loadedAt": "2026-06-20T12:00:00+03:00",
+    "publishedLabel": "20 червня 2026",
+    "title": "Сила в єдності: Інститут відзначено нагородою від Повітряного командування «Центр»",
+    "excerpt": "У часи доленосних випробувань кожен із нас робить свій внесок у спільну справу, наближаючи таку бажану й омріяну Перемогу. З почуттям гордості повідомляємо, що підтримка...",
+    "image": "assets/news/latest/4851-syla-v-iednosti-instytut-vidznacheno-nahorodoiu-vid-povitrianoho-komanduvannia-tsentr-01.jpg",
+    "alt": "1ghjutkvfxdtk",
+    "url": "news-4851-syla-v-iednosti-instytut-vidznacheno-nahorodoiu-vid-povitrianoho-komanduvannia-tsentr.html",
+    "tags": [
+      "sdg-16",
+      "sdg-17"
+    ]
+  },
+  {
+    "id": "4838-uchast-vykladachiv-kafedry-prava-u-mizhnarodnomu-naukovomu-forumi-asotsiatsii-iurydychnykh-klinik-ukrainy",
+    "loadedAt": "2026-06-12T12:00:00+03:00",
+    "publishedLabel": "12 червня 2026",
+    "title": "Участь викладачів кафедри права у Міжнародному науковому форумі Асоціації юридичних клінік України",
+    "excerpt": "11–12 червня 2026 року представники юридичної клініки «Громадська приймальня» кафедри права взяли участь у Міжнародному науковому форумі Асоціації юридичних клінік...",
+    "image": "assets/news/latest/4838-uchast-vykladachiv-kafedry-prava-u-mizhnarodnomu-naukovomu-forumi-asotsiatsii-iurydychnykh-klinik-ukrainy-01.jpeg",
+    "alt": "IMG 3562",
+    "url": "news-4838-uchast-vykladachiv-kafedry-prava-u-mizhnarodnomu-naukovomu-forumi-asotsiatsii-iurydychnykh-klinik-ukrainy.html",
+    "tags": [
+      "social-law",
+      "sdg-04",
+      "sdg-10",
+      "sdg-16"
+    ]
+  },
+  {
+    "id": "4831-vykladachi-kafedry-prava-vzialy-uchast-u-vseukrainskii-naukovo-praktychnii-konferentsii-z-mizhnarodnoiu-uchastiu",
+    "loadedAt": "2026-06-09T13:00:00+03:00",
+    "publishedLabel": "9 червня 2026",
+    "title": "Викладачі кафедри права взяли участь у Всеукраїнській науково-практичній конференції з міжнародною участю",
+    "excerpt": "5 червня 2026 року представники кафедри права Приватного закладу «Київський кооперативний інститут бізнесу і права» взяли участь у Всеукраїнській науково-практичній...",
+    "image": "assets/news/latest/4831-vykladachi-kafedry-prava-vzialy-uchast-u-vseukrainskii-naukovo-praktychnii-konferentsii-z-mizhnarodnoiu-uchastiu-01.jpg",
+    "alt": "702729585 1605902944877580 4864025448436903825 n",
+    "url": "news-4831-vykladachi-kafedry-prava-vzialy-uchast-u-vseukrainskii-naukovo-praktychnii-konferentsii-z-mizhnarodnoiu-uchastiu.html",
+    "tags": [
+      "social-law",
+      "sdg-03",
+      "sdg-04",
+      "sdg-16"
+    ]
+  },
+  {
+    "id": "4811-petrenko-artem-sportyvna-hordist-ekonomiko-pravovoho-fakhovoho-koledzhu",
+    "loadedAt": "2026-05-31T12:00:00+03:00",
+    "publishedLabel": "31 травня 2026",
+    "title": "Петренко Артем – спортивна гордість Економіко-правового фахового коледжу!",
+    "excerpt": "Студент групи 21 КІК Петренко Артем отримав Подяку від Департаменту молоді та спорту Київської міської державної адміністрації за високий рівень професійної майстерності...",
+    "image": "assets/news/latest/4811-petrenko-artem-sportyvna-hordist-ekonomiko-pravovoho-fakhovoho-koledzhu-01.jpg",
+    "alt": "IMG 44eed92a86cc4e32305ef1d3af273dce V",
+    "url": "news-4811-petrenko-artem-sportyvna-hordist-ekonomiko-pravovoho-fakhovoho-koledzhu.html",
+    "tags": [
+      "sdg-03"
+    ]
+  },
+  {
+    "id": "4760-den-zemli-ekolohichne-pravo-i-stalyi-rozvytok",
+    "loadedAt": "2026-05-10T12:00:00+03:00",
+    "publishedLabel": "10 травня 2026",
+    "title": "День Землі: екологічне право і сталий розвиток",
+    "excerpt": "Нещодавно на економіко-правовому факультеті відбувся науково-просвітницький захід «День Землі: екологічне право і сталий розвиток», організований для студентів...",
+    "image": "assets/news/latest/4760-den-zemli-ekolohichne-pravo-i-stalyi-rozvytok-01.jpg",
+    "alt": "IMG 20260511 091302 773 1",
+    "url": "news-4760-den-zemli-ekolohichne-pravo-i-stalyi-rozvytok.html",
+    "tags": [
+      "social-law",
+      "sdg-04",
+      "sdg-12",
+      "sdg-16"
+    ]
+  },
+  {
+    "id": "4731-chornobyl-u-fotohrafiiakh-analiz-zmin-kriz-chas",
+    "loadedAt": "2026-04-27T12:00:00+03:00",
+    "publishedLabel": "27 квітня 2026",
+    "title": "Чорнобиль у фотографіях: аналіз змін крізь час",
+    "excerpt": "У межах заходів до вшанування пам’яті трагедії на ЧАЕС студентами груп 21 ТК та 21 ТМК Економіко-правового фахового коледжу Київського кооперативного інституту бізнесу і...",
+    "image": "assets/news/latest/4731-chornobyl-u-fotohrafiiakh-analiz-zmin-kriz-chas-01.jpg",
+    "alt": "7kldcxjgbvmikolxseo",
+    "url": "news-4731-chornobyl-u-fotohrafiiakh-analiz-zmin-kriz-chas.html",
+    "tags": [
+      "it-science",
+      "sdg-04",
+      "sdg-13",
+      "sdg-15"
+    ]
+  },
+  {
+    "id": "4729-notayenota-feyky-pro-chornobyl-ta-radiatsiyu-vidbulasya-antyfeykova-intelektualna-hra",
+    "loadedAt": "2026-04-27T11:00:00+03:00",
+    "publishedLabel": "27 квітня 2026",
+    "title": "«НОТАЄНОТА. ФЕЙКИ ПРО ЧОРНОБИЛЬ ТА РАДІАЦІЮ»: ВІДБУЛАСЯ АНТИФЕЙКОВА ІНТЕЛЕКТУАЛЬНА ГРА",
+    "excerpt": "З нагоди Дня пам’яті Чорнобильської трагедії відбулася антифейкова інтелектуальна гра «НотаЄнота. Фейки про Чорнобиль та радіацію», організована к.і.н., доцентом Юлією...",
+    "image": "assets/news/latest/4729-notayenota-feyky-pro-chornobyl-ta-radiatsiyu-vidbulasya-antyfeykova-intelektualna-hra-01.jpg",
+    "alt": "20260428 155547 1",
+    "url": "news-4729-notayenota-feyky-pro-chornobyl-ta-radiatsiyu-vidbulasya-antyfeykova-intelektualna-hra.html",
+    "tags": [
+      "social-law",
+      "it-science",
+      "sdg-04",
+      "sdg-13",
+      "sdg-16"
+    ]
+  },
+  {
+    "id": "4726-100-troiand-dlia-kvituchoho-maibutnoho-vesniana-toloka-v-instytuti",
+    "loadedAt": "2026-04-25T12:00:00+03:00",
+    "publishedLabel": "25 квітня 2026",
+    "title": "100 троянд для квітучого майбутнього: весняна толока в Інституті",
+    "excerpt": "22 квітня 2026 року в межах проєкту озеленення Приватного закладу «Київський кооперативний інститут бізнесу і права» та реалізації цілей сталого розвитку здобувачі освіти...",
+    "image": "assets/news/latest/4726-100-troiand-dlia-kvituchoho-maibutnoho-vesniana-toloka-v-instytuti-01.jpg",
+    "alt": "IMG 0336 1edlikawsjtfleadw",
+    "url": "news-4726-100-troiand-dlia-kvituchoho-maibutnoho-vesniana-toloka-v-instytuti.html",
+    "tags": [
+      "it-science",
+      "sdg-11",
+      "sdg-13",
+      "sdg-15"
+    ]
+  },
+  {
+    "id": "4723-treninh-iz-protydii-dyskryminatsii-ta-pidtrymky-rivnosti",
+    "loadedAt": "2026-04-24T13:00:00+03:00",
+    "publishedLabel": "24 квітня 2026",
+    "title": "Тренінг із протидії дискримінації та підтримки рівності",
+    "excerpt": "20 квітня 2026 року в нашому закладі освіти відбувся тренінг для членів Студентського парламенту, присвячений інтеграції Методичних рекомендацій щодо впровадження...",
+    "image": "assets/news/latest/4723-treninh-iz-protydii-dyskryminatsii-ta-pidtrymky-rivnosti-01.jpg",
+    "alt": "IMG 87b0aa1625b376c24d03b2508372",
+    "url": "news-4723-treninh-iz-protydii-dyskryminatsii-ta-pidtrymky-rivnosti.html",
+    "tags": [
+      "social-law",
+      "sdg-05",
+      "sdg-10",
+      "sdg-16"
+    ]
+  },
+  {
+    "id": "4716-praktychnyi-dosvid-i-novi-mozhlyvosti-uchast-studentiv-u-forumi-kharchovoi-ta-pobutovoi-industrii",
+    "loadedAt": "2026-04-24T12:00:00+03:00",
+    "publishedLabel": "24 квітня 2026",
+    "title": "Практичний досвід і нові можливості: участь студентів у форумі харчової та побутової індустрії",
+    "excerpt": "24 квітня 2026 року студенти груп 21 ГРХ та 21 ХК разом із викладачами циклової комісії Економіко-правового фахового коледжу Приватного закладу «Київський кооперативний...",
+    "image": "assets/news/latest/4716-praktychnyi-dosvid-i-novi-mozhlyvosti-uchast-studentiv-u-forumi-kharchovoi-ta-pobutovoi-industrii-01.jpg",
+    "alt": "IMG 8a04b07384c7f7f5b377e08c1da156e2 V",
+    "url": "news-4716-praktychnyi-dosvid-i-novi-mozhlyvosti-uchast-studentiv-u-forumi-kharchovoi-ta-pobutovoi-industrii.html",
+    "tags": [
+      "food-hospitality",
+      "sdg-04",
+      "sdg-09",
+      "sdg-12"
+    ]
+  },
+  {
+    "id": "4651-zdobuvachi-osvity-otrymaly-sertyfikaty-za-kursom-otsinka-shkody-dovkillyu-vid-rosiyskoyi-ahresiyi",
+    "loadedAt": "2026-04-07T12:00:00+03:00",
+    "publishedLabel": "7 квітня 2026",
+    "title": "ЗДОБУВАЧІ ОСВІТИ ОТРИМАЛИ СЕРТИФІКАТИ ЗА КУРСОМ «ОЦІНКА ШКОДИ ДОВКІЛЛЮ ВІД РОСІЙСЬКОЇ АГРЕСІЇ»",
+    "excerpt": "7 квітня 2026 року студенти успішно завершили онлайн-навчання за курсом «Оцінка шкоди довкіллю від російської агресії» та отримали відповідні сертифікати. Ініціатива...",
+    "image": "assets/news/latest/4651-zdobuvachi-osvity-otrymaly-sertyfikaty-za-kursom-otsinka-shkody-dovkillyu-vid-rosiyskoyi-ahresiyi-01.jpg",
+    "alt": "IMG 6223",
+    "url": "news-4651-zdobuvachi-osvity-otrymaly-sertyfikaty-za-kursom-otsinka-shkody-dovkillyu-vid-rosiyskoyi-ahresiyi.html",
+    "tags": [
+      "social-law",
+      "it-science",
+      "sdg-13",
+      "sdg-15",
+      "sdg-16"
+    ]
+  },
+  {
+    "id": "4648-praktychne-zaniattia-restoratoriv-poiednannia-estetyky-ta-kreatyvnosti",
+    "loadedAt": "2026-04-05T12:00:00+03:00",
+    "publishedLabel": "5 квітня 2026",
+    "title": "Практичне заняття рестораторів: поєднання естетики та креативності",
+    "excerpt": "У межах практично-лабораторного заняття студенти спеціальності 241 «Готельно-ресторанна справа» опанували сучасні підходи до створення естетичного сервірування з...",
+    "image": "assets/news/latest/4648-praktychne-zaniattia-restoratoriv-poiednannia-estetyky-ta-kreatyvnosti-01.jpg",
+    "alt": "IMG 20260407 100813 396",
+    "url": "news-4648-praktychne-zaniattia-restoratoriv-poiednannia-estetyky-ta-kreatyvnosti.html",
+    "tags": [
+      "food-hospitality",
+      "sdg-02",
+      "sdg-04",
+      "sdg-08"
+    ]
+  },
+  {
+    "id": "4643-praktychni-zanyattya-u-restoratoriv",
+    "loadedAt": "2026-04-04T12:00:00+03:00",
+    "publishedLabel": "4 квітня 2026",
+    "title": "ПРАКТИЧНІ ЗАНЯТТЯ У РЕСТОРАТОРІВ",
+    "excerpt": "У межах практичної підготовки студенти спеціальності 241 «Готельно-ресторанна справа» провели заняття, присвячене культурі подачі напоїв та стандартам обслуговування...",
+    "image": "assets/news/latest/4643-praktychni-zanyattya-u-restoratoriv-01.jpg",
+    "alt": "IMG 20260404 093407 064",
+    "url": "news-4643-praktychni-zanyattya-u-restoratoriv.html",
+    "tags": [
+      "food-hospitality",
+      "sdg-02",
+      "sdg-04",
+      "sdg-08"
+    ]
+  },
+  {
+    "id": "4558-vidbuvsia-kruhlyi-stil-na-temu-henderna-rivnist-u-pravi-ta-ekonomitsi-suchasni-vyklyky",
+    "loadedAt": "2026-03-18T12:00:00+02:00",
+    "publishedLabel": "18 березня 2026",
+    "title": "Відбувся круглий стіл на тему «Гендерна рівність у праві та економіці: сучасні виклики»",
+    "excerpt": "У стінах нашого навчального закладу відбувся круглий стіл на тему «Гендерна рівність у праві та економіці: сучасні виклики», організований за ініціативи декана...",
+    "image": "assets/news/latest/4558-vidbuvsia-kruhlyi-stil-na-temu-henderna-rivnist-u-pravi-ta-ekonomitsi-suchasni-vyklyky-01.png",
+    "alt": "IMG 20260316 162635 217",
+    "url": "news-4558-vidbuvsia-kruhlyi-stil-na-temu-henderna-rivnist-u-pravi-ta-ekonomitsi-suchasni-vyklyky.html",
+    "tags": [
+      "social-law",
+      "economics-trade",
+      "sdg-05",
+      "sdg-10",
+      "sdg-16"
+    ]
+  },
+  {
+    "id": "4530-uchast-u-natsionalnomu-forumi-women-led-recovery-hroshi-rishennia-vplyv",
+    "loadedAt": "2026-03-06T12:00:00+02:00",
+    "publishedLabel": "6 березня 2026",
+    "title": "Участь у національному форумі «Women-Led Recovery: Гроші. Рішення. Вплив»",
+    "excerpt": "6 березня 2026 року завідувачка кафедри підприємництва, торгівлі та логістики, докторка економічних наук, професорка Сафонова В.Є. взяла участь у форумі «Women-Led...",
+    "image": "assets/news/latest/4530-uchast-u-natsionalnomu-forumi-women-led-recovery-hroshi-rishennia-vplyv-01.jpg",
+    "alt": "1djhbiguhfv",
+    "url": "news-4530-uchast-u-natsionalnomu-forumi-women-led-recovery-hroshi-rishennia-vplyv.html",
+    "tags": [
+      "economics-trade",
+      "sdg-05",
+      "sdg-08",
+      "sdg-10"
+    ]
+  },
+  {
+    "id": "4452-klasyka-svitovoho-kino-pro-kryzu-ta-nadiiu",
+    "loadedAt": "2026-02-10T12:00:00+02:00",
+    "publishedLabel": "10 лютого 2026",
+    "title": "Класика світового кіно про кризу та надію",
+    "excerpt": "У межах ініціативи викладача історії Михайла Радіо «КіноХист» студенти груп 11 МК, ОК, ФК Економіко-правового фахового коледжу Київського кооперативного інституту бізнесу...",
+    "image": "assets/news/latest/4452-klasyka-svitovoho-kino-pro-kryzu-ta-nadiiu-01.jpg",
+    "alt": "5219927549201290883",
+    "url": "news-4452-klasyka-svitovoho-kino-pro-kryzu-ta-nadiiu.html",
+    "tags": [
+      "social-law",
+      "sdg-01",
+      "sdg-04",
+      "sdg-08"
+    ]
+  },
+  {
+    "id": "4379-mystetstvo-proty-nasylstva-ta-movy-nenavysti",
+    "loadedAt": "2025-12-01T12:00:00+02:00",
+    "publishedLabel": "1 грудня 2025",
+    "title": "Мистецтво проти насильства та мови ненависті",
+    "excerpt": "У межах Всеукраїнської акції «16 днів проти насильства» та проєкту #NoToHate викладачі кафедри соціально-гуманітарних дисциплін ККІБП Михайло Радіо та Юлія Руденко, разом...",
+    "image": "assets/news/latest/4379-mystetstvo-proty-nasylstva-ta-movy-nenavysti-01.jpg",
+    "alt": "20251215 121617",
+    "url": "news-4379-mystetstvo-proty-nasylstva-ta-movy-nenavysti.html",
+    "tags": [
+      "social-law",
+      "sdg-05",
+      "sdg-10",
+      "sdg-16"
+    ]
+  },
+  {
+    "id": "4297-pravo-na-zhyttia-mizhnarodno-pravovyi-zakhyst-dovkillia-pid-chas-viiny",
+    "loadedAt": "2025-11-06T12:00:00+02:00",
+    "publishedLabel": "6 листопада 2025",
+    "title": "Право на життя: міжнародно-правовий захист довкілля під час війни",
+    "excerpt": "До Міжнародного дня запобігання експлуатації навколишнього середовища під час війни і збройних конфліктів під керівництвом викладачів кафедри права к.ю.н. Скаржинського...",
+    "image": "assets/news/latest/4297-pravo-na-zhyttia-mizhnarodno-pravovyi-zakhyst-dovkillia-pid-chas-viiny-01.jpg",
+    "alt": "photo 5237709065994046984 x",
+    "url": "news-4297-pravo-na-zhyttia-mizhnarodno-pravovyi-zakhyst-dovkillia-pid-chas-viiny.html",
+    "tags": [
+      "social-law",
+      "it-science",
+      "sdg-13",
+      "sdg-15",
+      "sdg-16"
+    ]
+  },
+  {
+    "id": "4247-fotovystavka-torhivlya-lyudmy-nebezpeka-poruch",
+    "loadedAt": "2025-10-20T12:00:00+03:00",
+    "publishedLabel": "20 жовтня 2025",
+    "title": "ФОТОВИСТАВКА «ТОРГІВЛЯ ЛЮДЬМИ: НЕБЕЗПЕКА ПОРУЧ»",
+    "excerpt": "До нашого навчального закладу прибула фотовиставка «Торгівля людьми: небезпека поруч», яка спрямована на підвищення обізнаності молоді про небезпеку торгівлі людьми та...",
+    "image": "assets/news/latest/4247-fotovystavka-torhivlya-lyudmy-nebezpeka-poruch-01.jpg",
+    "alt": "IMG 2657",
+    "url": "news-4247-fotovystavka-torhivlya-lyudmy-nebezpeka-poruch.html",
+    "tags": [
+      "social-law",
+      "sdg-05",
+      "sdg-10",
+      "sdg-16"
+    ]
   }
 ];

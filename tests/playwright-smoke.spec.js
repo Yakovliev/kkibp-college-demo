@@ -266,7 +266,7 @@ test('home latest news renders exactly three newest shared cards', async ({ page
   await expect(allNews).toHaveAttribute('href', 'news.html');
 });
 
-test('news page paginates all 28 materials in the source inventory order', async ({ page }) => {
+test('news page paginates all 53 materials in chronological order', async ({ page }) => {
   await page.goto('/news.html');
 
   const grid = page.locator('[data-news-list]');
@@ -308,8 +308,10 @@ test('news page paginates all 28 materials in the source inventory order', async
   expect(await filterColors(sdgFilter)).toEqual(await filterColors(departmentFilter));
   if ((page.viewportSize()?.width || 0) >= 1100) {
     await departmentFilter.hover();
+    await page.waitForTimeout(250);
     const departmentHoverColors = await filterColors(departmentFilter);
     await sdgFilter.hover();
+    await page.waitForTimeout(250);
     expect(await filterColors(sdgFilter)).toEqual(departmentHoverColors);
   }
   await expect(cards).toHaveCount(9);
@@ -328,7 +330,7 @@ test('news page paginates all 28 materials in the source inventory order', async
   await expect(grid.locator('.news-meta')).toHaveCount(9);
   await expect(grid.locator('.text-link')).toHaveCount(9);
   await expect(grid.locator('.news-media-label')).toHaveCount(0);
-  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2', '3', '4']);
+  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2', '3', '4', '5', '6']);
   await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('1');
 
   const firstLink = grid.locator('.text-link').first();
@@ -338,13 +340,22 @@ test('news page paginates all 28 materials in the source inventory order', async
   await expect(page).toHaveURL(/news\.html\?tag=sdg-16$/);
   await expect(cards).toHaveCount(9);
   await expect(cards.locator('h3').first()).toHaveText('«КОРЕНІ ТА КРИЛА: ІСТОРІЯ, ЯКА ОБ’ЄДНУЄ»: УЧАСТЬ К.І.Н., ДОЦЕНТА ЮЛІЇ РУДЕНКО У РОБОТІ ДРУГОГО МОДУЛЯ ЛІТНЬОЇ ШКОЛИ');
-  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2']);
+  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2', '3']);
 
-  await page.goto('/news.html?page=4');
+  await page.goto('/news.html?page=6');
   const lastPageCards = page.locator('[data-news-list] .news-card');
-  await expect(lastPageCards).toHaveCount(1);
-  await expect(lastPageCards.locator('h3')).toHaveText(['«Першокурсники: рік по тому»: творчий звіт студентів']);
-  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('4');
+  await expect(lastPageCards).toHaveCount(8);
+  await expect(lastPageCards.locator('h3')).toHaveText([
+    'Практичне заняття рестораторів: поєднання естетики та креативності',
+    'ПРАКТИЧНІ ЗАНЯТТЯ У РЕСТОРАТОРІВ',
+    'Відбувся круглий стіл на тему «Гендерна рівність у праві та економіці: сучасні виклики»',
+    'Участь у національному форумі «Women-Led Recovery: Гроші. Рішення. Вплив»',
+    'Класика світового кіно про кризу та надію',
+    'Мистецтво проти насильства та мови ненависті',
+    'Право на життя: міжнародно-правовий захист довкілля під час війни',
+    'ФОТОВИСТАВКА «ТОРГІВЛЯ ЛЮДЬМИ: НЕБЕЗПЕКА ПОРУЧ»'
+  ]);
+  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('6');
 });
 
 test('news articles use zero to three SDG tags without the legacy icon footer', async ({ page }) => {
@@ -356,7 +367,7 @@ test('news articles use zero to three SDG tags without the legacy icon footer', 
     hasLegacySdgField: Object.hasOwn(item, 'sdgs') || Object.hasOwn(item, 'sdg')
   })));
 
-  expect(assignments).toHaveLength(28);
+  expect(assignments).toHaveLength(53);
   expect(assignments.slice(0, 16).map(item => item.sdgTags)).toEqual([
     ['sdg-04', 'sdg-11', 'sdg-16'],
     ['sdg-04', 'sdg-11', 'sdg-17'],
@@ -375,10 +386,39 @@ test('news articles use zero to three SDG tags without the legacy icon footer', 
     ['sdg-04', 'sdg-11', 'sdg-17'],
     ['sdg-04', 'sdg-08', 'sdg-09']
   ]);
+  expect(assignments.slice(-5).map(item => item.sdgTags)).toEqual([
+    ['sdg-05', 'sdg-08', 'sdg-10'],
+    ['sdg-01', 'sdg-04', 'sdg-08'],
+    ['sdg-05', 'sdg-10', 'sdg-16'],
+    ['sdg-13', 'sdg-15', 'sdg-16'],
+    ['sdg-05', 'sdg-10', 'sdg-16']
+  ]);
+  expect(Object.fromEntries(Array.from({ length: 17 }, (_, index) => {
+    const tag = `sdg-${String(index + 1).padStart(2, '0')}`;
+    return [tag, assignments.filter(item => item.sdgTags.includes(tag)).length];
+  }))).toEqual({
+    'sdg-01': 2,
+    'sdg-02': 5,
+    'sdg-03': 5,
+    'sdg-04': 38,
+    'sdg-05': 5,
+    'sdg-06': 0,
+    'sdg-07': 0,
+    'sdg-08': 12,
+    'sdg-09': 8,
+    'sdg-10': 10,
+    'sdg-11': 6,
+    'sdg-12': 5,
+    'sdg-13': 6,
+    'sdg-14': 0,
+    'sdg-15': 4,
+    'sdg-16': 24,
+    'sdg-17': 5
+  });
   expect(assignments.every(item => item.sdgTags.length <= 3)).toBe(true);
   expect(assignments.every(item => item.hasLegacySdgField === false)).toBe(true);
 
-  for (const item of assignments.slice(0, 16)) {
+  for (const item of [...assignments.slice(0, 16), ...assignments.slice(-5)]) {
     await page.goto(`/${item.url}`);
     await expect(page.locator('.news-article-sdg, .sdg-icon, .sdg-badges')).toHaveCount(0);
     await expect(page.locator('.news-article-tags .news-tag--sdg')).toHaveCount(item.sdgTags.length);
@@ -473,21 +513,21 @@ test('english news page uses the shared card feed without legacy filters', async
   await page.goto('/en/news.html');
 
   const grid = page.locator('[data-news-list]');
-  await expect(page.locator('[data-news-count]')).toHaveText('28');
+  await expect(page.locator('[data-news-count]')).toHaveText('53');
   await expect(page.locator('.filter-bar')).toHaveCount(0);
   await expect(grid.locator('.news-card')).toHaveCount(9);
   await expect(grid.locator('.news-media img')).toHaveCount(9);
   await expect(grid.locator('.news-media-label')).toHaveCount(0);
   await expect(grid.locator('.news-meta')).toHaveCount(9);
-  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2', '3', '4']);
+  await expect(page.locator('[data-news-pagination] a')).toHaveText(['1', '2', '3', '4', '5', '6']);
   await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('1');
   await expect(grid.locator('.text-link').first()).toContainText('Read in full');
   await expect(grid.locator('.text-link').first()).toHaveAttribute('href', /\.\.\/news-4893-.*\.html$/);
 
-  await page.goto('/en/news.html?page=4');
+  await page.goto('/en/news.html?page=6');
   const lastPageCards = page.locator('[data-news-list] .news-card');
-  await expect(lastPageCards).toHaveCount(1);
-  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('4');
+  await expect(lastPageCards).toHaveCount(8);
+  await expect(page.locator('[data-news-pagination] a[aria-current="page"]')).toHaveText('6');
 });
 
 test('english section pages use the current hub template', async ({ page }) => {
