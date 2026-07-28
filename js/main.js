@@ -383,6 +383,13 @@
   ];
   const NEWS_TAGS = [...DEPARTMENT_NEWS_TAGS, ...SDG_NEWS_TAGS];
   const NEWS_TAG_MAP = Object.fromEntries(NEWS_TAGS.map(t => [t.id, t]));
+  const SDG_COVER_COLORS = {
+    '01': '#e5243b', '02': '#dda63a', '03': '#4c9f38', '04': '#c5192d',
+    '05': '#ff3a21', '06': '#26bde2', '07': '#fcc30b', '08': '#a21942',
+    '09': '#fd6925', '10': '#dd1367', '11': '#fd9d24', '12': '#bf8b2e',
+    '13': '#3f7e44', '14': '#0a97d9', '15': '#56c02b', '16': '#00689d',
+    '17': '#19486a'
+  };
   const newsTagLabel = (id) => {
     const tag = NEWS_TAG_MAP[id];
     return tag ? (isEnglish ? tag.en : tag.uk) : '';
@@ -416,8 +423,12 @@
     const href = resolveSiteHref(item.url || '#');
     const linkAttrs = /^https?:\/\//.test(href) ? ' target="_blank" rel="noopener noreferrer"' : '';
     const idAttr = item.id ? ` id="${escapeHtml(item.id)}"` : '';
+    const sdgCover = String(item.image || '').match(/sdg-(\d{2})\.svg$/);
+    const sdgCoverStyle = sdgCover && SDG_COVER_COLORS[sdgCover[1]]
+      ? ` style="object-fit:contain;background:${SDG_COVER_COLORS[sdgCover[1]]}"`
+      : '';
     const image = item.image
-      ? `<div class="news-media news-media--image"><img src="${escapeHtml(resolveNewsAsset(item.image))}" alt="${escapeHtml(item.alt || item.title)}" loading="lazy"></div>`
+      ? `<div class="news-media news-media--image"><img src="${escapeHtml(resolveNewsAsset(item.image))}" alt="${escapeHtml(item.alt || item.title)}" loading="lazy"${sdgCoverStyle}></div>`
       : '<div class="news-media" aria-hidden="true"></div>';
     const excerpt = item.excerpt || item.content || item.body || '';
     const tags = renderNewsTagsCompact(item.tags);

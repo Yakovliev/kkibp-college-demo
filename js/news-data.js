@@ -1,5 +1,53 @@
 window.COLLEGE_NEWS = [
   {
+    "id": "sdg-06-vsesvitnii-den-vody-vidpovidalne-vodokorystuvannia",
+    "loadedAt": "2026-07-28T12:00:00+03:00",
+    "publishedLabel": "28 липня 2026",
+    "title": "У ККІБП відзначили Всесвітній день води: формуємо культуру відповідального водокористування",
+    "excerpt": "22 березня у коледжі відбувся просвітницький захід до Всесвітнього дня води, присвячений відповідальному використанню водних ресурсів.",
+    "image": "assets/sdg/sdg-06.svg",
+    "alt": "ЦСР 6 - Чиста вода та належні санітарні умови",
+    "url": "news-sdg-06-vsesvitnii-den-vody-vidpovidalne-vodokorystuvannia.html",
+    "tags": [
+      "it-science",
+      "sdg-06",
+      "sdg-04",
+      "sdg-12"
+    ]
+  },
+  {
+    "id": "sdg-07-enerhoefektyvnist-v-osvitnomu-seredovyshchi",
+    "loadedAt": "2026-07-28T11:00:00+03:00",
+    "publishedLabel": "28 липня 2026",
+    "title": "Коледж продовжує впроваджувати принципи енергоефективності в освітньому середовищі",
+    "excerpt": "Коледж послідовно модернізує освітлення, оптимізує споживання електроенергії та розвиває культуру відповідального енергоспоживання.",
+    "image": "assets/sdg/sdg-07.svg",
+    "alt": "ЦСР 7 - Доступна та чиста енергія",
+    "url": "news-sdg-07-enerhoefektyvnist-v-osvitnomu-seredovyshchi.html",
+    "tags": [
+      "it-science",
+      "sdg-07",
+      "sdg-09",
+      "sdg-13"
+    ]
+  },
+  {
+    "id": "sdg-14-ekolohichna-aktsiia-proty-plastykovoho-zabrudnennia-vodoim",
+    "loadedAt": "2026-07-28T10:00:00+03:00",
+    "publishedLabel": "28 липня 2026",
+    "title": "У коледжі провели екологічну акцію зі зменшення пластикового забруднення водойм",
+    "excerpt": "Студенти й працівники коледжу долучилися до збору пластикових кришечок і обговорили вплив пластикових відходів на водні екосистеми.",
+    "image": "assets/sdg/sdg-14.svg",
+    "alt": "ЦСР 14 - Збереження морських ресурсів",
+    "url": "news-sdg-14-ekolohichna-aktsiia-proty-plastykovoho-zabrudnennia-vodoim.html",
+    "tags": [
+      "it-science",
+      "sdg-14",
+      "sdg-12",
+      "sdg-13"
+    ]
+  },
+  {
     "id": "4893-koreni-ta-kryla-istoriya-yaka-ob-yednuye-uchast-k-i-n-dotsenta-yuliyi-rudenko-u-roboti-druhoho-modulya-litnoyi-shkoly",
     "loadedAt": "2026-07-17T12:00:00+03:00",
     "publishedLabel": "17 липня 2026",
@@ -120,6 +168,7 @@ window.COLLEGE_NEWS = [
     "url": "news-4885-uchasnyky-osvitnoho-protsesu-doluchylysya-do-aktsiyi-voroham-kryshka.html",
     "tags": [
       "sdg-12",
+      "sdg-14",
       "sdg-16"
     ]
   },
@@ -302,7 +351,7 @@ window.COLLEGE_NEWS = [
     "url": "news-4872-predstavnyky-instytutu-vzialy-uchast-u-mizhnarodnii-naukovo-praktychnii-konferentsii-z-pytan-ievropeiskoi-zelenoi-polityky-ta-stalykh-finansiv.html",
     "tags": [
       "social-law",
-      "sdg-04",
+      "sdg-07",
       "sdg-13",
       "sdg-17"
     ]
@@ -405,6 +454,22 @@ window.COLLEGE_NEWS = [
     ]
   },
   {
+    "id": "4864-prorektorka-inna-raikovska-vziala-uchast-u-naukovo-praktychnomu-seminari-z-pytan-tsyfrovoi-transformatsii-sfery-nti",
+    "loadedAt": "2026-06-24T13:00:00+03:00",
+    "publishedLabel": "24 червня 2026",
+    "title": "Проректорка Інна Райковська взяла участь у науково-практичному семінарі з питань цифрової трансформації сфери НТІ",
+    "excerpt": "23 червня 2026 року проректорка з навчально-методичної та наукової роботи ПРИВАТНОГО ЗАКЛАДУ «КИЇВСЬКИЙ КООПЕРАТИВНИЙ ІНСТИТУТ БІЗНЕСУ І ПРАВА» Інна Райковська взяла...",
+    "image": "assets/news/latest/4864-prorektorka-inna-raikovska-vziala-uchast-u-naukovo-praktychnomu-seminari-z-pytan-tsyfrovoi-transformatsii-sfery-nti-01.jpg",
+    "alt": "1tsjnrgfuhyjytjkityys",
+    "url": "news-4864-prorektorka-inna-raikovska-vziala-uchast-u-naukovo-praktychnomu-seminari-z-pytan-tsyfrovoi-transformatsii-sfery-nti.html",
+    "tags": [
+      "it-science",
+      "sdg-04",
+      "sdg-09",
+      "sdg-17"
+    ]
+  },
+  {
     "id": "4863-k-i-n-dotsent-yuliya-rudenko-vzyala-uchast-v-osvitnomu-treninhu-znovu-vidnovlyuyemos-2026",
     "loadedAt": "2026-06-24T12:00:00+03:00",
     "publishedLabel": "24 червня 2026",
@@ -438,6 +503,20 @@ window.COLLEGE_NEWS = [
     ]
   },
   {
+    "id": "4851-syla-v-iednosti-instytut-vidznacheno-nahorodoiu-vid-povitrianoho-komanduvannia-tsentr",
+    "loadedAt": "2026-06-20T12:00:00+03:00",
+    "publishedLabel": "20 червня 2026",
+    "title": "Сила в єдності: Інститут відзначено нагородою від Повітряного командування «Центр»",
+    "excerpt": "У часи доленосних випробувань кожен із нас робить свій внесок у спільну справу, наближаючи таку бажану й омріяну Перемогу. З почуттям гордості повідомляємо, що підтримка...",
+    "image": "assets/news/latest/4851-syla-v-iednosti-instytut-vidznacheno-nahorodoiu-vid-povitrianoho-komanduvannia-tsentr-01.jpg",
+    "alt": "1ghjutkvfxdtk",
+    "url": "news-4851-syla-v-iednosti-instytut-vidznacheno-nahorodoiu-vid-povitrianoho-komanduvannia-tsentr.html",
+    "tags": [
+      "sdg-16",
+      "sdg-17"
+    ]
+  },
+  {
     "id": "4849-temriava-u-liudskomu-sertsi-prem-iera-vystavy-studentskoho-teatru-palladium",
     "loadedAt": "2026-06-19T12:00:00+03:00",
     "publishedLabel": "19 червня 2026",
@@ -466,82 +545,6 @@ window.COLLEGE_NEWS = [
       "sdg-02",
       "sdg-04",
       "sdg-12"
-    ]
-  },
-  {
-    "id": "4830-tvorymo-dobro-razom-blahodiina-poizdka-do-udaitsivskoho-navchalno-reabilitatsiinoho-tsentru",
-    "loadedAt": "2026-06-09T12:00:00+03:00",
-    "publishedLabel": "9 червня 2026",
-    "title": "Творимо добро разом: благодійна поїздка до Удайцівського навчально-реабілітаційного центру",
-    "excerpt": "3 червня 2026 року в межах щорічної благодійної акції відбулася поїздка до вихованців Удайцівського навчально-реабілітаційного центру. У заході взяли участь студенти...",
-    "image": "assets/news/latest/4830-tvorymo-dobro-razom-blahodiina-poizdka-do-udaitsivskoho-navchalno-reabilitatsiinoho-tsentru-01.jpg",
-    "alt": "IMG 7562",
-    "url": "news-4830-tvorymo-dobro-razom-blahodiina-poizdka-do-udaitsivskoho-navchalno-reabilitatsiinoho-tsentru.html",
-    "tags": [
-      "sdg-01",
-      "sdg-10"
-    ]
-  },
-  {
-    "id": "4812-maister-klas-studentiv-v-kompanii-dinner-s",
-    "loadedAt": "2026-06-01T12:00:00+03:00",
-    "publishedLabel": "1 червня 2026",
-    "title": "Майстер-клас студентів в компанії Dinner’s",
-    "excerpt": "28 травня 2026 р. студенти циклової комісії харчових технологій та організації готельно-ресторанного бізнесу разом із викладачем циклової комісії Марією Олефіренко...",
-    "image": "assets/news/latest/4812-maister-klas-studentiv-v-kompanii-dinner-s-01.jpg",
-    "alt": "20260528 115612 1",
-    "url": "news-4812-maister-klas-studentiv-v-kompanii-dinner-s.html",
-    "tags": [
-      "food-hospitality",
-      "sdg-02",
-      "sdg-04",
-      "sdg-08"
-    ]
-  },
-  {
-    "id": "4762-doktora-tekhnichnykh-nauk-profesora-ihoria-stadnyka-vidznacheno-premiieiu-natsionalnoi-akademii-ahrarnykh-nauk-ukrainy",
-    "loadedAt": "2026-05-11T12:00:00+03:00",
-    "publishedLabel": "11 травня 2026",
-    "title": "Доктора технічних наук, професора Ігоря Стадника відзначено премією Національної академії аграрних наук України",
-    "excerpt": "Колектив Інституту щиро вітає доктора технічних наук, професора Ігоря Стадника з високою державною відзнакою – присвоєнням звання лауреата премії «За видатні досягнення в...",
-    "image": "assets/news/latest/4762-doktora-tekhnichnykh-nauk-profesora-ihoria-stadnyka-vidznacheno-premiieiu-natsionalnoi-akademii-ahrarnykh-nauk-ukrainy-01.jpg",
-    "alt": "IMG 20260511 134717 777 1",
-    "url": "news-4762-doktora-tekhnichnykh-nauk-profesora-ihoria-stadnyka-vidznacheno-premiieiu-natsionalnoi-akademii-ahrarnykh-nauk-ukrainy.html",
-    "tags": [
-      "food-hospitality",
-      "sdg-02",
-      "sdg-04",
-      "sdg-09"
-    ]
-  },
-  {
-    "id": "4864-prorektorka-inna-raikovska-vziala-uchast-u-naukovo-praktychnomu-seminari-z-pytan-tsyfrovoi-transformatsii-sfery-nti",
-    "loadedAt": "2026-06-24T13:00:00+03:00",
-    "publishedLabel": "24 червня 2026",
-    "title": "Проректорка Інна Райковська взяла участь у науково-практичному семінарі з питань цифрової трансформації сфери НТІ",
-    "excerpt": "23 червня 2026 року проректорка з навчально-методичної та наукової роботи ПРИВАТНОГО ЗАКЛАДУ «КИЇВСЬКИЙ КООПЕРАТИВНИЙ ІНСТИТУТ БІЗНЕСУ І ПРАВА» Інна Райковська взяла...",
-    "image": "assets/news/latest/4864-prorektorka-inna-raikovska-vziala-uchast-u-naukovo-praktychnomu-seminari-z-pytan-tsyfrovoi-transformatsii-sfery-nti-01.jpg",
-    "alt": "1tsjnrgfuhyjytjkityys",
-    "url": "news-4864-prorektorka-inna-raikovska-vziala-uchast-u-naukovo-praktychnomu-seminari-z-pytan-tsyfrovoi-transformatsii-sfery-nti.html",
-    "tags": [
-      "it-science",
-      "sdg-04",
-      "sdg-09",
-      "sdg-17"
-    ]
-  },
-  {
-    "id": "4851-syla-v-iednosti-instytut-vidznacheno-nahorodoiu-vid-povitrianoho-komanduvannia-tsentr",
-    "loadedAt": "2026-06-20T12:00:00+03:00",
-    "publishedLabel": "20 червня 2026",
-    "title": "Сила в єдності: Інститут відзначено нагородою від Повітряного командування «Центр»",
-    "excerpt": "У часи доленосних випробувань кожен із нас робить свій внесок у спільну справу, наближаючи таку бажану й омріяну Перемогу. З почуттям гордості повідомляємо, що підтримка...",
-    "image": "assets/news/latest/4851-syla-v-iednosti-instytut-vidznacheno-nahorodoiu-vid-povitrianoho-komanduvannia-tsentr-01.jpg",
-    "alt": "1ghjutkvfxdtk",
-    "url": "news-4851-syla-v-iednosti-instytut-vidznacheno-nahorodoiu-vid-povitrianoho-komanduvannia-tsentr.html",
-    "tags": [
-      "sdg-16",
-      "sdg-17"
     ]
   },
   {
@@ -577,6 +580,36 @@ window.COLLEGE_NEWS = [
     ]
   },
   {
+    "id": "4830-tvorymo-dobro-razom-blahodiina-poizdka-do-udaitsivskoho-navchalno-reabilitatsiinoho-tsentru",
+    "loadedAt": "2026-06-09T12:00:00+03:00",
+    "publishedLabel": "9 червня 2026",
+    "title": "Творимо добро разом: благодійна поїздка до Удайцівського навчально-реабілітаційного центру",
+    "excerpt": "3 червня 2026 року в межах щорічної благодійної акції відбулася поїздка до вихованців Удайцівського навчально-реабілітаційного центру. У заході взяли участь студенти...",
+    "image": "assets/news/latest/4830-tvorymo-dobro-razom-blahodiina-poizdka-do-udaitsivskoho-navchalno-reabilitatsiinoho-tsentru-01.jpg",
+    "alt": "IMG 7562",
+    "url": "news-4830-tvorymo-dobro-razom-blahodiina-poizdka-do-udaitsivskoho-navchalno-reabilitatsiinoho-tsentru.html",
+    "tags": [
+      "sdg-01",
+      "sdg-10"
+    ]
+  },
+  {
+    "id": "4812-maister-klas-studentiv-v-kompanii-dinner-s",
+    "loadedAt": "2026-06-01T12:00:00+03:00",
+    "publishedLabel": "1 червня 2026",
+    "title": "Майстер-клас студентів в компанії Dinner’s",
+    "excerpt": "28 травня 2026 р. студенти циклової комісії харчових технологій та організації готельно-ресторанного бізнесу разом із викладачем циклової комісії Марією Олефіренко...",
+    "image": "assets/news/latest/4812-maister-klas-studentiv-v-kompanii-dinner-s-01.jpg",
+    "alt": "20260528 115612 1",
+    "url": "news-4812-maister-klas-studentiv-v-kompanii-dinner-s.html",
+    "tags": [
+      "food-hospitality",
+      "sdg-02",
+      "sdg-04",
+      "sdg-08"
+    ]
+  },
+  {
     "id": "4811-petrenko-artem-sportyvna-hordist-ekonomiko-pravovoho-fakhovoho-koledzhu",
     "loadedAt": "2026-05-31T12:00:00+03:00",
     "publishedLabel": "31 травня 2026",
@@ -587,6 +620,22 @@ window.COLLEGE_NEWS = [
     "url": "news-4811-petrenko-artem-sportyvna-hordist-ekonomiko-pravovoho-fakhovoho-koledzhu.html",
     "tags": [
       "sdg-03"
+    ]
+  },
+  {
+    "id": "4762-doktora-tekhnichnykh-nauk-profesora-ihoria-stadnyka-vidznacheno-premiieiu-natsionalnoi-akademii-ahrarnykh-nauk-ukrainy",
+    "loadedAt": "2026-05-11T12:00:00+03:00",
+    "publishedLabel": "11 травня 2026",
+    "title": "Доктора технічних наук, професора Ігоря Стадника відзначено премією Національної академії аграрних наук України",
+    "excerpt": "Колектив Інституту щиро вітає доктора технічних наук, професора Ігоря Стадника з високою державною відзнакою – присвоєнням звання лауреата премії «За видатні досягнення в...",
+    "image": "assets/news/latest/4762-doktora-tekhnichnykh-nauk-profesora-ihoria-stadnyka-vidznacheno-premiieiu-natsionalnoi-akademii-ahrarnykh-nauk-ukrainy-01.jpg",
+    "alt": "IMG 20260511 134717 777 1",
+    "url": "news-4762-doktora-tekhnichnykh-nauk-profesora-ihoria-stadnyka-vidznacheno-premiieiu-natsionalnoi-akademii-ahrarnykh-nauk-ukrainy.html",
+    "tags": [
+      "food-hospitality",
+      "sdg-02",
+      "sdg-04",
+      "sdg-09"
     ]
   },
   {
@@ -831,6 +880,22 @@ window.COLLEGE_NEWS = [
       "sdg-05",
       "sdg-10",
       "sdg-16"
+    ]
+  },
+  {
+    "id": "3357-publichna-lektsiia-alternatyvna-enerhetyka-ta-ii-rol-v-enerhetychnii-nezalezhnosti-derzhavy",
+    "loadedAt": "2024-02-29T12:00:00+02:00",
+    "publishedLabel": "29 лютого 2024",
+    "title": "Публічна лекція «Альтернативна енергетика та її роль в енергетичній незалежності держави»",
+    "excerpt": "Професор Олександр Серьогін розповів студентам і викладачам про відновлювані джерела енергії та їхнє значення для енергетичної незалежності держави.",
+    "image": "assets/news/latest/3357-alternatyvna-enerhetyka-01.jpg",
+    "alt": "Публічна лекція про альтернативну енергетику",
+    "url": "news-3357-publichna-lektsiia-alternatyvna-enerhetyka-ta-ii-rol-v-enerhetychnii-nezalezhnosti-derzhavy.html",
+    "tags": [
+      "it-science",
+      "sdg-07",
+      "sdg-04",
+      "sdg-13"
     ]
   }
 ];
