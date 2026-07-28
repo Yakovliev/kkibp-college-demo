@@ -299,7 +299,7 @@ const translations = {
   'Читачам': 'For readers',
   'Анкета читача': 'Reader form',
   'Книжковий фонд': 'Book collection',
-  'Репозитарій': 'Repository',
+  'Репозиторій': 'Repository',
   'Нові надходження': 'New acquisitions',
   'Книжкові виставки': 'Book exhibitions',
   'Електронна бібліотека навчальної літератури': 'Electronic library of textbooks',

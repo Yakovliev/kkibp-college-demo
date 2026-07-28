@@ -584,6 +584,23 @@ test('primary menu toggles submenus without navigating', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Новини' }).first()).toHaveAttribute('href', 'news.html');
 });
 
+test('library menu opens the repository page with the correct Ukrainian label', async ({ page }) => {
+  await page.goto('/library.html');
+
+  const navToggle = page.locator('.nav-toggle');
+  if (await navToggle.isVisible()) await navToggle.click();
+
+  await page.getByRole('button', { name: /Бібліотека/ }).first().click();
+  const repositoryLink = page.locator('#menu-5').getByRole('link', { name: 'Репозиторій', exact: true });
+
+  await expect(repositoryLink).toHaveAttribute('href', 'library/book-fund/repository.html');
+  await repositoryLink.click();
+
+  await expect(page).toHaveURL(/\/library\/book-fund\/repository\.html$/);
+  await expect(page.getByRole('heading', { level: 1, name: 'Репозиторій' })).toBeVisible();
+  await expect(page.locator('.breadcrumbs')).toContainText('Репозиторій');
+});
+
 test('mobile submenu uses measured accordion motion', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'chromium-mobile', 'mobile accordion motion is specific to the drawer layout');
 
