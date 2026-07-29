@@ -423,14 +423,22 @@ test('news articles use zero to three SDG tags without the legacy icon footer', 
   }
 });
 
-test('TikTok replaces the theme toggle on desktop and stays hidden with other header socials below desktop', async ({ page }) => {
+test('header TikTok and footer Student Parliament links use the accepted social structure', async ({ page }) => {
   await page.goto('/news-4873-rozvytok-tsyfrovykh-kompetentnostei-vykladachi-ta-zdobuvachi-osvity-mahisterskoi-opp-komertsiia-ta-torhivlia-uspishno-zavershyly-pidvyshchennia-kvalifikatsii-u-mezhakh-proiektu-prof2it.html');
   await page.locator('.header-tiktok').waitFor({ state: 'attached' });
   await expect(page.locator('.header-theme')).toHaveCount(0);
   await expect(page.locator('.header-tiktok')).toHaveAttribute('href', 'https://www.tiktok.com/@studparliament_kkibp');
   await expect(page.locator('.header-tiktok path')).toHaveAttribute('d', 'M16.5 3c.2 1.9 1.4 3.5 3.5 4.1v3.2a8.3 8.3 0 0 1-3.5-1v5.3a5.9 5.9 0 1 1-5.1-5.8V12a2.7 2.7 0 1 0 1.9 2.6V3h3.2Z');
-  await expect(page.locator('.footer-social .social-link--tiktok')).toHaveAttribute('href', 'https://www.tiktok.com/@studparliament_kkibp');
-  await expect(page.locator('.footer-social .social-links a')).toHaveCount(3);
+  await expect(page.locator('.footer-social .social-links a')).toHaveCount(2);
+  await expect(page.locator('.footer-social .social-link--tiktok')).toHaveCount(0);
+  await expect(page.locator('.footer-subsection h3')).toHaveText('СТУДПАРЛАМЕНТ');
+  await expect(page.locator('.footer-subsection .social-links a')).toHaveCount(3);
+  await expect(page.locator('.footer-subsection .social-link--instagram')).toHaveAttribute('href', 'https://www.instagram.com/studparliament_kkibp');
+  await expect(page.locator('.footer-subsection .social-link--tiktok')).toHaveAttribute('href', 'https://www.tiktok.com/@studparliament_kkibp');
+  await expect(page.locator('.footer-subsection .social-link--telegram')).toHaveAttribute('href', 'https://t.me/+mbguBh8lnxQ4MDI6');
+  await expect(page.locator('.footer-subsection .social-link--telegram svg')).toHaveCount(1);
+  await expect(page.locator('.footer-subsection .social-link--telegram path')).toHaveAttribute('transform', 'translate(.48 .48) scale(.96)');
+  await expect(page.locator('.footer-grid > div:nth-child(2) a', { hasText: 'Інститут' })).toHaveAttribute('href', 'https://yakovliev.github.io/kkibp-institute-demo/');
   await expect(page.locator('.news-article-sdg, .sdg-icon, .sdg-badges')).toHaveCount(0);
 
   const boxes = await page.evaluate(() => {
