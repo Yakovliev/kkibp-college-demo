@@ -1,28 +1,60 @@
 window.COLLEGE_NEWS = [
   {
-    "id": "sdg-06-vsesvitnii-den-vody-vidpovidalne-vodokorystuvannia",
-    "loadedAt": "2026-07-28T12:00:00+03:00",
-    "publishedLabel": "28 липня 2026",
-    "title": "У ККІБП відзначили Всесвітній день води: формуємо культуру відповідального водокористування",
-    "excerpt": "22 березня у коледжі відбувся просвітницький захід до Всесвітнього дня води, присвячений відповідальному використанню водних ресурсів.",
-    "image": "assets/sdg/sdg-06.svg",
-    "alt": "ЦСР 6 - Чиста вода та належні санітарні умови",
-    "url": "news-sdg-06-vsesvitnii-den-vody-vidpovidalne-vodokorystuvannia.html",
+    "id": "4898-plastyk-bez-kordoniv-iak-zberehty-vodni-ekosystemy",
+    "loadedAt": "2026-07-29T15:00:00+03:00",
+    "publishedLabel": "29 липня 2026",
+    "title": "У коледжі відбулася відкрита дискусія «Пластик без кордонів: як зберегти водні екосистеми»",
+    "excerpt": "Студенти й викладачі обговорили вплив пластикових відходів на водні екосистеми та запропонували практичні екологічні ініціативи.",
+    "image": "assets/news/latest/4898-plastyk-bez-kordoniv-01.jpg",
+    "alt": "Учасники відкритої дискусії про збереження водних екосистем",
+    "url": "news-4898-plastyk-bez-kordoniv-iak-zberehty-vodni-ekosystemy.html",
     "tags": [
       "it-science",
-      "sdg-06",
-      "sdg-04",
-      "sdg-12"
+      "sdg-14",
+      "sdg-12",
+      "sdg-06"
+    ]
+  },
+  {
+    "id": "sdg-14-ekolohichna-aktsiia-proty-plastykovoho-zabrudnennia-vodoim",
+    "loadedAt": "2026-07-29T14:00:00+03:00",
+    "publishedLabel": "29 липня 2026",
+    "title": "Екологічна акція зі зменшення пластикового забруднення водойм",
+    "excerpt": "Студенти й працівники коледжу долучилися до збору пластикових кришечок і обговорили вплив пластикових відходів на водні екосистеми.",
+    "image": "assets/news/latest/4897-plastykove-zabrudnennia-vodoim-01.jpg",
+    "alt": "Студентки коледжу зі зібраними пластиковими кришечками",
+    "url": "news-sdg-14-ekolohichna-aktsiia-proty-plastykovoho-zabrudnennia-vodoim.html",
+    "tags": [
+      "it-science",
+      "sdg-14",
+      "sdg-12",
+      "sdg-13"
+    ]
+  },
+  {
+    "id": "4896-enerhiia-vidpovidalnosti-informatsiina-kampaniia-z-enerhooshchadnosti",
+    "loadedAt": "2026-07-29T13:00:00+03:00",
+    "publishedLabel": "29 липня 2026",
+    "title": "«Енергія відповідальності»: у коледжі стартувала інформаційна кампанія з енергоощадності",
+    "excerpt": "Кампанія об’єднала інформаційну роботу, практичні рекомендації та моніторинг енергоспоживання для формування культури енергоощадності.",
+    "image": "assets/news/latest/4896-enerhiia-vidpovidalnosti-01.jpg",
+    "alt": "Презентація ініціатив із відповідального споживання ресурсів",
+    "url": "news-4896-enerhiia-vidpovidalnosti-informatsiina-kampaniia-z-enerhooshchadnosti.html",
+    "tags": [
+      "it-science",
+      "sdg-07",
+      "sdg-12",
+      "sdg-13"
     ]
   },
   {
     "id": "sdg-07-enerhoefektyvnist-v-osvitnomu-seredovyshchi",
-    "loadedAt": "2026-07-28T11:00:00+03:00",
-    "publishedLabel": "28 липня 2026",
+    "loadedAt": "2026-07-29T12:00:00+03:00",
+    "publishedLabel": "29 липня 2026",
     "title": "Коледж продовжує впроваджувати принципи енергоефективності в освітньому середовищі",
     "excerpt": "Коледж послідовно модернізує освітлення, оптимізує споживання електроенергії та розвиває культуру відповідального енергоспоживання.",
-    "image": "assets/sdg/sdg-07.svg",
-    "alt": "ЦСР 7 - Доступна та чиста енергія",
+    "image": "assets/news/latest/4895-enerhoefektyvnist-01.jpg",
+    "alt": "Студенти в оновленому освітньому просторі з енергоощадним освітленням",
     "url": "news-sdg-07-enerhoefektyvnist-v-osvitnomu-seredovyshchi.html",
     "tags": [
       "it-science",
@@ -32,19 +64,19 @@ window.COLLEGE_NEWS = [
     ]
   },
   {
-    "id": "sdg-14-ekolohichna-aktsiia-proty-plastykovoho-zabrudnennia-vodoim",
-    "loadedAt": "2026-07-28T10:00:00+03:00",
-    "publishedLabel": "28 липня 2026",
-    "title": "У коледжі провели екологічну акцію зі зменшення пластикового забруднення водойм",
-    "excerpt": "Студенти й працівники коледжу долучилися до збору пластикових кришечок і обговорили вплив пластикових відходів на водні екосистеми.",
-    "image": "assets/sdg/sdg-14.svg",
-    "alt": "ЦСР 14 - Збереження морських ресурсів",
-    "url": "news-sdg-14-ekolohichna-aktsiia-proty-plastykovoho-zabrudnennia-vodoim.html",
+    "id": "sdg-06-vsesvitnii-den-vody-vidpovidalne-vodokorystuvannia",
+    "loadedAt": "2026-07-29T11:00:00+03:00",
+    "publishedLabel": "29 липня 2026",
+    "title": "У коледжі відзначили Всесвітній день води: формуємо культуру відповідального водокористування",
+    "excerpt": "22 березня у коледжі відбувся просвітницький захід до Всесвітнього дня води, присвячений відповідальному використанню водних ресурсів.",
+    "image": "assets/news/latest/4894-vsesvitnii-den-vody-01.jpg",
+    "alt": "Учасники заходу до Всесвітнього дня води біля питного бювету",
+    "url": "news-sdg-06-vsesvitnii-den-vody-vidpovidalne-vodokorystuvannia.html",
     "tags": [
       "it-science",
-      "sdg-14",
-      "sdg-12",
-      "sdg-13"
+      "sdg-06",
+      "sdg-04",
+      "sdg-12"
     ]
   },
   {
